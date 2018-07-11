@@ -1,0 +1,16 @@
+PODS:
+  - textbundle-swift (0.1.0)
+
+DEPENDENCIES:
+  - textbundle-swift (from `../`)
+
+EXTERNAL SOURCES:
+  textbundle-swift:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  textbundle-swift: afa2d7f92c365613b5586509f400b3b4e84302dd
+
+PODFILE CHECKSUM: 7ec93cbe81942f02c076f6c33caeeea54998927a
+
+COCOAPODS: 1.5.0
