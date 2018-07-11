@@ -23,14 +23,17 @@ TODO: Add long description of the pod here.
 
   s.homepage         = 'https://github.com/bdewey@gmail.com/textbundle-swift'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
+  s.license          = { :type => 'Apache', :file => 'LICENSE' }
   s.author           = { 'bdewey@gmail.com' => 'bdewey@gmail.com' }
   s.source           = { :git => 'https://github.com/bdewey@gmail.com/textbundle-swift.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '11.0'
 
-  s.source_files = 'textbundle-swift-template/Classes/**/*'
+  s.source_files = 'textbundle-swift/Classes/**/*'
+  s.test_spec 'Tests' do |test_spec|
+    test_spec.source_files = 'textbundle-swift/Tests/**/*'
+  end
 
   # s.resource_bundles = {
   #   'textbundle-swift-template' => ['textbundle-swift-template/Assets/*.png']

@@ -1,16 +1,18 @@
 PODS:
   - textbundle-swift (0.1.0)
+  - textbundle-swift/Tests (0.1.0)
 
 DEPENDENCIES:
   - textbundle-swift (from `../`)
+  - textbundle-swift/Tests (from `../`)
 
 EXTERNAL SOURCES:
   textbundle-swift:
     :path: "../"
 
 SPEC CHECKSUMS:
-  textbundle-swift: afa2d7f92c365613b5586509f400b3b4e84302dd
+  textbundle-swift: 4db0dca6b8134c36261c4bbac1ea6313fa9e76e0
 
-PODFILE CHECKSUM: 7ec93cbe81942f02c076f6c33caeeea54998927a
+PODFILE CHECKSUM: 922edac2e6938807f68588cb45739e9222319ea4
 
 COCOAPODS: 1.5.0

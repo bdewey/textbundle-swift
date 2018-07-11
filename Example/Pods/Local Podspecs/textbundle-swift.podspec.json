@@ -5,7 +5,7 @@
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/bdewey@gmail.com/textbundle-swift",
   "license": {
-    "type": "MIT",
+    "type": "Apache",
     "file": "LICENSE"
   },
   "authors": {
@@ -18,5 +18,12 @@
   "platforms": {
     "ios": "11.0"
   },
-  "source_files": "textbundle-swift-template/Classes/**/*"
+  "source_files": "textbundle-swift/Classes/**/*",
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "textbundle-swift/Tests/**/*"
+    }
+  ]
 }

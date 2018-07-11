@@ -217,7 +217,7 @@
    limitations under the License.
 </string>
 			<key>License</key>
-			<string>MIT</string>
+			<string>Apache</string>
 			<key>Title</key>
 			<string>textbundle-swift</string>
 			<key>Type</key>
