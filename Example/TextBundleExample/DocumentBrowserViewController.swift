@@ -45,12 +45,12 @@ final class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDo
     _ controller: UIDocumentBrowserViewController,
     didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void
   ) {
-    let newDocumentURL: URL? = nil
+    let newDocumentURL: URL? = Bundle.main.url(forResource: "Textbundle Example", withExtension: "textbundle")
     
     // Set the URL for the new document here. Optionally, you can present a template chooser before calling the importHandler.
     // Make sure the importHandler is always called, even if the user cancels the creation request.
     if newDocumentURL != nil {
-      importHandler(newDocumentURL, .move)
+      importHandler(newDocumentURL, .copy)
     } else {
       importHandler(nil, .none)
     }
@@ -86,10 +86,11 @@ final class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDo
   
   func presentDocument(at documentURL: URL) {
     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-    let documentViewController = storyBoard.instantiateViewController(withIdentifier: "DocumentViewController") as! DocumentViewController
+    let navigationController = storyBoard.instantiateViewController(withIdentifier: "DocumentViewController") as! UINavigationController
+    let documentViewController = navigationController.viewControllers[0] as! DocumentViewController
     documentViewController.document = TextBundleDocument(fileURL: documentURL)
     
-    present(documentViewController, animated: true, completion: nil)
+    present(navigationController, animated: true, completion: nil)
   }
 }
 

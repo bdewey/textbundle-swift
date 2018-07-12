@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4AAEE4E0FDAE6D7FF5DAE7E8 /* Pods_TextBundleExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FD0AD68CE2B3E855DE67AB4 /* Pods_TextBundleExample.framework */; };
 		A452F18892E2A8F61C121126 /* Pods_TextBundleExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E711140D00D83771A9D073D /* Pods_TextBundleExampleTests.framework */; };
+		D307E84D20F7842C00E85A81 /* Textbundle Example.textbundle in Resources */ = {isa = PBXBuildFile; fileRef = D307E84C20F7842C00E85A81 /* Textbundle Example.textbundle */; };
 		D349846920F679A500226851 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D349846820F679A500226851 /* AppDelegate.swift */; };
 		D349846B20F679A500226851 /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D349846A20F679A500226851 /* DocumentBrowserViewController.swift */; };
 		D349846D20F679A500226851 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D349846C20F679A500226851 /* DocumentViewController.swift */; };
@@ -34,6 +35,7 @@
 		7E711140D00D83771A9D073D /* Pods_TextBundleExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TextBundleExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FFF519A2E17B57DACC0EE46 /* Pods-TextBundleExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextBundleExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TextBundleExample/Pods-TextBundleExample.debug.xcconfig"; sourceTree = "<group>"; };
 		B543F46D61B57620AB4F9A64 /* Pods-TextBundleExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextBundleExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TextBundleExampleTests/Pods-TextBundleExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		D307E84C20F7842C00E85A81 /* Textbundle Example.textbundle */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = "Textbundle Example.textbundle"; sourceTree = "<group>"; };
 		D349846520F679A500226851 /* TextBundleExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextBundleExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D349846820F679A500226851 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D349846A20F679A500226851 /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 		D349846720F679A500226851 /* TextBundleExample */ = {
 			isa = PBXGroup;
 			children = (
+				D307E84C20F7842C00E85A81 /* Textbundle Example.textbundle */,
 				D349846820F679A500226851 /* AppDelegate.swift */,
 				D349846A20F679A500226851 /* DocumentBrowserViewController.swift */,
 				D349846C20F679A500226851 /* DocumentViewController.swift */,
@@ -218,6 +221,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D349847720F679A600226851 /* LaunchScreen.storyboard in Resources */,
+				D307E84D20F7842C00E85A81 /* Textbundle Example.textbundle in Resources */,
 				D349847420F679A600226851 /* Assets.xcassets in Resources */,
 				D349847220F679A500226851 /* Main.storyboard in Resources */,
 			);

@@ -19,29 +19,48 @@ import UIKit
 
 import textbundle_swift
 
-final class DocumentViewController: UIViewController {
+final class DocumentViewController: UIViewController, UITextViewDelegate {
+  
+  var document: TextBundleDocument?
+  
+  @IBOutlet var textView: UITextView!
+  
+  override func viewDidLoad() {
+    textView.delegate = self
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+      barButtonSystemItem: .done,
+      target: self,
+      action: #selector(dismissDocumentViewController)
+    )
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     
-    @IBOutlet weak var documentNameLabel: UILabel!
-    
-    var document: TextBundleDocument?
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Access the document
-        document?.open(completionHandler: { (success) in
-            if success {
-                // Display the content of the document, e.g.:
-                self.documentNameLabel.text = self.document?.metadata.creatorURL
-            } else {
-                // Make sure to handle the failed import appropriately, e.g., by presenting an error message to the user.
-            }
-        })
+    // Access the document
+    document?.open(completionHandler: { (success) in
+      if success {
+        // Display the content of the document, e.g.:
+        self.textView.text = self.document?.contents
+        self.title = self.document?.fileURL.lastPathComponent
+      } else {
+        // Make sure to handle the failed import appropriately, e.g., by presenting an error message to the user.
+      }
+    })
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    document?.close(completionHandler: nil)
+  }
+  
+  @IBAction func dismissDocumentViewController() {
+    dismiss(animated: true) {
+      self.document?.close(completionHandler: nil)
     }
-    
-    @IBAction func dismissDocumentViewController() {
-        dismiss(animated: true) {
-            self.document?.close(completionHandler: nil)
-        }
-    }
+  }
+  
+  func textViewDidChange(_ textView: UITextView) {
+    self.document?.contents = textView.text
+  }
 }

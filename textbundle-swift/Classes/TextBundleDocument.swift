@@ -43,8 +43,21 @@ public final class TextBundleDocument: UIDocument {
     }
   }
   
-  public var metadata = Metadata()
-  public var contents = ""
+  public var metadata = Metadata() {
+    didSet {
+      undoManager.registerUndo(withTarget: self) { (document) in
+        document.metadata = oldValue
+      }
+    }
+  }
+  
+  public var contents = "" {
+    didSet {
+      undoManager.registerUndo(withTarget: self) { (document) in
+        document.contents = oldValue
+      }
+    }
+  }
   
   override public func contents(forType typeName: String) throws -> Any {
     return FileWrapper(directoryWithFileWrappers: [
