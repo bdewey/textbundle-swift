@@ -12,7 +12,6 @@
 		D349846920F679A500226851 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D349846820F679A500226851 /* AppDelegate.swift */; };
 		D349846B20F679A500226851 /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D349846A20F679A500226851 /* DocumentBrowserViewController.swift */; };
 		D349846D20F679A500226851 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D349846C20F679A500226851 /* DocumentViewController.swift */; };
-		D349846F20F679A500226851 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D349846E20F679A500226851 /* Document.swift */; };
 		D349847220F679A500226851 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D349847020F679A500226851 /* Main.storyboard */; };
 		D349847420F679A600226851 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D349847320F679A600226851 /* Assets.xcassets */; };
 		D349847720F679A600226851 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D349847520F679A600226851 /* LaunchScreen.storyboard */; };
@@ -39,7 +38,6 @@
 		D349846820F679A500226851 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D349846A20F679A500226851 /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
 		D349846C20F679A500226851 /* DocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewController.swift; sourceTree = "<group>"; };
-		D349846E20F679A500226851 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		D349847120F679A500226851 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D349847320F679A600226851 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D349847620F679A600226851 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -118,7 +116,6 @@
 				D349846820F679A500226851 /* AppDelegate.swift */,
 				D349846A20F679A500226851 /* DocumentBrowserViewController.swift */,
 				D349846C20F679A500226851 /* DocumentViewController.swift */,
-				D349846E20F679A500226851 /* Document.swift */,
 				D349847020F679A500226851 /* Main.storyboard */,
 				D349847320F679A600226851 /* Assets.xcassets */,
 				D349847520F679A600226851 /* LaunchScreen.storyboard */,
@@ -297,7 +294,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D349846F20F679A500226851 /* Document.swift in Sources */,
 				D349846D20F679A500226851 /* DocumentViewController.swift in Sources */,
 				D349846B20F679A500226851 /* DocumentBrowserViewController.swift in Sources */,
 				D349846920F679A500226851 /* AppDelegate.swift in Sources */,
@@ -466,7 +462,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K2UU8WDD8H;
 				INFOPLIST_FILE = TextBundleExample/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brians-brain.TextBundleExample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -482,7 +481,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K2UU8WDD8H;
 				INFOPLIST_FILE = TextBundleExample/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brians-brain.TextBundleExample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -499,7 +501,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K2UU8WDD8H;
 				INFOPLIST_FILE = TextBundleExampleTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brians-brain.TextBundleExampleTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -517,7 +523,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K2UU8WDD8H;
 				INFOPLIST_FILE = TextBundleExampleTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brians-brain.TextBundleExampleTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;

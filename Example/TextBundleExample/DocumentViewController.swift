@@ -17,11 +17,13 @@
 
 import UIKit
 
+import textbundle_swift
+
 final class DocumentViewController: UIViewController {
     
     @IBOutlet weak var documentNameLabel: UILabel!
     
-    var document: UIDocument?
+    var document: TextBundleDocument?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -30,7 +32,7 @@ final class DocumentViewController: UIViewController {
         document?.open(completionHandler: { (success) in
             if success {
                 // Display the content of the document, e.g.:
-                self.documentNameLabel.text = self.document?.fileURL.lastPathComponent
+                self.documentNameLabel.text = self.document?.metadata.creatorURL
             } else {
                 // Make sure to handle the failed import appropriately, e.g., by presenting an error message to the user.
             }
