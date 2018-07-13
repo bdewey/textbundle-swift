@@ -33,6 +33,9 @@ TODO: Add long description of the pod here.
   s.source_files = 'textbundle-swift/Classes/**/*'
   s.test_spec 'Tests' do |test_spec|
     test_spec.source_files = 'textbundle-swift/Tests/**/*'
+    test_spec.resource_bundles = {
+      'TestContent' => 'textbundle-swift/TestContent/*',
+    }
   end
 
   # s.resource_bundles = {

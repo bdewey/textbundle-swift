@@ -18,6 +18,15 @@
 import XCTest
 import textbundle_swift
 
+fileprivate let expectedDocumentContents = """
+# Textbundle Example
+
+This is a simple example of a textbundle package. The following paragraph contains an example of a referenced image using the embedding code `![](assets/textbundle.png)`.
+
+![](assets/textbundle.png)
+
+"""
+
 final class TextBundleDocumentTests: XCTestCase {
 
   func testSerializeMetadata() {
@@ -29,7 +38,7 @@ final class TextBundleDocumentTests: XCTestCase {
     let string = String(data: data, encoding: .utf8)!
     let expectedResults = """
 {
-  "version" : 1,
+  "version" : 2,
   "type" : "net.daringfireball.markdown",
   "creatorIdentifier" : "org.brians-brain.TextBundleExample"
 }
@@ -63,5 +72,77 @@ final class TextBundleDocumentTests: XCTestCase {
     expectedResult.creatorIdentifier = "com.example.myapp"
     expectedResult.sourceURL = "file:///Users/johndoe/Documents/mytext.markdown"
     XCTAssertEqual(result, expectedResult)
+  }
+  
+  func testCanLoadContents() {
+    let document = try! makeDocument("testCanLoadContents")
+    defer { try? FileManager.default.removeItem(at: document.fileURL )}
+    let didOpen = expectation(description: "did open")
+    document.open { (success) in
+      XCTAssertTrue(success)
+      XCTAssertEqual(document.contents, expectedDocumentContents)
+      didOpen.fulfill()
+    }
+    waitForExpectations(timeout: 3, handler: nil)
+  }
+  
+  func testCanEditContents() {
+    let editedText = "This is edited text!\n"
+    let document = try! makeDocument("testCanEditContents")
+    defer { try? FileManager.default.removeItem(at: document.fileURL) }
+    let didEdit = expectation(description: "did edit")
+    document.open { (success) in
+      XCTAssertTrue(success)
+      document.contents = editedText
+      document.close(completionHandler: { (closeSuccess) in
+        XCTAssertTrue(closeSuccess)
+        didEdit.fulfill()
+      })
+    }
+    
+    waitForExpectations(timeout: 3, handler: nil)
+    
+    let roundTripDocument = TextBundleDocument(fileURL: document.fileURL)
+    let didOpen = expectation(description: "did open")
+    roundTripDocument.open { (success) in
+      XCTAssertTrue(success)
+      XCTAssertEqual(roundTripDocument.contents, editedText)
+      XCTAssertEqual(roundTripDocument.assetNames, ["textbundle.png"])
+      didOpen.fulfill()
+    }
+    waitForExpectations(timeout: 3, handler: nil)
+  }
+  
+  func testCanLoadAssets() {
+    let document = try! makeDocument("testCanLoadAssets")
+    defer { try? FileManager.default.removeItem(at: document.fileURL) }
+    let didOpen = expectation(description: "did open")
+    document.open { (success) in
+      XCTAssertTrue(success)
+      XCTAssertEqual(document.assetNames, ["textbundle.png"])
+      didOpen.fulfill()
+    }
+    waitForExpectations(timeout: 3, handler: nil)
+  }
+}
+
+// MARK: - Helpers
+
+extension TextBundleDocumentTests {
+  
+  func makeDocument(_ identifier: String) throws -> TextBundleDocument {
+    let url = testResources.url(forResource: "Textbundle Example", withExtension: "textbundle")!
+    let pathComponent = identifier + "-" + UUID().uuidString + ".textbundle"
+    let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(pathComponent)
+    try FileManager.default.copyItem(at: url, to: temporaryURL)
+    return TextBundleDocument(fileURL: temporaryURL)
+  }
+  
+  var testResources: Bundle {
+    let resourceURL = Bundle(for: TextBundleDocumentTests.self).url(
+      forResource: "TestContent",
+      withExtension: "bundle"
+    )
+    return Bundle(url: resourceURL!)!
   }
 }

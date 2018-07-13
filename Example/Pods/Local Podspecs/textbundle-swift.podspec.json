@@ -23,7 +23,10 @@
     {
       "name": "Tests",
       "test_type": "unit",
-      "source_files": "textbundle-swift/Tests/**/*"
+      "source_files": "textbundle-swift/Tests/**/*",
+      "resource_bundles": {
+        "TestContent": "textbundle-swift/TestContent/*"
+      }
     }
   ]
 }

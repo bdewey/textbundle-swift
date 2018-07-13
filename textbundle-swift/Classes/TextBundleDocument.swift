@@ -17,7 +17,76 @@
 
 import UIKit
 
+extension FileWrapper {
+  
+  fileprivate var string: String? {
+    guard let data = regularFileContents, let string = String(data: data, encoding: .utf8)
+      else { return nil }
+    return string
+  }
+  
+  fileprivate var existingContentsKey: String? {
+    return self.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
+  }
+}
+
+fileprivate class ContentsCache {
+  
+  private let bundle: FileWrapper
+  private let preferredFilename: String
+  
+  init(bundle: FileWrapper, preferredFilename: String) {
+    precondition(bundle.isDirectory)
+    self.bundle = bundle
+    self.preferredFilename = preferredFilename
+    _wrapper = bundle.fileWrappers?[preferredFilename]
+  }
+  
+  private var _contents: String? = nil
+  private var _wrapper: FileWrapper? = nil
+  
+  @discardableResult
+  func makeFileWrapper() throws -> FileWrapper {
+    guard _wrapper == nil else { return _wrapper! }
+    guard let data = _contents?.data(using: .utf8) else {
+      throw NSError(
+        domain: NSCocoaErrorDomain,
+        code: NSFileWriteInapplicableStringEncodingError,
+        userInfo: nil
+      )
+    }
+    let wrapper = FileWrapper(regularFileWithContents: data)
+    wrapper.preferredFilename = preferredFilename
+    bundle.addFileWrapper(wrapper)
+    _wrapper = wrapper
+    return wrapper
+  }
+  
+  var contents: String {
+    get {
+      if let contents = _contents { return contents }
+      if let wrapperString = _wrapper?.string {
+        _contents = wrapperString
+        return wrapperString
+      }
+      return ""
+    }
+    set {
+      if let wrapper = _wrapper {
+        bundle.removeFileWrapper(wrapper)
+      }
+      _wrapper = nil
+      _contents = newValue
+    }
+  }
+}
+
 public final class TextBundleDocument: UIDocument {
+  
+  public enum Error: Swift.Error {
+    case cannotDecodeString
+    case cannotEncodeString
+  }
   
   public struct Metadata: Codable, Equatable {
     public var version = 2
@@ -51,18 +120,39 @@ public final class TextBundleDocument: UIDocument {
     }
   }
   
-  public var contents = "" {
-    didSet {
+  public var contents: String {
+    get {
+      return contentsCache.contents
+    }
+    set {
+      let currentContents = contentsCache.contents
       undoManager.registerUndo(withTarget: self) { (document) in
-        document.contents = oldValue
+        document.contentsCache.contents = currentContents
       }
+      contentsCache.contents = newValue
     }
   }
   
+  public var assetNames: [String] {
+    if let assetNames = textBundle.fileWrappers?["assets"]?.fileWrappers?.keys {
+      return Array(assetNames)
+    } else {
+      return []
+    }
+  }
+  
+  private var textBundle: FileWrapper
+  private var contentsCache: ContentsCache
+  
+  public override init(fileURL url: URL) {
+    textBundle = FileWrapper(directoryWithFileWrappers: [:])
+    contentsCache = ContentsCache(bundle: textBundle, preferredFilename: "text.markdown")
+    super.init(fileURL: url)
+  }
+  
   override public func contents(forType typeName: String) throws -> Any {
-    return FileWrapper(directoryWithFileWrappers: [
-      "info.json": FileWrapper(regularFileWithContents: try metadata.makeData()),
-      ])
+    _ = try? contentsCache.makeFileWrapper()
+    return textBundle
   }
   
   public override func load(
@@ -75,14 +165,11 @@ public final class TextBundleDocument: UIDocument {
       else {
         return
     }
+    textBundle = directory
+    contentsCache = ContentsCache(bundle: textBundle, preferredFilename: textBundle.existingContentsKey ?? "text.markdown")
     if let metadataWrapper = fileWrappers["info.json"],
       let data = metadataWrapper.regularFileContents {
       metadata = try Metadata(from: data)
-    }
-    if let textKey = fileWrappers.keys.first(where: { $0.hasPrefix("text.") }),
-      let data = fileWrappers[textKey]?.regularFileContents,
-      let string = String(data: data, encoding: .utf8) {
-      self.contents = string
     }
   }
 }

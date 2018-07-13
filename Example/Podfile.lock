@@ -11,7 +11,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  textbundle-swift: 4db0dca6b8134c36261c4bbac1ea6313fa9e76e0
+  textbundle-swift: 1c52d1c8736be0892c7956eec270cb9874abbd52
 
 PODFILE CHECKSUM: 922edac2e6938807f68588cb45739e9222319ea4
 
