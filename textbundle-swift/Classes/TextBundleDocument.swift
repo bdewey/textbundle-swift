@@ -30,54 +30,109 @@ extension FileWrapper {
   }
 }
 
-fileprivate class ContentsCache {
+fileprivate class ContainedFileWrapper {
+  private weak var container: FileWrapper?
+  private var fileWrapper: FileWrapper
+  typealias FlushCallback = () -> Void
+  var willFlush: FlushCallback?
   
-  private let bundle: FileWrapper
-  private let preferredFilename: String
-  
-  init(bundle: FileWrapper, preferredFilename: String) {
-    precondition(bundle.isDirectory)
-    self.bundle = bundle
-    self.preferredFilename = preferredFilename
-    _wrapper = bundle.fileWrappers?[preferredFilename]
+  init(container: FileWrapper, fileWrapper: FileWrapper) {
+    precondition(container.isDirectory)
+    precondition(container.keyForChildFileWrapper(fileWrapper) != nil)
+    self.container = container
+    self.fileWrapper = fileWrapper
   }
   
-  private var _contents: String? = nil
-  private var _wrapper: FileWrapper? = nil
+  func replace(with fileWrapper: FileWrapper) {
+    guard let container = container else { return }
+    fileWrapper.preferredFilename = container.keyForChildFileWrapper(self.fileWrapper)
+    container.removeFileWrapper(self.fileWrapper)
+    container.addFileWrapper(fileWrapper)
+  }
   
-  @discardableResult
-  func makeFileWrapper() throws -> FileWrapper {
-    guard _wrapper == nil else { return _wrapper! }
-    guard let data = _contents?.data(using: .utf8) else {
-      throw NSError(
-        domain: NSCocoaErrorDomain,
-        code: NSFileWriteInapplicableStringEncodingError,
-        userInfo: nil
-      )
+  var regularFileContents: Data? {
+    return fileWrapper.regularFileContents
+  }
+  
+  func flush() {
+    willFlush?()
+  }
+}
+
+fileprivate class ContainerFileWrapper {
+  let container: FileWrapper
+  private var containedFileWrappers: [String : ContainedFileWrapper] = [:]
+  
+  init(container: FileWrapper) {
+    precondition(container.isDirectory)
+    self.container = container
+  }
+  
+  subscript (key: String) -> ContainedFileWrapper? {
+    get {
+      if let existingContainedFileWrapper = containedFileWrappers[key] {
+        return existingContainedFileWrapper
+      }
+      if let wrapper = container.fileWrappers?[key] {
+        let containedFileWrapper = ContainedFileWrapper(container: container, fileWrapper: wrapper)
+        containedFileWrappers[key] = containedFileWrapper
+        return containedFileWrapper
+      }
+      return nil
     }
+  }
+  
+  func addRegularFile(withContents data: Data, preferredFilename: String) -> ContainedFileWrapper {
     let wrapper = FileWrapper(regularFileWithContents: data)
     wrapper.preferredFilename = preferredFilename
-    bundle.addFileWrapper(wrapper)
-    _wrapper = wrapper
-    return wrapper
+    let key = container.addFileWrapper(wrapper)
+    let containedFileWrapper = ContainedFileWrapper(container: container, fileWrapper: wrapper)
+    containedFileWrappers[key] = containedFileWrapper
+    return containedFileWrapper
   }
   
-  var contents: String {
+  func flush() {
+    for wrapper in containedFileWrappers.values {
+      wrapper.flush()
+    }
+  }
+}
+
+fileprivate class FileWrapperStringData {
+  private let containedFileWrapper: ContainedFileWrapper
+  private var dirty = false
+  private var _value: String?
+  
+  var value: String {
     get {
-      if let contents = _contents { return contents }
-      if let wrapperString = _wrapper?.string {
-        _contents = wrapperString
-        return wrapperString
+      if let value = _value { return value }
+      guard
+        let data = containedFileWrapper.regularFileContents,
+        let value = String(data: data, encoding: .utf8)
+        else {
+          return ""
       }
-      return ""
+      _value = value
+      dirty = false
+      return value
     }
     set {
-      if let wrapper = _wrapper {
-        bundle.removeFileWrapper(wrapper)
-      }
-      _wrapper = nil
-      _contents = newValue
+      _value = newValue
+      dirty = true
     }
+  }
+  
+  init(containedFileWrapper: ContainedFileWrapper) {
+    self.containedFileWrapper = containedFileWrapper
+    containedFileWrapper.willFlush = { [weak self] in
+      self?.flush()
+    }
+  }
+  
+  private func flush() {
+    guard dirty, let data = _value?.data(using: .utf8) else { return }
+    let wrapper = FileWrapper(regularFileWithContents: data)
+    containedFileWrapper.replace(with: wrapper)
   }
 }
 
@@ -120,39 +175,49 @@ public final class TextBundleDocument: UIDocument {
     }
   }
   
+  private var _textString: FileWrapperStringData?
+  private var textString: FileWrapperStringData {
+    if let textString = _textString {
+      return textString
+    }
+    let key = textBundle.container.existingContentsKey ?? "text.markdown"
+    let wrapper = textBundle[key] ?? textBundle.addRegularFile(withContents: Data(), preferredFilename: key)
+    let textString = FileWrapperStringData(containedFileWrapper: wrapper)
+    _textString = textString
+    return textString
+  }
+  
   public var contents: String {
     get {
-      return contentsCache.contents
+      return textString.value
     }
     set {
-      let currentContents = contentsCache.contents
+      let currentContents = textString.value
       undoManager.registerUndo(withTarget: self) { (document) in
-        document.contentsCache.contents = currentContents
+        document.textString.value = currentContents
       }
-      contentsCache.contents = newValue
+      textString.value = newValue
     }
   }
   
   public var assetNames: [String] {
-    if let assetNames = textBundle.fileWrappers?["assets"]?.fileWrappers?.keys {
+    if let assetNames = textBundle.container.fileWrappers?["assets"]?.fileWrappers?.keys {
       return Array(assetNames)
     } else {
       return []
     }
   }
   
-  private var textBundle: FileWrapper
-  private var contentsCache: ContentsCache
+  private var textBundle: ContainerFileWrapper
   
   public override init(fileURL url: URL) {
-    textBundle = FileWrapper(directoryWithFileWrappers: [:])
-    contentsCache = ContentsCache(bundle: textBundle, preferredFilename: "text.markdown")
+    textBundle = ContainerFileWrapper(container: FileWrapper(directoryWithFileWrappers: [:]))
     super.init(fileURL: url)
   }
   
   override public func contents(forType typeName: String) throws -> Any {
-    _ = try? contentsCache.makeFileWrapper()
-    return textBundle
+    textBundle.flush()
+    return textBundle.container
   }
   
   public override func load(
@@ -165,8 +230,7 @@ public final class TextBundleDocument: UIDocument {
       else {
         return
     }
-    textBundle = directory
-    contentsCache = ContentsCache(bundle: textBundle, preferredFilename: textBundle.existingContentsKey ?? "text.markdown")
+    textBundle = ContainerFileWrapper(container: directory)
     if let metadataWrapper = fileWrappers["info.json"],
       let data = metadataWrapper.regularFileContents {
       metadata = try Metadata(from: data)
