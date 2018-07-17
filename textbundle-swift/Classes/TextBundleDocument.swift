@@ -24,61 +24,69 @@ extension FileWrapper {
   }
 }
 
-fileprivate class ContainedFileWrapper {
-  private weak var container: FileWrapper?
-  private var fileWrapper: FileWrapper
+protocol ValueStorage {
+  associatedtype Value
   
-  init(container: FileWrapper, fileWrapper: FileWrapper) {
-    precondition(container.isDirectory)
-    precondition(container.keyForChildFileWrapper(fileWrapper) != nil)
-    self.container = container
-    self.fileWrapper = fileWrapper
+  func readValue() throws -> Value
+  func writeValue(_ value: Value) throws
+}
+
+fileprivate struct CachedValue<Value, Storage: ValueStorage> where Storage.Value == Value {
+
+  private let storage: Storage
+  private var dirty = false
+  private var _value: Value?
+  
+  fileprivate init(storage: Storage) {
+    self.storage = storage
+  }
+
+  mutating func value() throws -> Value {
+    if let value = _value { return value }
+    let value = try storage.readValue()
+    _value = value
+    dirty = false
+    return value
   }
   
-  func replace(with fileWrapper: FileWrapper) {
-    guard let container = container else { return }
-    fileWrapper.preferredFilename = container.keyForChildFileWrapper(self.fileWrapper)
-    container.removeFileWrapper(self.fileWrapper)
-    container.addFileWrapper(fileWrapper)
+  mutating func setValue(_ value: Value) {
+    _value = value
+    dirty = true
   }
   
-  var regularFileContents: Data? {
-    return fileWrapper.regularFileContents
+  mutating func flush() throws {
+    if dirty, let value = _value {
+      try storage.writeValue(value)
+      dirty = false
+    }
+  }
+  
+  mutating func clear() {
+    dirty = false
+    _value = nil
   }
 }
 
-fileprivate class FileWrapperStringData {
-  private let containedFileWrapper: ContainedFileWrapper
-  private var dirty = false
-  private var _value: String?
+struct FileWrapperMetadataStorage: ValueStorage {
+  let directory: FileWrapper
   
-  var value: String {
-    get {
-      if let value = _value { return value }
-      guard
-        let data = containedFileWrapper.regularFileContents,
-        let value = String(data: data, encoding: .utf8)
-        else {
-          return ""
-      }
-      _value = value
-      dirty = false
-      return value
-    }
-    set {
-      _value = newValue
-      dirty = true
+  func readValue() throws -> TextBundleDocument.Metadata {
+    if let metadataWrapper = directory.fileWrappers?["info.json"],
+      let data = metadataWrapper.regularFileContents {
+      return try TextBundleDocument.Metadata(from: data)
+    } else {
+      return TextBundleDocument.Metadata()
     }
   }
   
-  init(containedFileWrapper: ContainedFileWrapper) {
-    self.containedFileWrapper = containedFileWrapper
-  }
-  
-  func flush() {
-    guard dirty, let data = _value?.data(using: .utf8) else { return }
+  func writeValue(_ value: TextBundleDocument.Metadata) throws {
+    let data = try value.makeData()
     let wrapper = FileWrapper(regularFileWithContents: data)
-    containedFileWrapper.replace(with: wrapper)
+    wrapper.preferredFilename = "info.json"
+    if let existingWrapper = directory.fileWrappers?["info.json"] {
+      directory.removeFileWrapper(existingWrapper)
+    }
+    directory.addFileWrapper(wrapper)
   }
 }
 
@@ -121,39 +129,20 @@ public final class TextBundleDocument: UIDocument {
     }
   }
   
-  private var textFileWrapper: ContainedFileWrapper {
-    if let key = textBundle.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") }),
-      let wrapper = textBundle.fileWrappers?[key] {
-      return ContainedFileWrapper(container: textBundle, fileWrapper: wrapper)
-    } else {
-      let wrapper = FileWrapper(regularFileWithContents: Data())
-      wrapper.preferredFilename = "text.markdown"
-      textBundle.addFileWrapper(wrapper)
-      return ContainedFileWrapper(container: textBundle, fileWrapper: wrapper)
-    }
+  private lazy var textCache = {
+    CachedValue(storage: StringStorage(document: self, key: "text.markdown"))
+  }()
+  
+  public func text() throws -> String {
+    return try textCache.value()
   }
   
-  private var _textString: FileWrapperStringData?
-  private var textString: FileWrapperStringData {
-    if let textString = _textString {
-      return textString
+  public func setText(_ contents: String) throws {
+    let currentContents = try textCache.value()
+    undoManager.registerUndo(withTarget: self) { (document) in
+      document.textCache.setValue(currentContents)
     }
-    let textString = FileWrapperStringData(containedFileWrapper: textFileWrapper)
-    _textString = textString
-    return textString
-  }
-  
-  public var contents: String {
-    get {
-      return textString.value
-    }
-    set {
-      let currentContents = textString.value
-      undoManager.registerUndo(withTarget: self) { (document) in
-        document.textString.value = currentContents
-      }
-      textString.value = newValue
-    }
+    textCache.setValue(contents)
   }
   
   public var assetNames: [String] {
@@ -172,7 +161,7 @@ public final class TextBundleDocument: UIDocument {
   }
   
   override public func contents(forType typeName: String) throws -> Any {
-    textString.flush()
+    try textCache.flush()
     return textBundle
   }
   
@@ -190,6 +179,33 @@ public final class TextBundleDocument: UIDocument {
     if let metadataWrapper = fileWrappers["info.json"],
       let data = metadataWrapper.regularFileContents {
       metadata = try Metadata(from: data)
+    }
+  }
+}
+
+extension TextBundleDocument {
+  struct StringStorage: ValueStorage {
+    weak var document: TextBundleDocument?
+    let key: String
+    
+    func readValue() throws -> String {
+      guard
+        let wrapper = document?.textBundle.fileWrappers?[key],
+        let data = wrapper.regularFileContents
+        else { return "" }
+      guard let string = String(data: data, encoding: .utf8)
+        else { throw Error.cannotDecodeString }
+      return string
+    }
+    
+    func writeValue(_ value: String) throws {
+      guard let data = value.data(using: .utf8) else { throw Error.cannotEncodeString }
+      let wrapper = FileWrapper(regularFileWithContents: data)
+      wrapper.preferredFilename = key
+      if let existingWrapper = document?.textBundle.fileWrappers?[key] {
+        document?.textBundle.removeFileWrapper(existingWrapper)
+      }
+      document?.textBundle.addFileWrapper(wrapper)
     }
   }
 }

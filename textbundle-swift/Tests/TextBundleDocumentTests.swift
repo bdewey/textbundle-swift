@@ -80,7 +80,7 @@ final class TextBundleDocumentTests: XCTestCase {
     let didOpen = expectation(description: "did open")
     document.open { (success) in
       XCTAssertTrue(success)
-      XCTAssertEqual(document.contents, expectedDocumentContents)
+      XCTAssertEqual(try? document.text(), expectedDocumentContents)
       didOpen.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
@@ -93,7 +93,7 @@ final class TextBundleDocumentTests: XCTestCase {
     let didEdit = expectation(description: "did edit")
     document.open { (success) in
       XCTAssertTrue(success)
-      document.contents = editedText
+      try! document.setText(editedText)
       document.close(completionHandler: { (closeSuccess) in
         XCTAssertTrue(closeSuccess)
         didEdit.fulfill()
@@ -106,7 +106,7 @@ final class TextBundleDocumentTests: XCTestCase {
     let didOpen = expectation(description: "did open")
     roundTripDocument.open { (success) in
       XCTAssertTrue(success)
-      XCTAssertEqual(roundTripDocument.contents, editedText)
+      XCTAssertEqual(try? roundTripDocument.text(), editedText)
       XCTAssertEqual(roundTripDocument.assetNames, ["textbundle.png"])
       didOpen.fulfill()
     }
