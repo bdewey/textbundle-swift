@@ -94,14 +94,18 @@ final class TextBundleDocumentTests: XCTestCase {
     document.open { (success) in
       XCTAssertTrue(success)
       try! document.setText(editedText)
-      document.close(completionHandler: { (closeSuccess) in
-        XCTAssertTrue(closeSuccess)
-        didEdit.fulfill()
-      })
+      didEdit.fulfill()
     }
-    
     waitForExpectations(timeout: 3, handler: nil)
     
+    XCTAssertTrue(document.hasUnsavedChanges)
+    let didClose = expectation(description: "did close")
+    document.close { (success) in
+      XCTAssertTrue(success)
+      didClose.fulfill()
+    }
+    waitForExpectations(timeout: 3, handler: nil)
+
     let roundTripDocument = TextBundleDocument(fileURL: document.fileURL)
     let didOpen = expectation(description: "did open")
     roundTripDocument.open { (success) in
@@ -110,7 +114,7 @@ final class TextBundleDocumentTests: XCTestCase {
       XCTAssertEqual(roundTripDocument.assetNames, ["textbundle.png"])
       didOpen.fulfill()
     }
-    waitForExpectations(timeout: 3, handler: nil)
+    waitForExpectations(timeout: 30 * 60, handler: nil)
   }
   
   func testCanLoadAssets() {
@@ -121,6 +125,37 @@ final class TextBundleDocumentTests: XCTestCase {
       XCTAssertTrue(success)
       XCTAssertEqual(document.assetNames, ["textbundle.png"])
       didOpen.fulfill()
+    }
+    waitForExpectations(timeout: 3, handler: nil)
+  }
+  
+  func testCanEditMetadata() {
+    let document = try! makeDocument("testCanEditMetadata")
+    defer { try? FileManager.default.removeItem(at: document.fileURL) }
+    let didEdit = expectation(description: "did edit")
+    let expectedIdentifier = "test application"
+    document.open { (success) in
+      XCTAssertTrue(success)
+      var metadata = try! document.metadata()
+      metadata.creatorIdentifier = expectedIdentifier
+      try! document.setMetadata(metadata)
+      didEdit.fulfill()
+    }
+    waitForExpectations(timeout: 3, handler: nil)
+    
+    let didClose = expectation(description: "did close")
+    document.close(completionHandler: { (success) in
+      XCTAssertTrue(success)
+      didClose.fulfill()
+    })
+    waitForExpectations(timeout: 3, handler: nil)
+    
+    let roundTripDocument = TextBundleDocument(fileURL: document.fileURL)
+    let didRead = expectation(description: "did read")
+    roundTripDocument.open { (_) in
+      let metadata = try! roundTripDocument.metadata()
+      XCTAssertEqual(metadata.creatorIdentifier, expectedIdentifier)
+      didRead.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
   }

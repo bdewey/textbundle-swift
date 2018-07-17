@@ -19,6 +19,15 @@ import UIKit
 
 extension FileWrapper {
   
+  func replaceFileWrapper(_ wrapper: FileWrapper, key: String) {
+    precondition(isDirectory)
+    wrapper.preferredFilename = key
+    if let existingWrapper = fileWrappers?[key] {
+      removeFileWrapper(existingWrapper)
+    }
+    addFileWrapper(wrapper)
+  }
+  
   fileprivate var existingContentsKey: String? {
     return self.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
   }
@@ -67,29 +76,6 @@ fileprivate struct CachedValue<Value, Storage: ValueStorage> where Storage.Value
   }
 }
 
-struct FileWrapperMetadataStorage: ValueStorage {
-  let directory: FileWrapper
-  
-  func readValue() throws -> TextBundleDocument.Metadata {
-    if let metadataWrapper = directory.fileWrappers?["info.json"],
-      let data = metadataWrapper.regularFileContents {
-      return try TextBundleDocument.Metadata(from: data)
-    } else {
-      return TextBundleDocument.Metadata()
-    }
-  }
-  
-  func writeValue(_ value: TextBundleDocument.Metadata) throws {
-    let data = try value.makeData()
-    let wrapper = FileWrapper(regularFileWithContents: data)
-    wrapper.preferredFilename = "info.json"
-    if let existingWrapper = directory.fileWrappers?["info.json"] {
-      directory.removeFileWrapper(existingWrapper)
-    }
-    directory.addFileWrapper(wrapper)
-  }
-}
-
 public final class TextBundleDocument: UIDocument {
   
   public enum Error: Swift.Error {
@@ -121,12 +107,20 @@ public final class TextBundleDocument: UIDocument {
     }
   }
   
-  public var metadata = Metadata() {
-    didSet {
-      undoManager.registerUndo(withTarget: self) { (document) in
-        document.metadata = oldValue
-      }
+  private lazy var metadataCache = {
+    return CachedValue(storage: MetadataStorage(document: self))
+  }()
+  
+  public func metadata() throws -> Metadata {
+    return try metadataCache.value()
+  }
+  
+  public func setMetadata(_ metadata: Metadata) throws {
+    let currentMetadata = try metadataCache.value()
+    undoManager.registerUndo(withTarget: self) { (document) in
+      document.metadataCache.setValue(currentMetadata)
     }
+    metadataCache.setValue(metadata)
   }
   
   private lazy var textCache = {
@@ -153,14 +147,10 @@ public final class TextBundleDocument: UIDocument {
     }
   }
   
-  private var textBundle: FileWrapper
-  
-  public override init(fileURL url: URL) {
-    textBundle = FileWrapper(directoryWithFileWrappers: [:])
-    super.init(fileURL: url)
-  }
+  private var textBundle = FileWrapper(directoryWithFileWrappers: [:])
   
   override public func contents(forType typeName: String) throws -> Any {
+    try metadataCache.flush()
     try textCache.flush()
     return textBundle
   }
@@ -170,16 +160,13 @@ public final class TextBundleDocument: UIDocument {
     ofType typeName: String?
   ) throws {
     guard
-      let directory = contents as? FileWrapper,
-      let fileWrappers = directory.fileWrappers
+      let directory = contents as? FileWrapper
       else {
         return
     }
+    metadataCache.clear()
+    textCache.clear()
     textBundle = directory
-    if let metadataWrapper = fileWrappers["info.json"],
-      let data = metadataWrapper.regularFileContents {
-      metadata = try Metadata(from: data)
-    }
   }
 }
 
@@ -201,11 +188,33 @@ extension TextBundleDocument {
     func writeValue(_ value: String) throws {
       guard let data = value.data(using: .utf8) else { throw Error.cannotEncodeString }
       let wrapper = FileWrapper(regularFileWithContents: data)
-      wrapper.preferredFilename = key
-      if let existingWrapper = document?.textBundle.fileWrappers?[key] {
-        document?.textBundle.removeFileWrapper(existingWrapper)
-      }
-      document?.textBundle.addFileWrapper(wrapper)
+      document?.textBundle.replaceFileWrapper(wrapper, key: key)
+    }
+  }
+}
+
+extension TextBundleDocument {
+  struct MetadataStorage: ValueStorage {
+    
+    private weak var document: TextBundleDocument?
+    private let key = "info.json"
+    
+    init(document: TextBundleDocument) {
+      self.document = document
+    }
+    
+    func readValue() throws -> Metadata {
+      guard
+        let wrapper = document?.textBundle.fileWrappers?[key],
+        let data = wrapper.regularFileContents
+        else { return Metadata() }
+      return try Metadata(from: data)
+    }
+    
+    func writeValue(_ value: Metadata) throws {
+      let data = try value.makeData()
+      let wrapper = FileWrapper(regularFileWithContents: data)
+      document?.textBundle.replaceFileWrapper(wrapper, key: key)
     }
   }
 }
