@@ -21,6 +21,7 @@
 		A19B04608ABEF8B959B0BDC2B97C3C3F /* TextBundleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B48C692616EF7C73CEED92688EAD8 /* TextBundleDocument.swift */; };
 		AB0F3C09172FA7B6072DF7BE14370149 /* textbundle_swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBF9B93B6235663FDEE9593AFB8A66B6 /* textbundle_swift.framework */; };
 		CA8BB94E85D03E1688ECD24461DB2397 /* Pods-TextBundleExample-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A67F663CD3707F1A7D4B19ABA2078F35 /* Pods-TextBundleExample-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D31F8CD820FE301D00D183B4 /* CachedValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31F8CD620FE2FC500D183B4 /* CachedValue.swift */; };
 		E713ED7287E1D5B27969A879C277C6B7 /* TestContent.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 099153DB9973C12525E62CA82878547A /* TestContent.bundle */; };
 		EF550B6EEE6EC5BE215802216E7D3BB5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E5065E6DD34A272CA6A371E68CD17E /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -97,6 +98,7 @@
 		AE98C1A9AF007FD53C0FADAEF2AEFE3B /* textbundle-swift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "textbundle-swift-dummy.m"; sourceTree = "<group>"; };
 		B669C305414D912E82B0911E5AA37449 /* Pods-TextBundleExampleTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TextBundleExampleTests-umbrella.h"; sourceTree = "<group>"; };
 		CA59D3183AE01581828BBB3A19E6A4AC /* textbundle-swift-Unit-Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "textbundle-swift-Unit-Tests-Info.plist"; sourceTree = "<group>"; };
+		D31F8CD620FE2FC500D183B4 /* CachedValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CachedValue.swift; path = "textbundle-swift/Classes/CachedValue.swift"; sourceTree = "<group>"; };
 		DBF9B93B6235663FDEE9593AFB8A66B6 /* textbundle_swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = textbundle_swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2EC1E1A375A9A8128698D478B606A11 /* ResourceBundle-TestContent-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-TestContent-Info.plist"; sourceTree = "<group>"; };
 		E43A404D86446729B14806C2C3329A1F /* textbundle-swift-Unit-Tests-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "textbundle-swift-Unit-Tests-prefix.pch"; sourceTree = "<group>"; };
@@ -189,10 +191,11 @@
 		21895D81261F658812270A2928FB8D2A /* textbundle-swift */ = {
 			isa = PBXGroup;
 			children = (
-				A56B48C692616EF7C73CEED92688EAD8 /* TextBundleDocument.swift */,
+				D31F8CD620FE2FC500D183B4 /* CachedValue.swift */,
 				915455B7CEDA89E6E32AE813B211FF5B /* Pod */,
 				813758AFE7C87E7E0693B478FA394802 /* Support Files */,
 				A1904F6B8D2DAB219B4FDB87B53BE98F /* Tests */,
+				A56B48C692616EF7C73CEED92688EAD8 /* TextBundleDocument.swift */,
 			);
 			name = "textbundle-swift";
 			path = ../..;
@@ -434,6 +437,11 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0930;
 				LastUpgradeCheck = 0930;
+				TargetAttributes = {
+					E7C9029FC6586D6DD408B664992BEB09 = {
+						LastSwiftMigration = 1000;
+					};
+				};
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -545,6 +553,7 @@
 			files = (
 				3C6E38911E9CE611230420AC8CE431B7 /* textbundle-swift-dummy.m in Sources */,
 				A19B04608ABEF8B959B0BDC2B97C3C3F /* TextBundleDocument.swift in Sources */,
+				D31F8CD820FE301D00D183B4 /* CachedValue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,6 +719,7 @@
 			baseConfigurationReference = A9035AE81708C3951BA45B3FCD75ADEB /* Pods-TextBundleExample.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -735,6 +745,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -963,6 +974,7 @@
 			baseConfigurationReference = 51D890B61B17CE4814242E37D6E46BA4 /* Pods-TextBundleExample.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -987,6 +999,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

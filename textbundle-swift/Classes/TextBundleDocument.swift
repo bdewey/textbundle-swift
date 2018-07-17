@@ -17,104 +17,34 @@
 
 import UIKit
 
-extension FileWrapper {
-  
-  func replaceFileWrapper(_ wrapper: FileWrapper, key: String) {
-    precondition(isDirectory)
-    wrapper.preferredFilename = key
-    if let existingWrapper = fileWrappers?[key] {
-      removeFileWrapper(existingWrapper)
-    }
-    addFileWrapper(wrapper)
-  }
-  
-  fileprivate var existingContentsKey: String? {
-    return self.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
-  }
-}
-
-protocol ValueStorage {
-  associatedtype Value
-  
-  func readValue() throws -> Value
-  func writeValue(_ value: Value) throws
-}
-
-fileprivate struct CachedValue<Value, Storage: ValueStorage> where Storage.Value == Value {
-
-  private let storage: Storage
-  private var dirty = false
-  private var _value: Value?
-  
-  fileprivate init(storage: Storage) {
-    self.storage = storage
-  }
-
-  mutating func value() throws -> Value {
-    if let value = _value { return value }
-    let value = try storage.readValue()
-    _value = value
-    dirty = false
-    return value
-  }
-  
-  mutating func setValue(_ value: Value) {
-    _value = value
-    dirty = true
-  }
-  
-  mutating func flush() throws {
-    if dirty, let value = _value {
-      try storage.writeValue(value)
-      dirty = false
-    }
-  }
-  
-  mutating func clear() {
-    dirty = false
-    _value = nil
-  }
-}
-
+/// UIDocument class that can read and edit the text contents and metadata of a
+/// textbundle wrapper.
+///
+/// See http://textbundle.org
 public final class TextBundleDocument: UIDocument {
   
+  /// Possible errors when reading / writing contents.
   public enum Error: Swift.Error {
+    
+    /// The text cannot be decoded from UTF-8.
     case cannotDecodeString
+    
+    /// The text cannot be encoded in UTF-8.
     case cannotEncodeString
   }
   
-  public struct Metadata: Codable, Equatable {
-    public var version = 2
-    public var type: String? = "net.daringfireball.markdown"
-    public var transient: Bool?
-    public var creatorURL: String?
-    public var creatorIdentifier: String?
-    public var sourceURL: String?
-    
-    public init() {
-      // NOTHING
-    }
-    
-    fileprivate init(from data: Data) throws {
-      let decoder = JSONDecoder()
-      self = try decoder.decode(Metadata.self, from: data)
-    }
-    
-    fileprivate func makeData() throws -> Data {
-      let encoder = JSONEncoder()
-      encoder.outputFormatting = .prettyPrinted
-      return try encoder.encode(self)
-    }
-  }
-  
+  /// Stores the in-memory copy of the bundle metadata.
   private lazy var metadataCache = {
     return CachedValue(storage: MetadataStorage(document: self))
   }()
   
+  /// The textbundle metadata.
   public func metadata() throws -> Metadata {
     return try metadataCache.value()
   }
   
+  /// Updates the textbundle metadata.
+  /// - parameter metadata: The updated copy of the textbundle metadata.
   public func setMetadata(_ metadata: Metadata) throws {
     let currentMetadata = try metadataCache.value()
     undoManager.registerUndo(withTarget: self) { (document) in
@@ -123,14 +53,19 @@ public final class TextBundleDocument: UIDocument {
     metadataCache.setValue(metadata)
   }
   
+  /// Stores the in-memory copy of the text.
   private lazy var textCache = {
     CachedValue(storage: StringStorage(document: self))
   }()
   
+  /// The textbundle text.
+  /// - returns: The in-memory copy of the textbundle text, reading from storage if necessary.
   public func text() throws -> String {
     return try textCache.value()
   }
   
+  /// Updates the textbundle text.
+  /// - parameter contents: The updated textbundle text.
   public func setText(_ contents: String) throws {
     let currentContents = try textCache.value()
     undoManager.registerUndo(withTarget: self) { (document) in
@@ -147,14 +82,17 @@ public final class TextBundleDocument: UIDocument {
     }
   }
   
+  /// The FileWrapper that points to the textbundle on disk.
   private var textBundle = FileWrapper(directoryWithFileWrappers: [:])
   
+  /// Write in-memory contents to textBundle and return textBundle for storage.
   override public func contents(forType typeName: String) throws -> Any {
     try metadataCache.flush()
     try textCache.flush()
     return textBundle
   }
   
+  /// Loads the textbundle.
   public override func load(
     fromContents contents: Any,
     ofType typeName: String?
@@ -171,6 +109,54 @@ public final class TextBundleDocument: UIDocument {
 }
 
 extension TextBundleDocument {
+  
+  /// Textbundle metadata. See http://textbundle.org/spec/
+  public struct Metadata: Codable, Equatable {
+    
+    /// Textbundle version
+    public var version = 2
+    
+    /// The UTI of the text contents in the bundle.
+    public var type: String? = "net.daringfireball.markdown"
+    
+    /// Flag indicating if the bundle is a temporary container solely for exchanging data between
+    /// applications.
+    public var transient: Bool?
+    
+    /// The URL of the application that originally created the textbundle.
+    public var creatorURL: String?
+    
+    /// The bundle identifier of the application that created the file.
+    public var creatorIdentifier: String?
+    
+    /// The URL of the file used to generate the bundle.
+    public var sourceURL: String?
+    
+    public init() {
+      // NOTHING
+    }
+    
+    /// Creates a Metadata instance from JSON-encoded data.
+    /// - throws: An error if any metadata field throws an error during decoding.
+    fileprivate init(from data: Data) throws {
+      let decoder = JSONDecoder()
+      self = try decoder.decode(Metadata.self, from: data)
+    }
+    
+    /// Returns a JSON-encoded representation of the metadata.
+    /// - throws: An error if any metadata field throws an error during encoding.
+    /// - returns: A new Data value containing the JSON-encoded representation of the metadata.
+    fileprivate func makeData() throws -> Data {
+      let encoder = JSONEncoder()
+      encoder.outputFormatting = .prettyPrinted
+      return try encoder.encode(self)
+    }
+  }
+}
+
+extension TextBundleDocument {
+  
+  /// Reads and writes data to text.*
   struct StringStorage: ValueStorage {
     weak var document: TextBundleDocument?
 
@@ -198,6 +184,8 @@ extension TextBundleDocument {
 }
 
 extension TextBundleDocument {
+  
+  /// Reads and writes metadata to info.json
   struct MetadataStorage: ValueStorage {
     
     private weak var document: TextBundleDocument?
@@ -220,5 +208,21 @@ extension TextBundleDocument {
       let wrapper = FileWrapper(regularFileWithContents: data)
       document?.textBundle.replaceFileWrapper(wrapper, key: key)
     }
+  }
+}
+
+extension FileWrapper {
+  
+  /// Stores a file wrapper into a directory, replacing any existing file wrapper at `key`.
+  /// - precondition: The receiver is a directory file wrapper.
+  /// - parameter wrapper: The file wrapper to store in the directory.
+  /// - parameter key: The identifier key to use for `wrapper` as a child of the receiver.
+  fileprivate func replaceFileWrapper(_ wrapper: FileWrapper, key: String) {
+    precondition(isDirectory)
+    wrapper.preferredFilename = key
+    if let existingWrapper = fileWrappers?[key] {
+      removeFileWrapper(existingWrapper)
+    }
+    addFileWrapper(wrapper)
   }
 }
