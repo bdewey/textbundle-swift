@@ -124,7 +124,7 @@ public final class TextBundleDocument: UIDocument {
   }
   
   private lazy var textCache = {
-    CachedValue(storage: StringStorage(document: self, key: "text.markdown"))
+    CachedValue(storage: StringStorage(document: self))
   }()
   
   public func text() throws -> String {
@@ -173,7 +173,11 @@ public final class TextBundleDocument: UIDocument {
 extension TextBundleDocument {
   struct StringStorage: ValueStorage {
     weak var document: TextBundleDocument?
-    let key: String
+
+    var key: String {
+      return document?.textBundle.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
+        ?? "text.markdown"
+    }
     
     func readValue() throws -> String {
       guard

@@ -87,34 +87,15 @@ final class TextBundleDocumentTests: XCTestCase {
   }
   
   func testCanEditContents() {
-    let editedText = "This is edited text!\n"
     let document = try! makeDocument("testCanEditContents")
     defer { try? FileManager.default.removeItem(at: document.fileURL) }
-    let didEdit = expectation(description: "did edit")
-    document.open { (success) in
-      XCTAssertTrue(success)
-      try! document.setText(editedText)
-      didEdit.fulfill()
-    }
-    waitForExpectations(timeout: 3, handler: nil)
-    
-    XCTAssertTrue(document.hasUnsavedChanges)
-    let didClose = expectation(description: "did close")
-    document.close { (success) in
-      XCTAssertTrue(success)
-      didClose.fulfill()
-    }
-    waitForExpectations(timeout: 3, handler: nil)
-
-    let roundTripDocument = TextBundleDocument(fileURL: document.fileURL)
-    let didOpen = expectation(description: "did open")
-    roundTripDocument.open { (success) in
-      XCTAssertTrue(success)
-      XCTAssertEqual(try? roundTripDocument.text(), editedText)
-      XCTAssertEqual(roundTripDocument.assetNames, ["textbundle.png"])
-      didOpen.fulfill()
-    }
-    waitForExpectations(timeout: 30 * 60, handler: nil)
+    assertEditingWorks(for: document)
+  }
+  
+  func testCanEditContentsWithArbitaryExtension() {
+    let document = try! makeDocument("testCanEditContents", resource: "textbundle-md-extension")
+    defer { try? FileManager.default.removeItem(at: document.fileURL) }
+    assertEditingWorks(for: document)
   }
   
   func testCanLoadAssets() {
@@ -165,8 +146,11 @@ final class TextBundleDocumentTests: XCTestCase {
 
 extension TextBundleDocumentTests {
   
-  func makeDocument(_ identifier: String) throws -> TextBundleDocument {
-    let url = testResources.url(forResource: "Textbundle Example", withExtension: "textbundle")!
+  func makeDocument(
+    _ identifier: String,
+    resource: String = "Textbundle Example"
+  ) throws -> TextBundleDocument {
+    let url = testResources.url(forResource: resource, withExtension: "textbundle")!
     let pathComponent = identifier + "-" + UUID().uuidString + ".textbundle"
     let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(pathComponent)
     try FileManager.default.copyItem(at: url, to: temporaryURL)
@@ -179,5 +163,36 @@ extension TextBundleDocumentTests {
       withExtension: "bundle"
     )
     return Bundle(url: resourceURL!)!
+  }
+
+  fileprivate func assertEditingWorks(for document: TextBundleDocument) {
+    let editedText = "This is edited text!\n"
+    let didEdit = expectation(description: "did edit")
+    document.open { (success) in
+      XCTAssertTrue(success)
+      let text = try! document.text()
+      XCTAssertEqual(expectedDocumentContents, text)
+      try! document.setText(editedText)
+      didEdit.fulfill()
+    }
+    waitForExpectations(timeout: 3, handler: nil)
+    
+    XCTAssertTrue(document.hasUnsavedChanges)
+    let didClose = expectation(description: "did close")
+    document.close { (success) in
+      XCTAssertTrue(success)
+      didClose.fulfill()
+    }
+    waitForExpectations(timeout: 3, handler: nil)
+    
+    let roundTripDocument = TextBundleDocument(fileURL: document.fileURL)
+    let didOpen = expectation(description: "did open")
+    roundTripDocument.open { (success) in
+      XCTAssertTrue(success)
+      XCTAssertEqual(try? roundTripDocument.text(), editedText)
+      XCTAssertEqual(roundTripDocument.assetNames, ["textbundle.png"])
+      didOpen.fulfill()
+    }
+    waitForExpectations(timeout: 3, handler: nil)
   }
 }
