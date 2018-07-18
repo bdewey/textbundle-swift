@@ -30,7 +30,7 @@ This is a simple example of a textbundle package. The following paragraph contai
 final class TextBundleDocumentTests: XCTestCase {
 
   func testSerializeMetadata() {
-    var metadata = TextBundleDocument.Metadata()
+    var metadata = TextBundle.Metadata()
     metadata.creatorIdentifier = "org.brians-brain.TextBundleExample"
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
@@ -63,8 +63,8 @@ final class TextBundleDocumentTests: XCTestCase {
 }
 """
     let decoder = JSONDecoder()
-    let result = try! decoder.decode(TextBundleDocument.Metadata.self, from: exampleMetadata.data(using: .utf8)!)
-    var expectedResult = TextBundleDocument.Metadata()
+    let result = try! decoder.decode(TextBundle.Metadata.self, from: exampleMetadata.data(using: .utf8)!)
+    var expectedResult = TextBundle.Metadata()
     expectedResult.version = 2
     expectedResult.type = "net.daringfireball.markdown"
     expectedResult.transient = true
@@ -80,7 +80,7 @@ final class TextBundleDocumentTests: XCTestCase {
     let didOpen = expectation(description: "did open")
     document.open { (success) in
       XCTAssertTrue(success)
-      XCTAssertEqual(try? document.text(), expectedDocumentContents)
+      XCTAssertEqual(try? document.textBundle.text(), expectedDocumentContents)
       didOpen.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
@@ -104,7 +104,7 @@ final class TextBundleDocumentTests: XCTestCase {
     let didOpen = expectation(description: "did open")
     document.open { (success) in
       XCTAssertTrue(success)
-      XCTAssertEqual(document.assetNames, ["textbundle.png"])
+      XCTAssertEqual(document.textBundle.assetNames, ["textbundle.png"])
       didOpen.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
@@ -117,9 +117,9 @@ final class TextBundleDocumentTests: XCTestCase {
     let expectedIdentifier = "test application"
     document.open { (success) in
       XCTAssertTrue(success)
-      var metadata = try! document.metadata()
+      var metadata = try! document.textBundle.metadata()
       metadata.creatorIdentifier = expectedIdentifier
-      try! document.setMetadata(metadata)
+      try! document.textBundle.setMetadata(metadata)
       didEdit.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
@@ -134,7 +134,7 @@ final class TextBundleDocumentTests: XCTestCase {
     let roundTripDocument = TextBundleDocument(fileURL: document.fileURL)
     let didRead = expectation(description: "did read")
     roundTripDocument.open { (_) in
-      let metadata = try! roundTripDocument.metadata()
+      let metadata = try! roundTripDocument.textBundle.metadata()
       XCTAssertEqual(metadata.creatorIdentifier, expectedIdentifier)
       didRead.fulfill()
     }
@@ -170,9 +170,9 @@ extension TextBundleDocumentTests {
     let didEdit = expectation(description: "did edit")
     document.open { (success) in
       XCTAssertTrue(success)
-      let text = try! document.text()
+      let text = try! document.textBundle.text()
       XCTAssertEqual(expectedDocumentContents, text)
-      try! document.setText(editedText)
+      try! document.textBundle.setText(editedText)
       didEdit.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
@@ -189,8 +189,8 @@ extension TextBundleDocumentTests {
     let didOpen = expectation(description: "did open")
     roundTripDocument.open { (success) in
       XCTAssertTrue(success)
-      XCTAssertEqual(try? roundTripDocument.text(), editedText)
-      XCTAssertEqual(roundTripDocument.assetNames, ["textbundle.png"])
+      XCTAssertEqual(try? roundTripDocument.textBundle.text(), editedText)
+      XCTAssertEqual(roundTripDocument.textBundle.assetNames, ["textbundle.png"])
       didOpen.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)

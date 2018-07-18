@@ -42,7 +42,7 @@ final class DocumentViewController: UIViewController, UITextViewDelegate {
       document.open(completionHandler: { (success) in
         if success {
           // Display the content of the document, e.g.:
-          self.textView.text = try? document.text()
+          self.textView.text = try? document.textBundle.text()
           self.title = document.fileURL.lastPathComponent
         } else {
           // Make sure to handle the failed import appropriately, e.g., by presenting an error message to the user.
@@ -63,6 +63,6 @@ final class DocumentViewController: UIViewController, UITextViewDelegate {
   }
   
   func textViewDidChange(_ textView: UITextView) {
-    try? self.document?.setText(textView.text)
+    try? self.document?.textBundle.setText(textView.text)
   }
 }
