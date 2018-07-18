@@ -20,13 +20,6 @@ import Foundation
 /// Reads and writes data to text.*
 struct TextStorage: ValueStorage {
   
-  /// Possible errors when reading / writing contents.
-  public enum Error: Swift.Error {
-    
-    /// The text cannot be encoded in UTF-8 format.
-    case textIsNotUTF8
-  }
-  
   weak var bundle: FileWrapper?
   
   var key: String {
@@ -39,13 +32,24 @@ struct TextStorage: ValueStorage {
       let wrapper = bundle?.fileWrappers?[key],
       let data = wrapper.regularFileContents
       else { return "" }
-    guard let string = String(data: data, encoding: .utf8)
-      else { throw Error.textIsNotUTF8 }
+    guard let string = String(data: data, encoding: .utf8) else {
+      throw NSError(
+        domain: NSCocoaErrorDomain,
+        code: NSFileReadInapplicableStringEncodingError,
+        userInfo: nil
+      )
+    }
     return string
   }
   
   func writeValue(_ value: String) throws {
-    guard let data = value.data(using: .utf8) else { throw Error.textIsNotUTF8 }
+    guard let data = value.data(using: .utf8) else {
+      throw NSError(
+        domain: NSCocoaErrorDomain,
+        code: NSFileWriteInapplicableStringEncodingError,
+        userInfo: nil
+      )
+    }
     let wrapper = FileWrapper(regularFileWithContents: data)
     bundle?.replaceFileWrapper(wrapper, key: key)
   }

@@ -45,11 +45,8 @@ public final class TextBundleDocument: UIDocument {
     fromContents contents: Any,
     ofType typeName: String?
   ) throws {
-    // TODO: Throw an error here.
-    guard
-      let directory = contents as? FileWrapper
-      else {
-        return
+    guard let directory = contents as? FileWrapper else {
+      throw NSError(domain: NSCocoaErrorDomain, code: NSFileReadCorruptFileError, userInfo: nil)
     }
     textBundle = TextBundle(bundle: directory, undoManager: undoManager)
   }
