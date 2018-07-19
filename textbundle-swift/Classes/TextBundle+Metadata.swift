@@ -18,6 +18,8 @@
 import Foundation
 
 extension TextBundle {
+
+  // TODO: The textbundle spec allows custom keys in info.json; support that.
   
   /// Textbundle metadata. See http://textbundle.org/spec/
   public struct Metadata: Codable, Equatable {

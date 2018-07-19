@@ -2,8 +2,9 @@
   "name": "textbundle-swift",
   "version": "0.1.0",
   "summary": "A Swift library for manipulating Textbundle packages (http://textbundle.org).",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/bdewey@gmail.com/textbundle-swift",
+  "swift_version": "4.0",
+  "description": "textbundle-swift is a pure-Swift library for reading and writing Textbundle packages.\nSee http://textbundle.org\nPlease note this is INCREDIBLY early in its development :-)",
+  "homepage": "https://github.com/bdewey/textbundle-swift",
   "license": {
     "type": "Apache",
     "file": "LICENSE"
@@ -12,7 +13,7 @@
     "bdewey@gmail.com": "bdewey@gmail.com"
   },
   "source": {
-    "git": "https://github.com/bdewey@gmail.com/textbundle-swift.git",
+    "git": "https://github.com/bdewey/textbundle-swift.git",
     "tag": "0.1.0"
   },
   "platforms": {

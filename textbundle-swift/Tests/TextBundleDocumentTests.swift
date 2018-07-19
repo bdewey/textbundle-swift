@@ -18,15 +18,6 @@
 import XCTest
 import textbundle_swift
 
-fileprivate let expectedDocumentContents = """
-# Textbundle Example
-
-This is a simple example of a textbundle package. The following paragraph contains an example of a referenced image using the embedding code `![](assets/textbundle.png)`.
-
-![](assets/textbundle.png)
-
-"""
-
 final class TextBundleDocumentTests: XCTestCase {
 
   func testSerializeMetadata() {
@@ -80,7 +71,7 @@ final class TextBundleDocumentTests: XCTestCase {
     let didOpen = expectation(description: "did open")
     document.open { (success) in
       XCTAssertTrue(success)
-      XCTAssertEqual(try? document.textBundle.text(), expectedDocumentContents)
+      XCTAssertEqual(try? document.textBundle.text(), TextBundleTestHelper.expectedDocumentContents)
       didOpen.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
@@ -171,7 +162,7 @@ extension TextBundleDocumentTests {
     document.open { (success) in
       XCTAssertTrue(success)
       let text = try! document.textBundle.text()
-      XCTAssertEqual(expectedDocumentContents, text)
+      XCTAssertEqual(TextBundleTestHelper.expectedDocumentContents, text)
       try! document.textBundle.setText(editedText)
       didEdit.fulfill()
     }
