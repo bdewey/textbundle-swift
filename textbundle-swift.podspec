@@ -1,32 +1,19 @@
-#
-# Be sure to run `pod lib lint textbundle-swift-template.podspec' to ensure this is a
-# valid spec before submitting.
-#
-# Any lines starting with a # are optional, but their use is encouraged
-# To learn more about a Podspec see https://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = 'textbundle-swift'
   s.version          = '0.1.0'
   s.summary          = 'A Swift library for manipulating Textbundle packages (http://textbundle.org).'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
+  s.swift_version    = '4.0'
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+  textbundle-swift is a pure-Swift library for reading and writing Textbundle packages.
+  See http://textbundle.org
+  Please note this is INCREDIBLY early in its development :-)
                        DESC
 
-  s.homepage         = 'https://github.com/bdewey@gmail.com/textbundle-swift'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = 'https://github.com/bdewey/textbundle-swift'
   s.license          = { :type => 'Apache', :file => 'LICENSE' }
   s.author           = { 'bdewey@gmail.com' => 'bdewey@gmail.com' }
-  s.source           = { :git => 'https://github.com/bdewey@gmail.com/textbundle-swift.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.source           = { :git => 'https://github.com/bdewey/textbundle-swift.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '11.0'
 
@@ -37,12 +24,4 @@ TODO: Add long description of the pod here.
       'TestContent' => 'textbundle-swift/TestContent/*',
     }
   end
-
-  # s.resource_bundles = {
-  #   'textbundle-swift-template' => ['textbundle-swift-template/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
