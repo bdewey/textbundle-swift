@@ -17,6 +17,30 @@
 
 import UIKit
 
+/// This class is a hack introduced in Xcode 10 Beta 4
+/// With that beta, simply calling the UndoManager methods did not autosave in time
+/// for tests to work. This class makes sure that we tell UIDocument that we have unsaved
+/// changes right away.
+fileprivate class ImmediateUndoManager: UndoManager {
+  
+  weak var document: UIDocument?
+  
+  init(document: UIDocument) {
+    self.document = document
+    super.init()
+  }
+  
+  override func registerUndo(withTarget target: Any, selector: Selector, object anObject: Any?) {
+    super.registerUndo(withTarget: target, selector: selector, object: anObject)
+    document?.updateChangeCount(.done)
+  }
+  
+  override func __registerUndoWithTarget(_ target: Any, handler undoHandler: @escaping (Any) -> Void) {
+    super.__registerUndoWithTarget(target, handler: undoHandler)
+    document?.updateChangeCount(.done)
+  }
+}
+
 /// UIDocument class that can read and edit the text contents and metadata of a
 /// textbundle wrapper.
 ///
@@ -28,6 +52,7 @@ public final class TextBundleDocument: UIDocument {
   
   public override init(fileURL url: URL) {
     super.init(fileURL: url)
+    self.undoManager = ImmediateUndoManager(document: self)
     self.textBundle = TextBundle(
       bundle: FileWrapper(directoryWithFileWrappers: [:]),
       undoManager: undoManager

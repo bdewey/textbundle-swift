@@ -18,7 +18,7 @@
 import XCTest
 import textbundle_swift
 
-final class TextBundleDocumentTests: XCTestCase {
+final class TextBundleDocumentTests: XCTestCase, TextBundleHelperMethods {
 
   func testSerializeMetadata() {
     var metadata = TextBundle.Metadata()
@@ -66,7 +66,7 @@ final class TextBundleDocumentTests: XCTestCase {
   }
   
   func testCanLoadContents() {
-    let document = try! makeDocument("testCanLoadContents")
+    let document = try! TextBundleTestHelper.makeDocument("testCanLoadContents")
     defer { try? FileManager.default.removeItem(at: document.fileURL )}
     let didOpen = expectation(description: "did open")
     document.open { (success) in
@@ -78,19 +78,19 @@ final class TextBundleDocumentTests: XCTestCase {
   }
   
   func testCanEditContents() {
-    let document = try! makeDocument("testCanEditContents")
+    let document = try! TextBundleTestHelper.makeDocument("testCanEditContents")
     defer { try? FileManager.default.removeItem(at: document.fileURL) }
     assertEditingWorks(for: document)
   }
   
   func testCanEditContentsWithArbitaryExtension() {
-    let document = try! makeDocument("testCanEditContents", resource: "textbundle-md-extension")
+    let document = try! TextBundleTestHelper.makeDocument("testCanEditContents", resource: "textbundle-md-extension")
     defer { try? FileManager.default.removeItem(at: document.fileURL) }
     assertEditingWorks(for: document)
   }
   
   func testCanLoadAssets() {
-    let document = try! makeDocument("testCanLoadAssets")
+    let document = try! TextBundleTestHelper.makeDocument("testCanLoadAssets")
     defer { try? FileManager.default.removeItem(at: document.fileURL) }
     let didOpen = expectation(description: "did open")
     document.open { (success) in
@@ -102,7 +102,7 @@ final class TextBundleDocumentTests: XCTestCase {
   }
   
   func testCanEditMetadata() {
-    let document = try! makeDocument("testCanEditMetadata")
+    let document = try! TextBundleTestHelper.makeDocument("testCanEditMetadata")
     defer { try? FileManager.default.removeItem(at: document.fileURL) }
     let didEdit = expectation(description: "did edit")
     let expectedIdentifier = "test application"
@@ -128,61 +128,6 @@ final class TextBundleDocumentTests: XCTestCase {
       let metadata = try! roundTripDocument.textBundle.metadata()
       XCTAssertEqual(metadata.creatorIdentifier, expectedIdentifier)
       didRead.fulfill()
-    }
-    waitForExpectations(timeout: 3, handler: nil)
-  }
-}
-
-// MARK: - Helpers
-
-extension TextBundleDocumentTests {
-  
-  func makeDocument(
-    _ identifier: String,
-    resource: String = "Textbundle Example"
-  ) throws -> TextBundleDocument {
-    let url = testResources.url(forResource: resource, withExtension: "textbundle")!
-    let pathComponent = identifier + "-" + UUID().uuidString + ".textbundle"
-    let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(pathComponent)
-    try FileManager.default.copyItem(at: url, to: temporaryURL)
-    return TextBundleDocument(fileURL: temporaryURL)
-  }
-  
-  var testResources: Bundle {
-    let resourceURL = Bundle(for: TextBundleDocumentTests.self).url(
-      forResource: "TestContent",
-      withExtension: "bundle"
-    )
-    return Bundle(url: resourceURL!)!
-  }
-
-  fileprivate func assertEditingWorks(for document: TextBundleDocument) {
-    let editedText = "This is edited text!\n"
-    let didEdit = expectation(description: "did edit")
-    document.open { (success) in
-      XCTAssertTrue(success)
-      let text = try! document.textBundle.text()
-      XCTAssertEqual(TextBundleTestHelper.expectedDocumentContents, text)
-      try! document.textBundle.setText(editedText)
-      didEdit.fulfill()
-    }
-    waitForExpectations(timeout: 3, handler: nil)
-    
-    XCTAssertTrue(document.hasUnsavedChanges)
-    let didClose = expectation(description: "did close")
-    document.close { (success) in
-      XCTAssertTrue(success)
-      didClose.fulfill()
-    }
-    waitForExpectations(timeout: 3, handler: nil)
-    
-    let roundTripDocument = TextBundleDocument(fileURL: document.fileURL)
-    let didOpen = expectation(description: "did open")
-    roundTripDocument.open { (success) in
-      XCTAssertTrue(success)
-      XCTAssertEqual(try? roundTripDocument.textBundle.text(), editedText)
-      XCTAssertEqual(roundTripDocument.textBundle.assetNames, ["textbundle.png"])
-      didOpen.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
   }
