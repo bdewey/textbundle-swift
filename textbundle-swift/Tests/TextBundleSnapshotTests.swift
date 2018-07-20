@@ -16,27 +16,37 @@
 //  under the License.
 
 import XCTest
+import textbundle_swift
 
 final class TextBundleSnapshotTests: XCTestCase {
-  
-  override func setUp() {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-  }
-  
-  override func tearDown() {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-  }
-  
-  func testExample() {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-  }
-  
-  func testPerformanceExample() {
-    // This is an example of a performance test case.
-    self.measure {
-      // Put the code you want to measure the time of here.
+
+  func testSimpleSnapshot() {
+    let editedText = "updated text"
+    let document = try! TextBundleTestHelper.makeDocument("testSimpleSnapshot")
+    let didOpen = expectation(description: "did open")
+    document.open { (success) in
+      XCTAssert(success)
+      didOpen.fulfill()
     }
+    waitForExpectations(timeout: 3, handler: nil)
+    let now = Date()
+    try! document.textBundle.makeSnapshot(at: now)
+    try! document.textBundle.setText(editedText)
+    let didClose = expectation(description: "did close")
+    document.close { (success) in
+      XCTAssert(success)
+      didClose.fulfill()
+    }
+    waitForExpectations(timeout: 3, handler: nil)
+    
+    let roundTripDocument = TextBundleDocument(fileURL: document.fileURL)
+    let didRead = expectation(description: "did read")
+    roundTripDocument.open { (_) in
+      let text = try! roundTripDocument.textBundle.text()
+      XCTAssertEqual(text, editedText)
+      XCTAssertEqual(try? roundTripDocument.textBundle.snapshot(at: now), TextBundleTestHelper.expectedDocumentContents)
+      didRead.fulfill()
+    }
+    waitForExpectations(timeout: 3, handler: nil)
   }
-  
 }
