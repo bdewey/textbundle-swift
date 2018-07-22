@@ -23,7 +23,7 @@ extension FileWrapper {
   /// - precondition: The receiver is a directory file wrapper.
   /// - parameter wrapper: The file wrapper to store in the directory.
   /// - parameter key: The identifier key to use for `wrapper` as a child of the receiver.
-  internal func replaceFileWrapper(_ wrapper: FileWrapper, key: String) {
+  public func replaceFileWrapper(_ wrapper: FileWrapper, key: String) {
     precondition(isDirectory)
     wrapper.preferredFilename = key
     if let existingWrapper = fileWrappers?[key] {
