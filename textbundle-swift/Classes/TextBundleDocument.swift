@@ -75,4 +75,11 @@ public final class TextBundleDocument: UIDocument {
     }
     textBundle = TextBundle(bundle: directory, undoManager: undoManager)
   }
+
+  public var previousError: Error?
+
+  public override func handleError(_ error: Error, userInteractionPermitted: Bool) {
+    self.previousError = error
+    finishedHandlingError(error, recovered: false)
+  }
 }
