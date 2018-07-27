@@ -117,11 +117,15 @@ public final class TextBundle {
   public func addData(
     _ data: Data,
     preferredFilename: String,
+    replaceIfExists: Bool = true,
     childDirectoryPath: [String] = []
   ) throws -> String {
     let container = try containerWrapper(at: childDirectoryPath)
     let child = FileWrapper(regularFileWithContents: data)
     child.preferredFilename = preferredFilename
+    if replaceIfExists, let existingWrapper = container.fileWrappers?[preferredFilename] {
+      container.removeFileWrapper(existingWrapper)
+    }
     let key = container.addFileWrapper(child)
     undoManager.registerUndo(withTarget: container) { (container) in
       container.removeFileWrapper(child)
