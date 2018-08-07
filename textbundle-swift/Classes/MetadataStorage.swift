@@ -18,22 +18,36 @@
 import Foundation
 
 /// Reads and writes metadata to info.json
-struct MetadataStorage: ValueStorage {
-  
-  weak var bundle: FileWrapper?
-  let key = "info.json"
-  
-  func readValue() throws -> TextBundle.Metadata {
-    guard
-      let wrapper = bundle?.fileWrappers?[key],
-      let data = wrapper.regularFileContents
-      else { return TextBundle.Metadata() }
-    return try TextBundle.Metadata(from: data)
+public final class MetadataStorage: TextBundleDocumentSaveListener {
+  public init(document: TextBundleDocument) {
+    self.document = document
+    document.addListener(self)
+    metadata = DirtyableValue<Metadata>(initializer: readValue)
   }
   
-  func writeValue(_ value: TextBundle.Metadata) throws {
+  public var metadata: DirtyableValue<Metadata>!
+
+  private let document: TextBundleDocument
+  private let key = "info.json"
+  
+  private func readValue() throws -> Metadata {
+    guard let data = try? document.data(for: key) else { return Metadata() }
+    return try Metadata(from: data)
+  }
+  
+  public func dirtyableValueDidChange(_ dirtyableValue: DirtyableValue<Metadata>) {
+    document.updateChangeCount(.done)
+  }
+  
+  private func writeValue(_ value: Metadata) throws {
     let data = try value.makeData()
     let wrapper = FileWrapper(regularFileWithContents: data)
-    bundle?.replaceFileWrapper(wrapper, key: key)
+    document.bundle.replaceFileWrapper(wrapper, key: key)
+  }
+
+  public func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws {
+    if let metadata = metadata.clean() {
+      try writeValue(metadata)
+    }
   }
 }

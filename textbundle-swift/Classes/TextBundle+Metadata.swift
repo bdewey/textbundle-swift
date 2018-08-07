@@ -17,7 +17,7 @@
 
 import Foundation
 
-extension TextBundle {
+extension MetadataStorage {
 
   // TODO: The textbundle spec allows custom keys in info.json; support that.
   

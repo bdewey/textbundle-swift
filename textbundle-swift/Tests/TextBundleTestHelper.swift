@@ -39,7 +39,7 @@ final class TextBundleTestHelper {
   static func makeDocument(
     _ identifier: String,
     resource: String = "Textbundle Example"
-    ) throws -> TextBundleDocument {
+  ) throws -> TextBundleDocument {
     let url = testResources.url(forResource: resource, withExtension: "textbundle")!
     let pathComponent = identifier + "-" + UUID().uuidString + ".textbundle"
     let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(pathComponent)
@@ -58,9 +58,10 @@ extension TextBundleHelperMethods where Self: XCTestCase {
     let didEdit = expectation(description: "did edit")
     document.open { (success) in
       XCTAssertTrue(success)
-      let text = try! document.textBundle.text()
+      let textStorage = TextStorage(document: document)
+      let text = try! textStorage.text.value()
       XCTAssertEqual(TextBundleTestHelper.expectedDocumentContents, text)
-      try! document.textBundle.setText(editedText)
+      textStorage.text.setValue(editedText)
       didEdit.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
@@ -77,8 +78,8 @@ extension TextBundleHelperMethods where Self: XCTestCase {
     let didOpen = expectation(description: "did open")
     roundTripDocument.open { (success) in
       XCTAssertTrue(success)
-      XCTAssertEqual(try? roundTripDocument.textBundle.text(), editedText)
-      XCTAssertEqual(roundTripDocument.textBundle.assetNames, ["textbundle.png"])
+      XCTAssertEqual(try? TextStorage(document: roundTripDocument).text.value(), editedText)
+      XCTAssertEqual(roundTripDocument.assetNames, ["textbundle.png"])
       didOpen.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)

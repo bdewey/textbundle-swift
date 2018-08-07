@@ -41,28 +41,45 @@ fileprivate class ImmediateUndoManager: UndoManager {
   }
 }
 
+public protocol TextBundleDocumentSaveListener: class {
+  func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws
+}
+
 /// UIDocument class that can read and edit the text contents and metadata of a
 /// textbundle wrapper.
 ///
 /// See http://textbundle.org
 public final class TextBundleDocument: UIDocument {
   
-  /// The FileWrapper that points to the textbundle on disk.
-  private(set) public var textBundle: TextBundle!
+  /// The FileWrapper that contains all of the TextBundle contents.
+  public var bundle: FileWrapper
   
   public override init(fileURL url: URL) {
+    self.bundle = FileWrapper(directoryWithFileWrappers: [:])
     super.init(fileURL: url)
     self.undoManager = ImmediateUndoManager(document: self)
-    self.textBundle = TextBundle(
-      bundle: FileWrapper(directoryWithFileWrappers: [:]),
-      undoManager: undoManager
-    )
+  }
+  
+  private struct _WeakListener {
+    weak var listener: TextBundleDocumentSaveListener?
+    
+    init(_ listener: TextBundleDocumentSaveListener) {
+      self.listener = listener
+    }
+  }
+  
+  private var listeners: [_WeakListener] = []
+  
+  public func addListener(_ listener: TextBundleDocumentSaveListener) {
+    listeners.append(_WeakListener(listener))
   }
   
   /// Write in-memory contents to textBundle and return textBundle for storage.
   override public func contents(forType typeName: String) throws -> Any {
-    try textBundle.flush()
-    return textBundle.bundle
+    for listenerWrapper in listeners {
+      try listenerWrapper.listener?.textBundleDocumentWillSave(self)
+    }
+    return bundle
   }
   
   /// Loads the textbundle.
@@ -73,13 +90,136 @@ public final class TextBundleDocument: UIDocument {
     guard let directory = contents as? FileWrapper else {
       throw NSError(domain: NSCocoaErrorDomain, code: NSFileReadCorruptFileError, userInfo: nil)
     }
-    textBundle = TextBundle(bundle: directory, undoManager: undoManager)
+    bundle = directory
   }
 
-  public var previousError: Error?
+  public var previousError: Swift.Error?
 
-  public override func handleError(_ error: Error, userInteractionPermitted: Bool) {
+  public override func handleError(_ error: Swift.Error, userInteractionPermitted: Bool) {
     self.previousError = error
     finishedHandlingError(error, recovered: false)
+  }
+}
+
+extension TextBundleDocument {
+  
+  enum Error: Swift.Error {
+    
+    /// A bundle key is already in use in the package.
+    case keyAlreadyUsed(key: String)
+    
+    /// The key is not used to identify data in the bundle.
+    case noSuchDataKey(key: String)
+    
+    /// The child directory path cannot be used
+    case invalidChildPath(error: Swift.Error)
+  }
+  
+  /// Convenience: Exposes the names of the assets in the bundle.
+  public var assetNames: [String] {
+    if let assetNames = bundle.fileWrappers?["assets"]?.fileWrappers?.keys {
+      return Array(assetNames)
+    } else {
+      return []
+    }
+  }
+  
+  // MARK: - Manipulating bundle contents
+  
+  /// Adds data to the bundle.
+  ///
+  /// - parameter data: The data to add.
+  /// - parameter preferredFilename: The key to access the data
+  /// - parameter childDirectoryPath: The path to a child directory in the bundle. Use an empty
+  ///                                 array to add the data to the root of the bundle.
+  /// - returns: The actual key used to store the data.
+  /// - throws: Error.invalidChildDirectoryPath if childDirectoryPath cannot be used, for example
+  ///           if something in the path array is already used by a non-directory file wrapper.
+  @discardableResult
+  public func addData(
+    _ data: Data,
+    preferredFilename: String,
+    replaceIfExists: Bool = true,
+    childDirectoryPath: [String] = []
+  ) throws -> String {
+    let container = try containerWrapper(at: childDirectoryPath)
+    let child = FileWrapper(regularFileWithContents: data)
+    child.preferredFilename = preferredFilename
+    if replaceIfExists, let existingWrapper = container.fileWrappers?[preferredFilename] {
+      container.removeFileWrapper(existingWrapper)
+    }
+    let key = container.addFileWrapper(child)
+    undoManager.registerUndo(withTarget: container) { (container) in
+      container.removeFileWrapper(child)
+    }
+    return key
+  }
+  
+  /// Returns the keys used by a container in the bundle.
+  /// - parameter childDirectoryPath: The path to a child directory in the bundle. Use an empty
+  ///                                 array to add the data to the root of the bundle.
+  /// - returns: The keys used in the container.
+  /// - throws: Error.invalidChildDirectoryPath if childDirectoryPath cannot be used, for example
+  ///           if something in the path array is already used by a non-directory file wrapper.
+  public func keys(at childDirectoryPath: [String] = []) throws -> [String] {
+    let container = try containerWrapper(at: childDirectoryPath)
+    if let fileWrappers = container.fileWrappers {
+      return Array(fileWrappers.keys)
+    } else {
+      return []
+    }
+  }
+  
+  /// Returns the data associated with a key in the bundle.
+  /// - parameter key: The key identifying the data.
+  /// - parameter childDirectoryPath: The path to a child directory in the bundle. Use an empty
+  ///                                 array to add the data to the root of the bundle.
+  /// - returns: The data associated with the key.
+  /// - throws: Error.noSuchDataKey if the key is not used to identify data in the bundle.
+  public func data(for key: String, at childDirectoryPath: [String] = []) throws -> Data {
+    let container = try containerWrapper(at: childDirectoryPath)
+    guard let wrapper = container.fileWrappers?[key], let data = wrapper.regularFileContents else {
+      throw Error.noSuchDataKey(key: key)
+    }
+    return data
+  }
+  
+  /// Finds or creates a container wrapper at a given path.
+  /// - parameter childDirectoryPath: The path to a child directory in the bundle. Use an empty
+  ///                                 array to add the data to the root of the bundle.
+  /// - throws: Error.invalidChildDirectoryPath if childDirectoryPath cannot be used, for example
+  ///           if something in the path array is already used by a non-directory file wrapper.
+  private func containerWrapper(at childDirectoryPath: [String]) throws -> FileWrapper {
+    var containerWrapper = bundle
+    for pathComponent in childDirectoryPath {
+      do {
+        containerWrapper = try directory(with: pathComponent, in: containerWrapper)
+      } catch {
+        throw Error.invalidChildPath(error: error)
+      }
+    }
+    return containerWrapper
+  }
+  
+  /// Returns a directory FileWrapper.
+  /// - parameter key: The key used to access the directory.
+  /// - returns: The directory FileWrapper.
+  /// - throws: Error.keyAlreadyUsed if the key is already in use in the bundle for a non-directory.
+  private func directory(with key: String, in container: FileWrapper) throws -> FileWrapper {
+    if let wrapper = container.fileWrappers?[key] {
+      if wrapper.isDirectory {
+        return wrapper
+      } else {
+        throw Error.keyAlreadyUsed(key: key)
+      }
+    } else {
+      let wrapper = FileWrapper(directoryWithFileWrappers: [:])
+      wrapper.preferredFilename = key
+      container.addFileWrapper(wrapper)
+      undoManager.registerUndo(withTarget: container) { (bundle) in
+        bundle.removeFileWrapper(wrapper)
+      }
+      return wrapper
+    }
   }
 }

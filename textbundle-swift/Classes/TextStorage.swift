@@ -18,20 +18,24 @@
 import Foundation
 
 /// Reads and writes data to text.*
-struct TextStorage: ValueStorage {
+public final class TextStorage {
   
-  weak var bundle: FileWrapper?
+  public init(document: TextBundleDocument) {
+    self.document = document
+    document.addListener(self)
+    self.text = DirtyableValue(initializer: readValue)
+  }
+  
+  internal let document: TextBundleDocument
+  public var text: DirtyableValue<String>!
   
   var key: String {
-    return bundle?.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
+    return document.bundle.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
       ?? "text.markdown"
   }
   
   func readValue() throws -> String {
-    guard
-      let wrapper = bundle?.fileWrappers?[key],
-      let data = wrapper.regularFileContents
-      else { return "" }
+    guard let data = try? document.data(for: key) else { return "" }
     guard let string = String(data: data, encoding: .utf8) else {
       throw NSError(
         domain: NSCocoaErrorDomain,
@@ -51,6 +55,14 @@ struct TextStorage: ValueStorage {
       )
     }
     let wrapper = FileWrapper(regularFileWithContents: data)
-    bundle?.replaceFileWrapper(wrapper, key: key)
+    document.bundle.replaceFileWrapper(wrapper, key: key)
+  }
+}
+
+extension TextStorage: TextBundleDocumentSaveListener {
+  public func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws {
+    if let value = text.clean() {
+      try writeValue(value)
+    }
   }
 }
