@@ -60,24 +60,17 @@ public final class TextBundleDocument: UIDocument {
     self.undoManager = ImmediateUndoManager(document: self)
   }
   
-  private struct _WeakListener {
-    weak var listener: TextBundleDocumentSaveListener?
-    
-    init(_ listener: TextBundleDocumentSaveListener) {
-      self.listener = listener
-    }
-  }
-  
-  private var listeners: [_WeakListener] = []
+  /// Listeners are strongly held until the document closes.
+  private var listeners: [TextBundleDocumentSaveListener] = []
   
   public func addListener(_ listener: TextBundleDocumentSaveListener) {
-    listeners.append(_WeakListener(listener))
+    listeners.append(listener)
   }
   
   /// Write in-memory contents to textBundle and return textBundle for storage.
   override public func contents(forType typeName: String) throws -> Any {
-    for listenerWrapper in listeners {
-      try listenerWrapper.listener?.textBundleDocumentWillSave(self)
+    for listener in listeners {
+      try listener.textBundleDocumentWillSave(self)
     }
     return bundle
   }
@@ -91,6 +84,14 @@ public final class TextBundleDocument: UIDocument {
       throw NSError(domain: NSCocoaErrorDomain, code: NSFileReadCorruptFileError, userInfo: nil)
     }
     bundle = directory
+  }
+  
+  public override func close(completionHandler: ((Bool) -> Void)? = nil) {
+    let wrappedHandler = { (success: Bool) in
+      completionHandler?(success)
+      self.listeners = []
+    }
+    super.close(completionHandler: wrappedHandler)
   }
 
   public var previousError: Swift.Error?

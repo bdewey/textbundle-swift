@@ -18,32 +18,20 @@
 import Foundation
 
 /// Reads and writes data to text.*
-public final class TextStorage {
+public final class TextStorage: WrappingDocument {
   
   public init(document: TextBundleDocument) {
     self.document = document
     document.addListener(self)
-    self.text = DirtyableValue(initializer: readValue)
+    text.delegate = self
   }
   
-  internal let document: TextBundleDocument
-  public var text: DirtyableValue<String>!
+  public let document: TextBundleDocument
+  public var text = DirtyableValue<TextStorage>()
   
   var key: String {
     return document.bundle.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
       ?? "text.markdown"
-  }
-  
-  func readValue() throws -> String {
-    guard let data = try? document.data(for: key) else { return "" }
-    guard let string = String(data: data, encoding: .utf8) else {
-      throw NSError(
-        domain: NSCocoaErrorDomain,
-        code: NSFileReadInapplicableStringEncodingError,
-        userInfo: nil
-      )
-    }
-    return string
   }
   
   func writeValue(_ value: String) throws {
@@ -64,5 +52,24 @@ extension TextStorage: TextBundleDocumentSaveListener {
     if let value = text.clean() {
       try writeValue(value)
     }
+  }
+}
+
+extension TextStorage: DirtyableValueDelegate {
+  
+  public func dirtyableValueInitialValue() throws -> String {
+    guard let data = try? document.data(for: key) else { return "" }
+    guard let string = String(data: data, encoding: .utf8) else {
+      throw NSError(
+        domain: NSCocoaErrorDomain,
+        code: NSFileReadInapplicableStringEncodingError,
+        userInfo: nil
+      )
+    }
+    return string
+  }
+  
+  public func dirtyableValueDidChange() {
+    document.updateChangeCount(.done)
   }
 }

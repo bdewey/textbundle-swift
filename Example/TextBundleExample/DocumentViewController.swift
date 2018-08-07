@@ -22,6 +22,7 @@ import textbundle_swift
 final class DocumentViewController: UIViewController, UITextViewDelegate {
   
   var document: TextBundleDocument?
+  var textStorage: TextStorage?
   
   @IBOutlet var textView: UITextView!
   
@@ -42,8 +43,10 @@ final class DocumentViewController: UIViewController, UITextViewDelegate {
       document.open(completionHandler: { (success) in
         if success {
           // Display the content of the document, e.g.:
-          self.textView.text = try? document.textBundle.text()
+          let textStorage = TextStorage(document: document)
+          self.textView.text = try? textStorage.text.value()
           self.title = document.fileURL.lastPathComponent
+          self.textStorage = textStorage
         } else {
           // Make sure to handle the failed import appropriately, e.g., by presenting an error message to the user.
         }
@@ -63,6 +66,6 @@ final class DocumentViewController: UIViewController, UITextViewDelegate {
   }
   
   func textViewDidChange(_ textView: UITextView) {
-    try? self.document?.textBundle.setText(textView.text)
+    textStorage?.text.setValue(textView.text)
   }
 }

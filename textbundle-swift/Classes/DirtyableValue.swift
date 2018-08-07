@@ -17,31 +17,38 @@
 
 import Foundation
 
-public final class DirtyableValue<Value> {
+public protocol DirtyableValueDelegate: class {
+  associatedtype Value
   
-  public typealias InitializeValueBlock = () throws -> Value
+  func dirtyableValueInitialValue() throws -> Value
+  func dirtyableValueDidChange()
+}
+
+public final class DirtyableValue<Delegate: DirtyableValueDelegate> {
   
-  public init(initializer: @escaping InitializeValueBlock) {
-    self.initializer = initializer
-  }
+  public init() { }
+
+  public weak var delegate: Delegate?
   
-  private let initializer: InitializeValueBlock
+  // Hold a strong reference to the delegate while we have dirty data to make sure
+  // the delegate doesn't go away before writing.
   private(set) var dirty = false
-  private var _value: Value?
+  private var _value: Delegate.Value?
   
-  public func value() throws -> Value {
+  public func value() throws -> Delegate.Value {
     if let value = _value { return value }
-    let value = try initializer()
+    let value = try delegate!.dirtyableValueInitialValue()
     dirty = false
     return value
   }
   
-  public func setValue(_ value: Value) {
+  public func setValue(_ value: Delegate.Value) {
     self._value = value
     dirty = true
+    delegate?.dirtyableValueDidChange()
   }
   
-  public func clean() -> Value? {
+  public func clean() -> Delegate.Value? {
     if dirty {
       dirty = false
       return _value

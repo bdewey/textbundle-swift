@@ -18,26 +18,17 @@
 import Foundation
 
 /// Reads and writes metadata to info.json
-public final class MetadataStorage: TextBundleDocumentSaveListener {
+public final class MetadataStorage: TextBundleDocumentSaveListener, WrappingDocument {
   public init(document: TextBundleDocument) {
     self.document = document
     document.addListener(self)
-    metadata = DirtyableValue<Metadata>(initializer: readValue)
+    metadata.delegate = self
   }
   
-  public var metadata: DirtyableValue<Metadata>!
+  public var metadata = DirtyableValue<MetadataStorage>()
 
-  private let document: TextBundleDocument
+  public let document: TextBundleDocument
   private let key = "info.json"
-  
-  private func readValue() throws -> Metadata {
-    guard let data = try? document.data(for: key) else { return Metadata() }
-    return try Metadata(from: data)
-  }
-  
-  public func dirtyableValueDidChange(_ dirtyableValue: DirtyableValue<Metadata>) {
-    document.updateChangeCount(.done)
-  }
   
   private func writeValue(_ value: Metadata) throws {
     let data = try value.makeData()
@@ -49,5 +40,16 @@ public final class MetadataStorage: TextBundleDocumentSaveListener {
     if let metadata = metadata.clean() {
       try writeValue(metadata)
     }
+  }
+}
+
+extension MetadataStorage: DirtyableValueDelegate {
+  public func dirtyableValueInitialValue() throws -> Metadata {
+    guard let data = try? document.data(for: key) else { return Metadata() }
+    return try Metadata(from: data)
+  }
+  
+  public func dirtyableValueDidChange() {
+    document.updateChangeCount(.done)
   }
 }
