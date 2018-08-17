@@ -17,7 +17,7 @@
 
 import UIKit
 
-import textbundle_swift
+import TextBundleKit
 
 final class DocumentViewController: UIViewController, UITextViewDelegate {
   

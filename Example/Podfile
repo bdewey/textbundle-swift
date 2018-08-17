@@ -2,7 +2,7 @@ use_frameworks!
 platform :ios, '11.0'
 
 target 'TextBundleExample' do
-  pod 'textbundle-swift', :path => '../', :testspecs => ['Tests']
+  pod 'TextBundleKit', :path => '../', :testspecs => ['Tests']
 
   target 'TextBundleExampleTests' do
     inherit! :search_paths

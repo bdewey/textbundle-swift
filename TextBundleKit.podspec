@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name             = 'textbundle-swift'
+  s.name             = 'TextBundleKit'
   s.version          = '0.1.0'
   s.summary          = 'A Swift library for manipulating Textbundle packages (http://textbundle.org).'
   s.swift_version    = '4.0'

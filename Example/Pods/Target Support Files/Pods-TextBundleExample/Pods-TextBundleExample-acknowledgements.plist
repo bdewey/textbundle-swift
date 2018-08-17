@@ -219,7 +219,7 @@
 			<key>License</key>
 			<string>Apache</string>
 			<key>Title</key>
-			<string>textbundle-swift</string>
+			<string>TextBundleKit</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
