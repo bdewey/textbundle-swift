@@ -16,7 +16,7 @@
 //  under the License.
 
 import XCTest
-import textbundle_swift
+import TextBundleKit
 
 final class TextBundleSnapshotTests: XCTestCase {
 

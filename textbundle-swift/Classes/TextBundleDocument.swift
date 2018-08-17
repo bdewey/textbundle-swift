@@ -49,7 +49,7 @@ public protocol TextBundleDocumentSaveListener: class {
 /// textbundle wrapper.
 ///
 /// See http://textbundle.org
-public final class TextBundleDocument: UIDocument {
+public final class TextBundleDocument: UIDocumentWithPreviousError {
   
   /// The FileWrapper that contains all of the TextBundle contents.
   public var bundle: FileWrapper
@@ -92,13 +92,6 @@ public final class TextBundleDocument: UIDocument {
       self.listeners = []
     }
     super.close(completionHandler: wrappedHandler)
-  }
-
-  public var previousError: Swift.Error?
-
-  public override func handleError(_ error: Swift.Error, userInteractionPermitted: Bool) {
-    self.previousError = error
-    finishedHandlingError(error, recovered: false)
   }
 }
 

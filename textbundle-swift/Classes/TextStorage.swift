@@ -23,11 +23,11 @@ public final class TextStorage: WrappingDocument {
   public init(document: TextBundleDocument) {
     self.document = document
     document.addListener(self)
-    text.delegate = self
+    text.storage = self
   }
   
   public let document: TextBundleDocument
-  public var text = DirtyableValue<TextStorage>()
+  public var text = CachedValue<TextStorage>()
   
   var key: String {
     return document.bundle.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
@@ -55,7 +55,7 @@ extension TextStorage: TextBundleDocumentSaveListener {
   }
 }
 
-extension TextStorage: DirtyableValueDelegate {
+extension TextStorage: StableStorage {
   
   public func dirtyableValueInitialValue() throws -> String {
     guard let data = try? document.data(for: key) else { return "" }

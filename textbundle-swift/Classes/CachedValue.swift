@@ -17,38 +17,52 @@
 
 import Foundation
 
-public protocol DirtyableValueDelegate: class {
+/// Coordination protocol with stable storage.
+public protocol StableStorage: class {
   associatedtype Value
   
+  /// Supplies the stable storage version of the value.
   func dirtyableValueInitialValue() throws -> Value
+  
+  /// Lets stable storage know that the in-memory copy has changed.
   func dirtyableValueDidChange()
 }
 
-public final class DirtyableValue<Delegate: DirtyableValueDelegate> {
+/// Holds an mutable in-memory copy of data that is in stable storage, and tracks whether
+/// the in-memory copy has changed since being in stable storage ("dirty").
+public final class CachedValue<Storage: StableStorage> {
   
   public init() { }
-
-  public weak var delegate: Delegate?
   
-  // Hold a strong reference to the delegate while we have dirty data to make sure
-  // the delegate doesn't go away before writing.
+  /// Weak reference back to stable storage.
+  public weak var storage: Storage?
+  
+  /// Flag indicating if the in-memory copy has changed.
   private(set) var dirty = false
-  private var _value: Delegate.Value?
   
-  public func value() throws -> Delegate.Value {
+  /// In-memory copy of the value.
+  private var _value: Storage.Value?
+  
+  /// Returns the in-memory copy of the value.
+  public func value() throws -> Storage.Value {
     if let value = _value { return value }
-    let value = try delegate!.dirtyableValueInitialValue()
+    let value = try storage!.dirtyableValueInitialValue()
     dirty = false
     return value
   }
   
-  public func setValue(_ value: Delegate.Value) {
+  /// Changes the in-memory copy of the value.
+  public func setValue(_ value: Storage.Value) {
     self._value = value
     dirty = true
-    delegate?.dirtyableValueDidChange()
+    storage?.dirtyableValueDidChange()
   }
   
-  public func clean() -> Delegate.Value? {
+  /// If the in-memory copy is dirty, returns that value and sets its state to clean.
+  ///
+  /// - note: This is intended to only be called by the stable storage when writing the
+  ///         in-memory copy.
+  public func clean() -> Storage.Value? {
     if dirty {
       dirty = false
       return _value
