@@ -30,7 +30,7 @@ public protocol StableStorage: class {
 
 /// Holds an mutable in-memory copy of data that is in stable storage, and tracks whether
 /// the in-memory copy has changed since being in stable storage ("dirty").
-public final class CachedValue<Storage: StableStorage> {
+public final class CachedValue<Storage: StableStorage>: Publisher {
   
   public init() { }
   
@@ -41,19 +41,44 @@ public final class CachedValue<Storage: StableStorage> {
   private(set) var dirty = false
   
   /// In-memory copy of the value.
-  private var _value: Storage.Value?
+  private var _value: Result<Storage.Value>?
+  
+  private let publisher = SimplePublisher<Storage.Value>()
+  
+  public func subscribe(_ block: @escaping (Result<Storage.Value>) -> Void) -> AnySubscription {
+    block(currentValue)
+    return publisher.subscribe(block)
+  }
+  
+  public func removeSubscription(_ subscription: AnySubscription) {
+    publisher.removeSubscription(subscription)
+  }
+  
+  public func invalidate() {
+    assert(!dirty)
+    _value = nil
+    if publisher.hasActiveSubscribers {
+      publisher.publishResult(currentValue)
+    }
+  }
   
   /// Returns the in-memory copy of the value.
-  public func value() throws -> Storage.Value {
+  public var currentValue: Result<Storage.Value> {
     if let value = _value { return value }
-    let value = try storage!.dirtyableValueInitialValue()
-    dirty = false
-    return value
+    do {
+      let value = try storage!.dirtyableValueInitialValue()
+      dirty = false
+      _value = .success(value)
+    } catch {
+      _value = .failure(error)
+    }
+    return _value!
   }
   
   /// Changes the in-memory copy of the value.
   public func setValue(_ value: Storage.Value) {
-    self._value = value
+    self._value = .success(value)
+    publisher.publishValue(value)
     dirty = true
     storage?.dirtyableValueDidChange()
   }
@@ -63,10 +88,11 @@ public final class CachedValue<Storage: StableStorage> {
   /// - note: This is intended to only be called by the stable storage when writing the
   ///         in-memory copy.
   public func clean() -> Storage.Value? {
-    if dirty {
+    switch (dirty, _value) {
+    case (true, .some(.success(let value))):
       dirty = false
-      return _value
-    } else {
+      return value
+    default:
       return nil
     }
   }

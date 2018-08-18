@@ -43,6 +43,7 @@ fileprivate class ImmediateUndoManager: UndoManager {
 
 public protocol TextBundleDocumentSaveListener: class {
   func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws
+  func textBundleDocumentDidLoad(_ textBundleDocument: TextBundleDocument)
 }
 
 /// UIDocument class that can read and edit the text contents and metadata of a
@@ -84,6 +85,9 @@ public final class TextBundleDocument: UIDocumentWithPreviousError {
       throw NSError(domain: NSCocoaErrorDomain, code: NSFileReadCorruptFileError, userInfo: nil)
     }
     bundle = directory
+    for listener in listeners {
+      listener.textBundleDocumentDidLoad(self)
+    }
   }
   
   public override func close(completionHandler: ((Bool) -> Void)? = nil) {

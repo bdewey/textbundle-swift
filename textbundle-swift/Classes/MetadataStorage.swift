@@ -41,6 +41,10 @@ public final class MetadataStorage: TextBundleDocumentSaveListener, WrappingDocu
       try writeValue(metadata)
     }
   }
+  
+  public func textBundleDocumentDidLoad(_ textBundleDocument: TextBundleDocument) {
+    metadata.invalidate()
+  }
 }
 
 extension MetadataStorage: StableStorage {

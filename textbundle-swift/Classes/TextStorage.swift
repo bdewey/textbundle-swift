@@ -36,11 +36,7 @@ public final class TextStorage: WrappingDocument {
   
   func writeValue(_ value: String) throws {
     guard let data = value.data(using: .utf8) else {
-      throw NSError(
-        domain: NSCocoaErrorDomain,
-        code: NSFileWriteInapplicableStringEncodingError,
-        userInfo: nil
-      )
+      throw NSError.fileWriteInapplicableStringEncoding
     }
     let wrapper = FileWrapper(regularFileWithContents: data)
     document.bundle.replaceFileWrapper(wrapper, key: key)
@@ -52,6 +48,10 @@ extension TextStorage: TextBundleDocumentSaveListener {
     if let value = text.clean() {
       try writeValue(value)
     }
+  }
+  
+  public func textBundleDocumentDidLoad(_ textBundleDocument: TextBundleDocument) {
+    text.invalidate()
   }
 }
 

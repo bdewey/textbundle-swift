@@ -35,6 +35,8 @@ final class DocumentViewController: UIViewController, UITextViewDelegate {
     )
   }
   
+  var activeDocumentSubscription: AnySubscription?
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
@@ -44,7 +46,9 @@ final class DocumentViewController: UIViewController, UITextViewDelegate {
         if success {
           // Display the content of the document, e.g.:
           let textStorage = TextStorage(document: document)
-          self.textView.text = try? textStorage.text.value()
+          self.activeDocumentSubscription = textStorage.text.subscribe({ [weak self](result) in
+            self?.textView.text = result.value
+          })
           self.title = document.fileURL.lastPathComponent
           self.textStorage = textStorage
         } else {
