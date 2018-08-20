@@ -32,6 +32,7 @@
 		CD3D81CB8C0F7973071663E450207608 /* UIDocumentWithPreviousError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B6504064D3AE7E6F3090C3FEE28E1D /* UIDocumentWithPreviousError.swift */; };
 		CF9C759E0D830140BA405867697016FC /* TestContent.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 50759FF5F7CC9F466569298DD85C95C4 /* TestContent.bundle */; };
 		D3A1263D2127A28F0002422E /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A1263C2127A28F0002422E /* Result.swift */; };
+		D57C8CED212B7D0000547944 /* BlockArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57C8CEC212B7D0000547944 /* BlockArray.swift */; };
 		D6E509F045CB0C384EFAF902166389A7 /* TextBundleKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDCF595F82766C4C6F56057FCF4888D /* TextBundleKit-dummy.m */; };
 		DA3DCD668C2FEC0680155CA653128C07 /* textbundle-md-extension.textbundle in Resources */ = {isa = PBXBuildFile; fileRef = 2A53F71FF12F92DE83FFCD8B8A265EA4 /* textbundle-md-extension.textbundle */; };
 		E9FD0DA4337214C0F495F897457FE483 /* TextBundle+Snapshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772CD0A3BDAC4DEFFA8EA9278A09D138 /* TextBundle+Snapshots.swift */; };
@@ -123,6 +124,7 @@
 		C731746CD0AF259F630A9CFEE2D89645 /* Textbundle Example.textbundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper; name = "Textbundle Example.textbundle"; path = "textbundle-swift/TestContent/Textbundle Example.textbundle"; sourceTree = "<group>"; };
 		CC1FC3DA48D35BC8ECCFE94870A3CCB3 /* TextBundleKit-Unit-Tests-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TextBundleKit-Unit-Tests-prefix.pch"; sourceTree = "<group>"; };
 		D3A1263C2127A28F0002422E /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Result.swift; path = "textbundle-swift/Classes/Result.swift"; sourceTree = "<group>"; };
+		D57C8CEC212B7D0000547944 /* BlockArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlockArray.swift; path = "textbundle-swift/Classes/BlockArray.swift"; sourceTree = "<group>"; };
 		DA606CEA8A6FBFBCFC1467AF85C90F3E /* TextBundleKit-Unit-Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "TextBundleKit-Unit-Tests-frameworks.sh"; sourceTree = "<group>"; };
 		DD74D76A53BA514E06F2B5FF7E576A0E /* TextBundleKit.unit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TextBundleKit.unit.xcconfig; sourceTree = "<group>"; };
 		E5E80EE0CEE4A9003F1337E8813599B1 /* NSError+TextBundleKit.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSError+TextBundleKit.swift"; path = "textbundle-swift/Classes/NSError+TextBundleKit.swift"; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 				5AC7A924A6437C5D004F82091B298340 /* Support Files */,
 				F9081B4AE987F88DA52DA5ED6105F4AB /* Tests */,
 				D3A1263C2127A28F0002422E /* Result.swift */,
+				D57C8CEC212B7D0000547944 /* BlockArray.swift */,
 			);
 			name = TextBundleKit;
 			path = ../..;
@@ -570,6 +573,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF8D3D6F71C5B5E2508C0E1902A227CC /* CachedValue.swift in Sources */,
+				D57C8CED212B7D0000547944 /* BlockArray.swift in Sources */,
 				D3A1263D2127A28F0002422E /* Result.swift in Sources */,
 				5D1D0D75F7936265E69E11A9501C9AF2 /* DocumentProtocol.swift in Sources */,
 				B5792CF82A00355ADFE75DDCB9D57E7D /* FileWrapper+TextBundle.swift in Sources */,

@@ -43,7 +43,7 @@ public final class CachedValue<Storage: StableStorage>: Publisher {
   /// In-memory copy of the value.
   private var _value: Result<Storage.Value>?
   
-  private let publisher = SimplePublisher<Storage.Value>()
+  private let (publishingEndpoint, publisher) = SimplePublisher<Storage.Value>.create()
   
   public func subscribe(_ block: @escaping (Result<Storage.Value>) -> Void) -> AnySubscription {
     block(currentValue)
@@ -58,7 +58,7 @@ public final class CachedValue<Storage: StableStorage>: Publisher {
     assert(!dirty)
     _value = nil
     if publisher.hasActiveSubscribers {
-      publisher.publishResult(currentValue)
+      publishingEndpoint(currentValue)
     }
   }
   
@@ -78,7 +78,7 @@ public final class CachedValue<Storage: StableStorage>: Publisher {
   /// Changes the in-memory copy of the value.
   public func setValue(_ value: Storage.Value) {
     self._value = .success(value)
-    publisher.publishValue(value)
+    publishingEndpoint(_value!)
     dirty = true
     storage?.dirtyableValueDidChange()
   }

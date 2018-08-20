@@ -17,55 +17,41 @@
 
 import Foundation
 
-/// What it says: Maintains an array of blocks that accept a value, and can invoke all
-/// of the blocks with that value.
-private struct BlockArray<Value> {
-  typealias Block = (Value) -> Void
-  private var blocks: [Block?] = []
-  private var activeCount = 0
+/// Type-erasing protocol for subscriptions.
+public protocol AnySubscription: class { }
 
-  /// Adds a block to the collection.
-  ///
-  /// - returns: The index that can be used in a subsequent call to `remove(at:)`
-  mutating func append(_ block: @escaping Block) -> Int {
-    activeCount += 1
-    blocks.append(block)
-    return blocks.count - 1
-  }
-  
-  /// Removes the block at a specific index.
-  ///
-  /// - note: Removing a block does not invalidate other indexes.
-  mutating func remove(at index: Int) {
-    activeCount -= 1
-    blocks[index] = nil
-  }
-  
-  /// Invokes all valid blocks with the parameter `value`
-  func invoke(with value: Value) {
-    for block in blocks {
-      block?(value)
-    }
-  }
-  
-  var isEmpty: Bool {
-    return activeCount == 0
-  }
-}
-
-public protocol AnySubscription { }
-
+/// Things that know how to publish updated values conform to this protocol.
 public protocol Publisher {
+
+  /// The type that's published.
   associatedtype Value
+
+  /// A block that receives updated results.
+  ///
+  /// - note: The subscription block receives a `Result<Value>`, not a `Value`,
+  ///         to allow for the possiblity of errors.
   typealias SubscriptionBlock = (Result<Value>) -> Void
-  
+
+  /// Create a new subscription.
+  ///
+  /// - parameter block: The block that should receive updates.
+  /// - returns: A subscription object.
+  /// - note: When the subscription object is deallocated, it will remove itself from this
+  ///         publisher.
   func subscribe(_ block: @escaping SubscriptionBlock) -> AnySubscription
+
+  /// Removes a subscription. The block will no longer receive updates.
+  ///
+  /// - parameter subscription: The subscription object to remove from the publisher.
   func removeSubscription(_ subscription: AnySubscription)
 }
 
 /// Publishes changes to values.
-public class SimplePublisher<Value>: Publisher {
+public final class SimplePublisher<Value>: Publisher {
   
+  /// A publishing endpoint is a function that will send the value to all subscribers.
+  public typealias PublishingEndpoint = (Result<Value>) -> Void
+
   /// Represents a connection to a publisher.
   ///
   /// - note: The subscription maintains a strong connection back to the publisher.
@@ -88,19 +74,24 @@ public class SimplePublisher<Value>: Publisher {
       publisher.removeSubscription(self)
     }
   }
+
+  /// Creates a new publisher.
+  ///
+  /// - returns: A tuple containing the publisher and the endpoint that can be used to
+  ///            send results to the publisher.
+  public static func create() -> (PublishingEndpoint, SimplePublisher<Value>) {
+    let publisher = SimplePublisher<Value>()
+    return (publisher.publishResult, publisher)
+  }
   
   /// All subscribers.
   private var subscribers = BlockArray<Result<Value>>()
   
-  /// Publish a value to all subscribers.
-  ///
+  /// Publish a result to all subscribers.
   /// - note: All subscriber blocks are called synchronously on this thread.
-  /// - parameter value: The value to publish to subscribers.
-  public func publishValue(_ value: Value) {
-    subscribers.invoke(with: .success(value))
-  }
-  
-  public func publishResult(_ result: Result<Value>) {
+  /// - parameter result: The result to publish to subscribers.
+  private func publishResult(_ result: Result<Value>) {
+    assert(Thread.isMainThread)
     subscribers.invoke(with: result)
   }
   
@@ -108,13 +99,14 @@ public class SimplePublisher<Value>: Publisher {
   ///
   /// - parameter block: The block to invoke with new values
   public func subscribe(_ block: @escaping (Result<Value>) -> Void) -> AnySubscription {
+    assert(Thread.isMainThread)
     return Subscription(publisher: self, blockIndex: subscribers.append(block))
   }
   
   /// Removes this subscription. The associated block will not get called on subsequent
   /// `invoke`
-  public func removeSubscription(_ subscription: AnySubscription)
-  {
+  public func removeSubscription(_ subscription: AnySubscription) {
+    assert(Thread.isMainThread)
     let subscription = subscription as! Subscription
     assert(subscription.publisher === self)
     subscribers.remove(at: subscription.blockIndex)
