@@ -30,8 +30,27 @@ public protocol StableStorage: class {
 
 /// Holds an mutable in-memory copy of data that is in stable storage, and tracks whether
 /// the in-memory copy has changed since being in stable storage ("dirty").
-public final class CachedValue<Storage: StableStorage>: Publisher {
-  
+public final class CachedValue<Storage: StableStorage> {
+
+  public enum ValueSource {
+    /// The value came from the document
+    case document
+
+    /// The value came from in-memory modification
+    case memory
+  }
+
+  /// A structure that carries both a the value and its "source" (did it come from the document
+  /// or an in-memory modification)
+  public struct ValueDescription {
+
+    /// Where'd the value come from
+    public let source: ValueSource
+
+    /// The value itself
+    public let value: Storage.Value
+  }
+
   public init() { }
   
   /// Weak reference back to stable storage.
@@ -39,46 +58,46 @@ public final class CachedValue<Storage: StableStorage>: Publisher {
   
   /// Flag indicating if the in-memory copy has changed.
   private(set) var dirty = false
+
+  private var resultSource: ValueSource = .document
   
   /// In-memory copy of the value.
-  private var _value: Result<Storage.Value>?
+  private var _result: Result<Storage.Value>?
   
-  private let (publishingEndpoint, publisher) = SimplePublisher<Storage.Value>.create()
-  
-  public func subscribe(_ block: @escaping (Result<Storage.Value>) -> Void) -> AnySubscription {
-    block(currentValue)
-    return publisher.subscribe(block)
-  }
-  
-  public func removeSubscription(_ subscription: AnySubscription) {
-    publisher.removeSubscription(subscription)
-  }
-  
+  private let (publishingEndpoint, publisher) = SimplePublisher<ValueDescription>.create()
+
+  /// Discards the cached value and reloads from stable storage.
   public func invalidate() {
     assert(!dirty)
-    _value = nil
+    _result = nil
+    resultSource = .document
     if publisher.hasActiveSubscribers {
-      publishingEndpoint(currentValue)
+      publishingEndpoint(currentValueDescription)
     }
   }
   
   /// Returns the in-memory copy of the value.
-  public var currentValue: Result<Storage.Value> {
-    if let value = _value { return value }
+  public var currentResult: Result<Storage.Value> {
+    if let value = _result { return value }
     do {
       let value = try storage!.dirtyableValueInitialValue()
       dirty = false
-      _value = .success(value)
+      _result = .success(value)
     } catch {
-      _value = .failure(error)
+      _result = .failure(error)
     }
-    return _value!
+    return _result!
+  }
+
+  private var currentValueDescription: Result<ValueDescription> {
+    return currentResult.flatMap({ return ValueDescription(source: resultSource, value: $0)})
   }
   
   /// Changes the in-memory copy of the value.
   public func setValue(_ value: Storage.Value) {
-    self._value = .success(value)
-    publishingEndpoint(_value!)
+    self._result = .success(value)
+    resultSource = .memory
+    publishingEndpoint(currentValueDescription)
     dirty = true
     storage?.dirtyableValueDidChange()
   }
@@ -88,7 +107,7 @@ public final class CachedValue<Storage: StableStorage>: Publisher {
   /// - note: This is intended to only be called by the stable storage when writing the
   ///         in-memory copy.
   public func clean() -> Storage.Value? {
-    switch (dirty, _value) {
+    switch (dirty, _result) {
     case (true, .some(.success(let value))):
       dirty = false
       return value
@@ -98,3 +117,13 @@ public final class CachedValue<Storage: StableStorage>: Publisher {
   }
 }
 
+extension CachedValue: Publisher {
+  public func subscribe(_ block: @escaping (Result<ValueDescription>) -> Void) -> AnySubscription {
+    block(currentValueDescription)
+    return publisher.subscribe(block)
+  }
+
+  public func removeSubscription(_ subscription: AnySubscription) {
+    publisher.removeSubscription(subscription)
+  }
+}

@@ -35,7 +35,7 @@ final class TextStorageTests: XCTestCase {
     let didOpen = expectation(description: "did open")
     storage.open { (success) in
       XCTAssert(success)
-      XCTAssertEqual(storage.text.currentValue.value, expectedMarkdown)
+      XCTAssertEqual(storage.text.currentResult.value, expectedMarkdown)
       didOpen.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
