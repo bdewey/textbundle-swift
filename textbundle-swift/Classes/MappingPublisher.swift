@@ -17,7 +17,7 @@
 
 import Foundation
 
-public class MappingPublisher<P: Publisher, OutputValue>: Publisher {
+public final class MappingPublisher<P: Publisher, OutputValue>: Publisher {
   public typealias MappingBlock = (P.Value) -> OutputValue
   
   public init(publisher: P, mapping: @escaping MappingBlock) {
@@ -25,14 +25,14 @@ public class MappingPublisher<P: Publisher, OutputValue>: Publisher {
     self.mapping = mapping
     self.subscription = publisher.subscribe({ (input) in
       let output = input.flatMap(mapping)
-      self.outputPublisher.publishResult(output)
+      self.outputPublisherEndpoint(output)
     })
   }
   
   private let publisher: P
   private let mapping: MappingBlock
   private var subscription: AnySubscription?
-  private let outputPublisher = SimplePublisher<OutputValue>()
+  private let (outputPublisherEndpoint, outputPublisher) = SimplePublisher<OutputValue>.create()
   
   public func subscribe(_ block: @escaping (Result<OutputValue>) -> Void) -> AnySubscription {
     return outputPublisher.subscribe(block)

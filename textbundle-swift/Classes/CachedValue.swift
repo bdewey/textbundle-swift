@@ -32,24 +32,7 @@ public protocol StableStorage: class {
 /// the in-memory copy has changed since being in stable storage ("dirty").
 public final class CachedValue<Storage: StableStorage> {
 
-  public enum ValueSource {
-    /// The value came from the document
-    case document
-
-    /// The value came from in-memory modification
-    case memory
-  }
-
-  /// A structure that carries both a the value and its "source" (did it come from the document
-  /// or an in-memory modification)
-  public struct ValueDescription {
-
-    /// Where'd the value come from
-    public let source: ValueSource
-
-    /// The value itself
-    public let value: Storage.Value
-  }
+  public typealias CachedValueDescription = ValueDescription<Storage.Value>
 
   public init() { }
   
@@ -64,7 +47,7 @@ public final class CachedValue<Storage: StableStorage> {
   /// In-memory copy of the value.
   private var _result: Result<Storage.Value>?
   
-  private let (publishingEndpoint, publisher) = SimplePublisher<ValueDescription>.create()
+  private let (publishingEndpoint, publisher) = SimplePublisher<CachedValueDescription>.create()
 
   /// Discards the cached value and reloads from stable storage.
   public func invalidate() {
@@ -89,7 +72,7 @@ public final class CachedValue<Storage: StableStorage> {
     return _result!
   }
 
-  private var currentValueDescription: Result<ValueDescription> {
+  private var currentValueDescription: Result<CachedValueDescription> {
     return currentResult.flatMap({ return ValueDescription(source: resultSource, value: $0)})
   }
   
@@ -118,7 +101,7 @@ public final class CachedValue<Storage: StableStorage> {
 }
 
 extension CachedValue: Publisher {
-  public func subscribe(_ block: @escaping (Result<ValueDescription>) -> Void) -> AnySubscription {
+  public func subscribe(_ block: @escaping (Result<CachedValueDescription>) -> Void) -> AnySubscription {
     block(currentValueDescription)
     return publisher.subscribe(block)
   }
