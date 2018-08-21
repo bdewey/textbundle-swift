@@ -20,34 +20,13 @@ import Foundation
 /// Type-erasing protocol for subscriptions.
 public protocol AnySubscription: class { }
 
-/// Things that know how to publish updated values conform to this protocol.
-public protocol Publisher {
-
-  /// The type that's published.
-  associatedtype Value
-
-  /// A block that receives updated results.
-  ///
-  /// - note: The subscription block receives a `Result<Value>`, not a `Value`,
-  ///         to allow for the possiblity of errors.
-  typealias SubscriptionBlock = (Result<Value>) -> Void
-
-  /// Create a new subscription.
-  ///
-  /// - parameter block: The block that should receive updates.
-  /// - returns: A subscription object.
-  /// - note: When the subscription object is deallocated, it will remove itself from this
-  ///         publisher.
-  func subscribe(_ block: @escaping SubscriptionBlock) -> AnySubscription
-
-  /// Removes a subscription. The block will no longer receive updates.
-  ///
-  /// - parameter subscription: The subscription object to remove from the publisher.
-  func removeSubscription(_ subscription: AnySubscription)
-}
-
 /// Publishes changes to values.
-public final class SimplePublisher<Value>: Publisher {
+///
+/// This *looks* like Reactive Programming but is meant to be much less "scaffolding-rich" --
+/// it just contains what's needed to inform UI components of changes to documents, which can come
+/// either from other parts of the program generating model updates OR from the document changing
+/// because of some other process editing it (e.g., iCloud synchronization).
+public final class Publisher<Value> {
   
   /// A publishing endpoint is a function that will send the value to all subscribers.
   public typealias PublishingEndpoint = (Result<Value>) -> Void
@@ -58,13 +37,13 @@ public final class SimplePublisher<Value>: Publisher {
   final private class Subscription: AnySubscription {
     
     /// The publisher that generates
-    fileprivate let publisher: SimplePublisher<Value>
+    fileprivate let publisher: Publisher<Value>
     
     /// Index of this block in the publisher.
     fileprivate let blockIndex: Int
     
     /// Designated initializer.
-    fileprivate init(publisher: SimplePublisher<Value>, blockIndex: Int) {
+    fileprivate init(publisher: Publisher<Value>, blockIndex: Int) {
       self.publisher = publisher
       self.blockIndex = blockIndex
     }
@@ -79,9 +58,21 @@ public final class SimplePublisher<Value>: Publisher {
   ///
   /// - returns: A tuple containing the publisher and the endpoint that can be used to
   ///            send results to the publisher.
-  public static func create() -> (PublishingEndpoint, SimplePublisher<Value>) {
-    let publisher = SimplePublisher<Value>()
+  public static func create() -> (PublishingEndpoint, Publisher<Value>) {
+    let publisher = Publisher<Value>()
     return (publisher.publishResult, publisher)
+  }
+
+  /// Arbitrary objects that this publisher depends on. As long as this publisher exists,
+  /// these will exist.
+  private var dependencies: [AnyObject] = []
+
+  /// Adds a dependency.
+  ///
+  /// The publisher keeps a strong reference to all dependencies, making sure they exist as long
+  /// as the publisher exists.
+  public func addDependency(_ dependency: AnyObject) {
+    dependencies.append(dependency)
   }
   
   /// All subscribers.

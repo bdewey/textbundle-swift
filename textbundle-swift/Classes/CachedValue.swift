@@ -47,7 +47,7 @@ public final class CachedValue<Storage: StableStorage> {
   /// In-memory copy of the value.
   private var _result: Result<Storage.Value>?
   
-  private let (publishingEndpoint, publisher) = SimplePublisher<CachedValueDescription>.create()
+  private let (publishingEndpoint, publisher) = Publisher<CachedValueDescription>.create()
 
   /// Discards the cached value and reloads from stable storage.
   public func invalidate() {
@@ -100,7 +100,7 @@ public final class CachedValue<Storage: StableStorage> {
   }
 }
 
-extension CachedValue: Publisher {
+extension CachedValue {
   public func subscribe(_ block: @escaping (Result<CachedValueDescription>) -> Void) -> AnySubscription {
     block(currentValueDescription)
     return publisher.subscribe(block)

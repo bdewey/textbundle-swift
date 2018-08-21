@@ -42,6 +42,7 @@ final class TextStorageTests: XCTestCase {
   }
   
   func testConcurrentEdits() {
+    let editedText = "# Edited!\n\nThis is my edited text."
     let activeDocument = try! TextBundleTestHelper.makeDocument("testConcurrentEdits")
     let passiveDocument = TextBundleDocument(fileURL: activeDocument.fileURL)
     let activeStorage = TextStorage(document: activeDocument)
@@ -58,6 +59,22 @@ final class TextStorageTests: XCTestCase {
       didOpenActive.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
-    activeStorage.text.setValue("# Edited!\n\nThis is my edited text.")
+    var textHistory: [Result<ValueDescription<String>>] = []
+    let passiveDidGetEditedText = expectation(description: "passive document got the edited text")
+    var subscription: AnySubscription? = passiveStorage.text.subscribe { (result) in
+      textHistory.append(result)
+      _ = result.flatMap({ (valueDescription) -> Void in
+        if valueDescription.value == editedText {
+          passiveDidGetEditedText.fulfill()
+        }
+      })
+    }
+    defer {
+      subscription = nil
+    }
+    activeStorage.text.setValue(editedText)
+    activeStorage.document.autosave(completionHandler: nil)
+    waitForExpectations(timeout: 3, handler: nil)
+    XCTAssertEqual(textHistory.count, 2)
   }
 }
