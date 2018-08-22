@@ -22,17 +22,17 @@ public protocol StableStorage: class {
   associatedtype Value
   
   /// Supplies the stable storage version of the value.
-  func dirtyableValueInitialValue() throws -> Value
+  func documentPropertyInitialValue() throws -> Value
   
   /// Lets stable storage know that the in-memory copy has changed.
-  func dirtyableValueDidChange()
+  func documentPropertyDidChange()
 }
 
 /// Holds an mutable in-memory copy of data that is in stable storage, and tracks whether
 /// the in-memory copy has changed since being in stable storage ("dirty").
-public final class CachedValue<Storage: StableStorage> {
+public final class DocumentProperty<Storage: StableStorage> {
 
-  public typealias CachedValueDescription = ValueDescription<Storage.Value>
+  public typealias CachedValueDescription = DocumentPropertyWithSource<Storage.Value>
 
   public init() { }
   
@@ -42,14 +42,14 @@ public final class CachedValue<Storage: StableStorage> {
   /// Flag indicating if the in-memory copy has changed.
   private(set) var dirty = false
 
-  private var resultSource: ValueSource = .document
+  private var resultSource: DocumentPropertySource = .document
   
   /// In-memory copy of the value.
   private var _result: Result<Storage.Value>?
   
   private let (publishingEndpoint, publisher) = Publisher<CachedValueDescription>.create()
 
-  public var resultPublisher: Publisher<ValueDescription<Storage.Value>> {
+  public var resultPublisher: Publisher<DocumentPropertyWithSource<Storage.Value>> {
     return publisher
   }
 
@@ -67,7 +67,7 @@ public final class CachedValue<Storage: StableStorage> {
   public var currentResult: Result<Storage.Value> {
     if let value = _result { return value }
     do {
-      let value = try storage!.dirtyableValueInitialValue()
+      let value = try storage!.documentPropertyInitialValue()
       dirty = false
       _result = .success(value)
     } catch {
@@ -77,7 +77,7 @@ public final class CachedValue<Storage: StableStorage> {
   }
 
   private var currentValueDescription: Result<CachedValueDescription> {
-    return currentResult.flatMap({ return ValueDescription(source: resultSource, value: $0)})
+    return currentResult.flatMap({ return DocumentPropertyWithSource(source: resultSource, value: $0)})
   }
   
   /// Changes the in-memory copy of the value.
@@ -94,7 +94,7 @@ public final class CachedValue<Storage: StableStorage> {
     resultSource = .memory
     publishingEndpoint(currentValueDescription)
     dirty = true
-    storage?.dirtyableValueDidChange()
+    storage?.documentPropertyDidChange()
   }
 
   /// If the in-memory copy is dirty, returns that value and sets its state to clean.
@@ -112,7 +112,7 @@ public final class CachedValue<Storage: StableStorage> {
   }
 }
 
-extension CachedValue {
+extension DocumentProperty {
   public func subscribe(_ block: @escaping (Result<CachedValueDescription>) -> Void) -> AnySubscription {
     block(currentValueDescription)
     return publisher.subscribe(block)

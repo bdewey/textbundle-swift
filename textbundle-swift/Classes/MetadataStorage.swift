@@ -25,7 +25,7 @@ public final class MetadataStorage: TextBundleDocumentSaveListener, WrappingDocu
     metadata.storage = self
   }
   
-  public var metadata = CachedValue<MetadataStorage>()
+  public var metadata = DocumentProperty<MetadataStorage>()
 
   public let document: TextBundleDocument
   private let key = "info.json"
@@ -48,12 +48,12 @@ public final class MetadataStorage: TextBundleDocumentSaveListener, WrappingDocu
 }
 
 extension MetadataStorage: StableStorage {
-  public func dirtyableValueInitialValue() throws -> Metadata {
+  public func documentPropertyInitialValue() throws -> Metadata {
     guard let data = try? document.data(for: key) else { return Metadata() }
     return try Metadata(from: data)
   }
   
-  public func dirtyableValueDidChange() {
+  public func documentPropertyDidChange() {
     document.updateChangeCount(.done)
   }
 }

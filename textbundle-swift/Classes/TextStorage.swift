@@ -27,7 +27,7 @@ public final class TextStorage: WrappingDocument {
   }
   
   public let document: TextBundleDocument
-  public var text = CachedValue<TextStorage>()
+  public var text = DocumentProperty<TextStorage>()
   
   var key: String {
     return document.bundle.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
@@ -57,7 +57,7 @@ extension TextStorage: TextBundleDocumentSaveListener {
 
 extension TextStorage: StableStorage {
   
-  public func dirtyableValueInitialValue() throws -> String {
+  public func documentPropertyInitialValue() throws -> String {
     guard let data = try? document.data(for: key) else { return "" }
     guard let string = String(data: data, encoding: .utf8) else {
       throw NSError(
@@ -69,7 +69,7 @@ extension TextStorage: StableStorage {
     return string
   }
   
-  public func dirtyableValueDidChange() {
+  public func documentPropertyDidChange() {
     document.updateChangeCount(.done)
   }
 }

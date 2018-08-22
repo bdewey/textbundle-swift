@@ -17,7 +17,7 @@
 
 import Foundation
 
-public enum ValueSource {
+public enum DocumentPropertySource {
   /// The value came from the document
   case document
 
@@ -27,15 +27,15 @@ public enum ValueSource {
 
 /// A structure that carries both a the value and its "source" (did it come from the document
 /// or an in-memory modification)
-public struct ValueDescription<Value> {
+public struct DocumentPropertyWithSource<Value> {
 
-  public init(source: ValueSource, value: Value) {
+  public init(source: DocumentPropertySource, value: Value) {
     self.source = source
     self.value = value
   }
 
   /// Where'd the value come from
-  public let source: ValueSource
+  public let source: DocumentPropertySource
 
   /// The value itself
   public let value: Value
