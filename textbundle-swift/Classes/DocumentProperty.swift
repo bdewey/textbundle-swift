@@ -32,52 +32,38 @@ public protocol StableStorage: class {
 /// the in-memory copy has changed since being in stable storage ("dirty").
 public final class DocumentProperty<Storage: StableStorage> {
 
-  public typealias CachedValueDescription = DocumentPropertyWithSource<Storage.Value>
+  public typealias ValueWithSource = DocumentValueWithSource<Storage.Value>
 
   public init() { }
   
   /// Weak reference back to stable storage.
   public weak var storage: Storage?
   
-  /// Flag indicating if the in-memory copy has changed.
-  private(set) var dirty = false
-
-  private var resultSource: DocumentPropertySource = .document
-  
   /// In-memory copy of the value.
-  private var _result: Result<Storage.Value>?
+  private var _result: Result<ValueWithSource>?
   
-  private let (publishingEndpoint, publisher) = Publisher<CachedValueDescription>.create()
-
-  public var resultPublisher: Publisher<DocumentPropertyWithSource<Storage.Value>> {
-    return publisher
-  }
+  private let (publishingEndpoint, publisher) = Publisher<ValueWithSource>.create()
 
   /// Discards the cached value and reloads from stable storage.
   public func invalidate() {
-    assert(!dirty)
     _result = nil
-    resultSource = .document
     if publisher.hasActiveSubscribers {
-      publishingEndpoint(currentValueDescription)
+      publishingEndpoint(currentValueWithSource)
     }
   }
   
   /// Returns the in-memory copy of the value.
   public var currentResult: Result<Storage.Value> {
-    if let value = _result { return value }
-    do {
-      let value = try storage!.documentPropertyInitialValue()
-      dirty = false
-      _result = .success(value)
-    } catch {
-      _result = .failure(error)
-    }
-    return _result!
+    return currentValueWithSource.flatMap { $0.value }
   }
 
-  private var currentValueDescription: Result<CachedValueDescription> {
-    return currentResult.flatMap({ return DocumentPropertyWithSource(source: resultSource, value: $0)})
+  private var currentValueWithSource: Result<ValueWithSource> {
+    if let value = _result { return value }
+    _result = Result<ValueWithSource> {
+      let value = try storage!.documentPropertyInitialValue()
+      return DocumentValueWithSource(source: .document, value: value)
+    }
+    return _result!
   }
   
   /// Changes the in-memory copy of the value.
@@ -90,10 +76,8 @@ public final class DocumentProperty<Storage: StableStorage> {
   }
   
   private func setResult(_ result: Result<Storage.Value>) {
-    self._result = result
-    resultSource = .memory
-    publishingEndpoint(currentValueDescription)
-    dirty = true
+    self._result = result.flatMap { DocumentValueWithSource(source: .memory, value: $0) }
+    publishingEndpoint(currentValueWithSource)
     storage?.documentPropertyDidChange()
   }
 
@@ -102,19 +86,23 @@ public final class DocumentProperty<Storage: StableStorage> {
   /// - note: This is intended to only be called by the stable storage when writing the
   ///         in-memory copy.
   public func clean() -> Storage.Value? {
-    switch (dirty, _result) {
-    case (true, .some(.success(let value))):
-      dirty = false
-      return value
-    default:
-      return nil
-    }
+    var returnValue: Storage.Value? = nil
+    _result = _result?.flatMap({ (valueWithSource) -> ValueWithSource in
+      switch valueWithSource.source {
+      case .document:
+        return valueWithSource
+      case .memory:
+        returnValue = valueWithSource.value
+        return valueWithSource.settingSource(.document)
+      }
+    })
+    return returnValue
   }
 }
 
 extension DocumentProperty {
-  public func subscribe(_ block: @escaping (Result<CachedValueDescription>) -> Void) -> AnySubscription {
-    block(currentValueDescription)
+  public func subscribe(_ block: @escaping (Result<ValueWithSource>) -> Void) -> AnySubscription {
+    block(currentValueWithSource)
     return publisher.subscribe(block)
   }
 

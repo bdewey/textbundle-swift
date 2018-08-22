@@ -17,15 +17,31 @@
 
 import Foundation
 
-extension Publisher {
+public enum DocumentPropertySource {
+  /// The value came from the document
+  case document
 
-  /// Create a new Publisher that publishes the transformed results of this publisher.
-  public func map<Output>(_ transformation: @escaping (Value) -> Output) -> Publisher<Output> {
-    let (endpoint, publisher) = Publisher<Output>.create()
-    let subscription = self.subscribe { (result) in
-      endpoint(result.flatMap(transformation))
-    }
-    publisher.addDependency(subscription)
-    return publisher
+  /// The value came from in-memory modification
+  case memory
+}
+
+/// A structure that carries both a the value and its "source" (did it come from the document
+/// or an in-memory modification)
+public struct DocumentValueWithSource<Value> {
+
+  public init(source: DocumentPropertySource, value: Value) {
+    self.source = source
+    self.value = value
+  }
+
+  /// Where'd the value come from
+  public let source: DocumentPropertySource
+
+  /// The value itself
+  public let value: Value
+
+  public func settingSource(_ source: DocumentPropertySource) -> DocumentValueWithSource<Value> {
+    return DocumentValueWithSource(source: source, value: self.value)
   }
 }
+

@@ -20,6 +20,14 @@ import Foundation
 public enum Result<Value> {
   case success(Value)
   case failure(Error)
+
+  public init(_ block: () throws -> Value) {
+    do {
+      self = .success(try block())
+    } catch {
+      self = .failure(error)
+    }
+  }
   
   public func unwrap() throws -> Value {
     switch self {
