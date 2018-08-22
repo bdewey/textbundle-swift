@@ -49,6 +49,10 @@ public final class CachedValue<Storage: StableStorage> {
   
   private let (publishingEndpoint, publisher) = Publisher<CachedValueDescription>.create()
 
+  public var resultPublisher: Publisher<ValueDescription<Storage.Value>> {
+    return publisher
+  }
+
   /// Discards the cached value and reloads from stable storage.
   public func invalidate() {
     assert(!dirty)
@@ -78,13 +82,21 @@ public final class CachedValue<Storage: StableStorage> {
   
   /// Changes the in-memory copy of the value.
   public func setValue(_ value: Storage.Value) {
-    self._result = .success(value)
+    setResult(.success(value))
+  }
+
+  public func changeValue(_ mutation: (Storage.Value) -> Storage.Value) {
+    setResult(currentResult.flatMap(mutation))
+  }
+  
+  private func setResult(_ result: Result<Storage.Value>) {
+    self._result = result
     resultSource = .memory
     publishingEndpoint(currentValueDescription)
     dirty = true
     storage?.dirtyableValueDidChange()
   }
-  
+
   /// If the in-memory copy is dirty, returns that value and sets its state to clean.
   ///
   /// - note: This is intended to only be called by the stable storage when writing the
