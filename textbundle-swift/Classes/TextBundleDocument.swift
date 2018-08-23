@@ -101,7 +101,7 @@ public final class TextBundleDocument: UIDocumentWithPreviousError {
 
 extension TextBundleDocument {
   
-  enum Error: Swift.Error {
+  public enum Error: Swift.Error {
     
     /// A bundle key is already in use in the package.
     case keyAlreadyUsed(key: String)
