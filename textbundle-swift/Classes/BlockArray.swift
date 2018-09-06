@@ -54,3 +54,13 @@ public struct BlockArray<Value> {
   }
 }
 
+extension BlockArray: CustomReflectable {
+  public var customMirror: Mirror {
+    return Mirror(
+      self,
+      children: ["activeSubscribers": activeCount],
+      displayStyle: .class,
+      ancestorRepresentation: .suppressed
+    )
+  }
+}

@@ -100,6 +100,17 @@ public final class DocumentProperty<Storage: StableStorage> {
   }
 }
 
+extension DocumentProperty: CustomReflectable {
+  public var customMirror: Mirror {
+    return Mirror(
+      self,
+      children: ["currentResult": _result, "subscribers": publisher],
+      displayStyle: .class,
+      ancestorRepresentation: .suppressed
+    )
+  }
+}
+
 extension DocumentProperty {
   public func subscribe(_ block: @escaping (Result<ValueWithSource>) -> Void) -> AnySubscription {
     block(currentValueWithSource)

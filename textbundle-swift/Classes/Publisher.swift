@@ -107,3 +107,14 @@ public final class Publisher<Value> {
     return !subscribers.isEmpty
   }
 }
+
+extension Publisher: CustomReflectable {
+  public var customMirror: Mirror {
+    return Mirror(
+      self,
+      children: ["subscribers": subscribers],
+      displayStyle: .class,
+      ancestorRepresentation: .suppressed
+    )
+  }
+}
