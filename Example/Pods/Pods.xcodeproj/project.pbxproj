@@ -3,42 +3,42 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0147A168C0B7EAD41AC3DBFB42E721C3 /* UIDocumentWithPreviousError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D3E75634109EE1EACE47700AD8192B /* UIDocumentWithPreviousError.swift */; };
 		08921BC07B82D0567614410C2D3FC08A /* Pods-TextBundleExample-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 92754500A4651FB481A2D9703306EF62 /* Pods-TextBundleExample-dummy.m */; };
-		0A72E7723C8ABC54C34B13CD5AAF889D /* TextBundleSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C22E75495A2DAB76CA8D2EE6C8D7D5 /* TextBundleSnapshotTests.swift */; };
+		0A72E7723C8ABC54C34B13CD5AAF889D /* TextBundleSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFA38D22CFC8A53EF241B4FA3E7C571 /* TextBundleSnapshotTests.swift */; };
 		0DA9DAF785B172663A074ED14B35A312 /* Pods-TextBundleExampleTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E3BB114BBA9D500AC3A17476021200 /* Pods-TextBundleExampleTests-dummy.m */; };
-		0EE14699E6B096E7CCCE6C0EC833EA82 /* TextBundleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2261FC224F3B19773416EF9D08D275E1 /* TextBundleDocument.swift */; };
 		11F9565CF24F18BA45E3FEA247CFD04E /* Pods-TextBundleExampleTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B669C305414D912E82B0911E5AA37449 /* Pods-TextBundleExampleTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1AAA4F968D8A1353F1FC9F6B3CB7C223 /* TextStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305315BEAF06A734B69C1E2DF1CB62 /* TextStorage.swift */; };
 		229B404D6AB69A53FCE9B8FB6EDEC373 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA05B4A48C63E5E7CB52B53BE62CC48 /* Foundation.framework */; };
-		2A0EA7810B9448B02ED34E2D0AD4CC0E /* DocumentProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF125D5B5635D41AE8A84DF3EBA41038 /* DocumentProperty.swift */; };
-		387C4556D4F73A6FABE91E9D05D46435 /* TextStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0946E869F44BD1F10E547E606BBBCC98 /* TextStorageTests.swift */; };
+		255F9F1F6AACE325E93CA2ADC7323B44 /* DocumentProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212EF6E1AB79E42EA439A115F70BA491 /* DocumentProperty.swift */; };
+		2A8E702D45469E64622B6CE6955BE953 /* TextStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CD1963B53A80ECCCDB44E230D71731 /* TextStorage.swift */; };
+		31A11DD15C2B1AC675C25BA41F1263CD /* BlockArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324E3924EEEDB006BD4F209D5AF770E6 /* BlockArray.swift */; };
+		387C4556D4F73A6FABE91E9D05D46435 /* TextStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4025F7DDE0AEFF123071A29DA2A0356 /* TextStorageTests.swift */; };
 		39895D454501D83D33313B81732776CE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA05B4A48C63E5E7CB52B53BE62CC48 /* Foundation.framework */; };
-		3F6ED8ACC15CC45D66BFEBC253D8001A /* TextBundleTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749CB4CFED3BAB44C776FD9CFB75E9A4 /* TextBundleTestHelper.swift */; };
-		425F4A4D1C57FFCF4575E1A4FACF8B9B /* TextBundleDocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3A30BA2A1F8F8EA306B269C4EE2C24 /* TextBundleDocumentTests.swift */; };
+		3F6ED8ACC15CC45D66BFEBC253D8001A /* TextBundleTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF17254B9B8EF5FF00C8B0616C7AA1BD /* TextBundleTestHelper.swift */; };
+		425F4A4D1C57FFCF4575E1A4FACF8B9B /* TextBundleDocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D22D7AA82A1B451DB797B8F06F278 /* TextBundleDocumentTests.swift */; };
 		482FF68891E0898E11BADB49BC7C7B31 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA05B4A48C63E5E7CB52B53BE62CC48 /* Foundation.framework */; };
-		524977D429DB8E5827169A311FCE537E /* TextBundleKit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7561B5A12176061C4BEB5F7C2F662EC1 /* TextBundleKit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		58B4420A80E5AD60D5F72EAEF761A918 /* NSError+TextBundleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EC68EB687753A4AAAB7E5065E8AECC /* NSError+TextBundleKit.swift */; };
-		63F5A0036AA856D79DA620F936CAD179 /* TextBundle+Snapshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07062B24A1E092068FB64A52E793941F /* TextBundle+Snapshots.swift */; };
-		6C1590C52C766521C0EF16C76905FF33 /* UIDocumentWithPreviousError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F84911787E565C21869A3659E1EB7A /* UIDocumentWithPreviousError.swift */; };
+		524977D429DB8E5827169A311FCE537E /* TextBundleKit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FD88753794FDA212D4BAE911875B1578 /* TextBundleKit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5C46D5E1D4784C688CEA7913DCA778D1 /* TextBundleKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DE2CBBF5BDB931CE42F4A8577C83D58 /* TextBundleKit-dummy.m */; };
+		68F2E6200C7C15D1058CC415EC01EBB3 /* MetadataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D63C8ED8C41975A17A50940A76EA81 /* MetadataStorage.swift */; };
+		6E7D9EBAAFC2F80A968CC02CF729C2BD /* NSError+TextBundleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9445AD0692CDADEA44DD3B86D8C420 /* NSError+TextBundleKit.swift */; };
+		712E96CB46604B428AD5754F6C627C31 /* DocumentValueWithSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0C8CEFCBAD13D585D36BB1944ADE07 /* DocumentValueWithSource.swift */; };
 		7A9F285EE87584F4E712B2478B5900C9 /* Pods-TextBundleExample-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A67F663CD3707F1A7D4B19ABA2078F35 /* Pods-TextBundleExample-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7AD2DFF9A633FD098B465308CE3546CB /* DocumentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A22FB3D9CA85B6C20E8A100BF33CAB2 /* DocumentProtocol.swift */; };
-		8CC94DB18951E002949FA9DB3A7A6013 /* BlockArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFEB323B6DC66485F7707F5914F20CE6 /* BlockArray.swift */; };
-		8FD81A0DB19E1286F51289AE6B8B6EF8 /* MetadataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636FE35EEEA2B8CD42973BF2305883A3 /* MetadataStorage.swift */; };
-		9B14EC97EE156600316BCF485E30F75F /* DocumentValueWithSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7DC204A92EF2F91C0C42920BE64F20 /* DocumentValueWithSource.swift */; };
-		A2D3F0F847D12B7A2B28A66ED2A84039 /* TextBundleKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7671BF41FAEED9383D2C606E63FCDD /* TextBundleKit-dummy.m */; };
+		999879131816E5E550A85C362064C5D9 /* TextBundle+Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98E41ACAD4E5001BC5DE6ACC4B304D2 /* TextBundle+Metadata.swift */; };
+		9E8F947B0EF428C7A3B70EF5FED523DC /* TextBundle+Snapshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D669B046BE6465673FAB4CFFA7BF3 /* TextBundle+Snapshots.swift */; };
 		A4EC1784B58F864D32E3D81D8EDA9766 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA05B4A48C63E5E7CB52B53BE62CC48 /* Foundation.framework */; };
-		AAD4119ABB444BCA99300B0D2C4973E5 /* TextBundle+Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E7EABE170F942881058DFA2D85F0B2 /* TextBundle+Metadata.swift */; };
-		AB02F8503993E0A110A7C7886451531A /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9958057FC7076B927E6B688307C6583D /* Result.swift */; };
-		AE8C9E41E01F204D1FC878083994D23E /* Textbundle Example.textbundle in Resources */ = {isa = PBXBuildFile; fileRef = 0C732E210C9DB5BEC4D28F99C30F3C15 /* Textbundle Example.textbundle */; };
-		BDFA280FCA63BBDA596E2F0B90FF0FBA /* FileWrapper+TextBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D119F05F5F154D9612FF49F66F6C360 /* FileWrapper+TextBundle.swift */; };
+		A91860A5B842F319204D67BEC952F7B0 /* TextBundleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68845AEE681BC5E1F2E2B632C8BFD278 /* TextBundleDocument.swift */; };
+		AE8C9E41E01F204D1FC878083994D23E /* Textbundle Example.textbundle in Resources */ = {isa = PBXBuildFile; fileRef = 32DFB56D3FBD96EADEFB450D4193C9E8 /* Textbundle Example.textbundle */; };
+		BA10885C93EAB6BF052C736859F33972 /* FileWrapper+TextBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7C93C1923112CC89C0039EA509F66 /* FileWrapper+TextBundle.swift */; };
 		C91430E8D023AC2C75CA75EA2DAEDD99 /* TextBundleKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5FEA2A878513235636ECFB0D5A2A9CF /* TextBundleKit.framework */; };
 		CF9C759E0D830140BA405867697016FC /* TestContent.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 50759FF5F7CC9F466569298DD85C95C4 /* TestContent.bundle */; };
-		D8DA9A7B8AC038E6865E42DE790AB5E5 /* Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DEAD5343BA5CACB5BBAC3063287EE6 /* Publisher.swift */; };
-		DA3DCD668C2FEC0680155CA653128C07 /* textbundle-md-extension.textbundle in Resources */ = {isa = PBXBuildFile; fileRef = 51F7384351BCE30C7A67FDA5BF34A2ED /* textbundle-md-extension.textbundle */; };
+		DA3DCD668C2FEC0680155CA653128C07 /* textbundle-md-extension.textbundle in Resources */ = {isa = PBXBuildFile; fileRef = 896E9A37DEE270A496D63C8A75F78D54 /* textbundle-md-extension.textbundle */; };
+		DC70D57D856F192158218294C9FA63E6 /* Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BE4772463A4020E4AA5D72E8A9717C /* Publisher.swift */; };
+		DD08CC87927973EFBD683D4CB6A85267 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462060820AA04C7E7A875E951F2F4B93 /* Result.swift */; };
+		F465E792861844BF8B2F6B95F848F7EC /* DocumentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269B65BEC1FD5F8E2CB41313F6326FB8 /* DocumentProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,69 +73,69 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0181BB94D5A550F7C4B94727C3C0467C /* TextBundleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TextBundleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		035D9C452717DE79424452AC44DC6CB8 /* Pods_TextBundleExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TextBundleExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		07062B24A1E092068FB64A52E793941F /* TextBundle+Snapshots.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "TextBundle+Snapshots.swift"; path = "textbundle-swift/Classes/TextBundle+Snapshots.swift"; sourceTree = "<group>"; };
-		0946E869F44BD1F10E547E606BBBCC98 /* TextStorageTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextStorageTests.swift; path = "textbundle-swift/Tests/TextStorageTests.swift"; sourceTree = "<group>"; };
-		0C732E210C9DB5BEC4D28F99C30F3C15 /* Textbundle Example.textbundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper; name = "Textbundle Example.textbundle"; path = "textbundle-swift/TestContent/Textbundle Example.textbundle"; sourceTree = "<group>"; };
-		0D119F05F5F154D9612FF49F66F6C360 /* FileWrapper+TextBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "FileWrapper+TextBundle.swift"; path = "textbundle-swift/Classes/FileWrapper+TextBundle.swift"; sourceTree = "<group>"; };
+		0181BB94D5A550F7C4B94727C3C0467C /* TextBundleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = TextBundleKit.framework; path = TextBundleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		035D9C452717DE79424452AC44DC6CB8 /* Pods_TextBundleExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_TextBundleExample.framework; path = "Pods-TextBundleExample.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		08C0525E82F9BE95629BA3A650016F31 /* TextBundleKit.unit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TextBundleKit.unit.xcconfig; sourceTree = "<group>"; };
+		0DC636E896C809E045E24054BF45D74F /* TextBundleKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = TextBundleKit.modulemap; sourceTree = "<group>"; };
 		10AD847F2F1F4EA072C0BE9F6B06E493 /* Pods-TextBundleExample-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TextBundleExample-acknowledgements.plist"; sourceTree = "<group>"; };
+		10D3E75634109EE1EACE47700AD8192B /* UIDocumentWithPreviousError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIDocumentWithPreviousError.swift; path = "textbundle-swift/Classes/UIDocumentWithPreviousError.swift"; sourceTree = "<group>"; };
+		14F6AA60505710B2BC30E2BAEE658F0D /* ResourceBundle-TestContent-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-TestContent-Info.plist"; sourceTree = "<group>"; };
+		19110C527F8C891BA9FDF94C0540031D /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		1AE810C38108E1386C9626701EA29F09 /* TextBundleKit-Unit-Tests-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TextBundleKit-Unit-Tests-prefix.pch"; sourceTree = "<group>"; };
 		1D23F8EC7CFFA230730C64DC1467D1BD /* Pods-TextBundleExample-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TextBundleExample-acknowledgements.markdown"; sourceTree = "<group>"; };
-		2261FC224F3B19773416EF9D08D275E1 /* TextBundleDocument.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextBundleDocument.swift; path = "textbundle-swift/Classes/TextBundleDocument.swift"; sourceTree = "<group>"; };
+		212EF6E1AB79E42EA439A115F70BA491 /* DocumentProperty.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DocumentProperty.swift; path = "textbundle-swift/Classes/DocumentProperty.swift"; sourceTree = "<group>"; };
 		23B01B37B2C6F3F25629092B479956CE /* Pods-TextBundleExampleTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TextBundleExampleTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		26EC68EB687753A4AAAB7E5065E8AECC /* NSError+TextBundleKit.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSError+TextBundleKit.swift"; path = "textbundle-swift/Classes/NSError+TextBundleKit.swift"; sourceTree = "<group>"; };
-		2C0B63D5902C2BCCD4B10AC5E4FCE14A /* TextBundleKit.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = TextBundleKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		269B65BEC1FD5F8E2CB41313F6326FB8 /* DocumentProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DocumentProtocol.swift; path = "textbundle-swift/Classes/DocumentProtocol.swift"; sourceTree = "<group>"; };
 		31CC1675F3D9353C833B2F92F42C3120 /* Pods-TextBundleExample-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TextBundleExample-frameworks.sh"; sourceTree = "<group>"; };
+		324E3924EEEDB006BD4F209D5AF770E6 /* BlockArray.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BlockArray.swift; path = "textbundle-swift/Classes/BlockArray.swift"; sourceTree = "<group>"; };
+		32DFB56D3FBD96EADEFB450D4193C9E8 /* Textbundle Example.textbundle */ = {isa = PBXFileReference; includeInIndex = 1; name = "Textbundle Example.textbundle"; path = "textbundle-swift/TestContent/Textbundle Example.textbundle"; sourceTree = "<group>"; };
+		3569F675D34426913BF9E9D38468E5A2 /* TextBundleKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TextBundleKit.xcconfig; sourceTree = "<group>"; };
+		38D63C8ED8C41975A17A50940A76EA81 /* MetadataStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetadataStorage.swift; path = "textbundle-swift/Classes/MetadataStorage.swift"; sourceTree = "<group>"; };
 		3A9FD4A50CB899F265ACF1C7FEAA1D4A /* Pods-TextBundleExample-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TextBundleExample-resources.sh"; sourceTree = "<group>"; };
-		3AEE52DB75106C77476E04218491C587 /* TextBundleKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TextBundleKit.xcconfig; sourceTree = "<group>"; };
-		3C3A30BA2A1F8F8EA306B269C4EE2C24 /* TextBundleDocumentTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextBundleDocumentTests.swift; path = "textbundle-swift/Tests/TextBundleDocumentTests.swift"; sourceTree = "<group>"; };
-		41F84911787E565C21869A3659E1EB7A /* UIDocumentWithPreviousError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIDocumentWithPreviousError.swift; path = "textbundle-swift/Classes/UIDocumentWithPreviousError.swift"; sourceTree = "<group>"; };
-		447DBC9F0AEAB121B0D12FFE25218D20 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		462060820AA04C7E7A875E951F2F4B93 /* Result.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Result.swift; path = "textbundle-swift/Classes/Result.swift"; sourceTree = "<group>"; };
 		4906B205AE3012900B0EE515C72240B4 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		50759FF5F7CC9F466569298DD85C95C4 /* TestContent.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestContent.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DE2CBBF5BDB931CE42F4A8577C83D58 /* TextBundleKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TextBundleKit-dummy.m"; sourceTree = "<group>"; };
+		50759FF5F7CC9F466569298DD85C95C4 /* TestContent.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TestContent.bundle; path = "TextBundleKit-TestContent.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		51D890B61B17CE4814242E37D6E46BA4 /* Pods-TextBundleExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TextBundleExample.release.xcconfig"; sourceTree = "<group>"; };
-		51F7384351BCE30C7A67FDA5BF34A2ED /* textbundle-md-extension.textbundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper; name = "textbundle-md-extension.textbundle"; path = "textbundle-swift/TestContent/textbundle-md-extension.textbundle"; sourceTree = "<group>"; };
+		53D7C93C1923112CC89C0039EA509F66 /* FileWrapper+TextBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "FileWrapper+TextBundle.swift"; path = "textbundle-swift/Classes/FileWrapper+TextBundle.swift"; sourceTree = "<group>"; };
 		545D362570C0755A1B070E616E8EA2F9 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57C0C85500727A1BFBA29668CD23BBB3 /* Pods-TextBundleExampleTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TextBundleExampleTests-frameworks.sh"; sourceTree = "<group>"; };
+		57CD1963B53A80ECCCDB44E230D71731 /* TextStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextStorage.swift; path = "textbundle-swift/Classes/TextStorage.swift"; sourceTree = "<group>"; };
 		580C861A7AD9D76CB38E8B11DDF9996F /* Pods-TextBundleExampleTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TextBundleExampleTests-resources.sh"; sourceTree = "<group>"; };
-		5A7671BF41FAEED9383D2C606E63FCDD /* TextBundleKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TextBundleKit-dummy.m"; sourceTree = "<group>"; };
 		5A9DB94B472ECF8B9F8478191CB80794 /* Pods-TextBundleExampleTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-TextBundleExampleTests.modulemap"; sourceTree = "<group>"; };
-		6011AE971CEEA3B3C8C8423028BA5F91 /* TextBundleKit-Unit-Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "TextBundleKit-Unit-Tests-resources.sh"; sourceTree = "<group>"; };
-		636FE35EEEA2B8CD42973BF2305883A3 /* MetadataStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetadataStorage.swift; path = "textbundle-swift/Classes/MetadataStorage.swift"; sourceTree = "<group>"; };
+		5D9445AD0692CDADEA44DD3B86D8C420 /* NSError+TextBundleKit.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSError+TextBundleKit.swift"; path = "textbundle-swift/Classes/NSError+TextBundleKit.swift"; sourceTree = "<group>"; };
+		68845AEE681BC5E1F2E2B632C8BFD278 /* TextBundleDocument.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextBundleDocument.swift; path = "textbundle-swift/Classes/TextBundleDocument.swift"; sourceTree = "<group>"; };
 		6B5574DAD6AC9E980BCFB94AF7011323 /* Pods-TextBundleExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TextBundleExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		6BC430426FF83AA76CA426410C7D0CDF /* Pods-TextBundleExample.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-TextBundleExample.modulemap"; sourceTree = "<group>"; };
-		749CB4CFED3BAB44C776FD9CFB75E9A4 /* TextBundleTestHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextBundleTestHelper.swift; path = "textbundle-swift/Tests/TextBundleTestHelper.swift"; sourceTree = "<group>"; };
-		7561B5A12176061C4BEB5F7C2F662EC1 /* TextBundleKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TextBundleKit-umbrella.h"; sourceTree = "<group>"; };
+		7595D28C2A1238B552045A2F6FCD10A4 /* TextBundleKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TextBundleKit-prefix.pch"; sourceTree = "<group>"; };
 		76E3BB114BBA9D500AC3A17476021200 /* Pods-TextBundleExampleTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TextBundleExampleTests-dummy.m"; sourceTree = "<group>"; };
-		7A22FB3D9CA85B6C20E8A100BF33CAB2 /* DocumentProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DocumentProtocol.swift; path = "textbundle-swift/Classes/DocumentProtocol.swift"; sourceTree = "<group>"; };
-		7BBDAAD665779823EC53103313E98707 /* TextBundleKit-Unit-Tests-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TextBundleKit-Unit-Tests-prefix.pch"; sourceTree = "<group>"; };
+		783F746F84E22149B3469E08525F6080 /* TextBundleKit.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = TextBundleKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		896E9A37DEE270A496D63C8A75F78D54 /* textbundle-md-extension.textbundle */ = {isa = PBXFileReference; includeInIndex = 1; name = "textbundle-md-extension.textbundle"; path = "textbundle-swift/TestContent/textbundle-md-extension.textbundle"; sourceTree = "<group>"; };
+		90BE4772463A4020E4AA5D72E8A9717C /* Publisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Publisher.swift; path = "textbundle-swift/Classes/Publisher.swift"; sourceTree = "<group>"; };
 		92754500A4651FB481A2D9703306EF62 /* Pods-TextBundleExample-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TextBundleExample-dummy.m"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		95F177B0AFDC13B25FE392FFCE841E94 /* TextBundleKit-Unit-Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "TextBundleKit-Unit-Tests-frameworks.sh"; sourceTree = "<group>"; };
-		9958057FC7076B927E6B688307C6583D /* Result.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Result.swift; path = "textbundle-swift/Classes/Result.swift"; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9CA05B4A48C63E5E7CB52B53BE62CC48 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		9D41B8EF25E9DB3DBB3613A6D6B088F0 /* Pods-TextBundleExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TextBundleExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
-		A0AC114636FB2D1F04C0B60E51843216 /* TextBundleKit.unit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TextBundleKit.unit.xcconfig; sourceTree = "<group>"; };
+		9E0C8CEFCBAD13D585D36BB1944ADE07 /* DocumentValueWithSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DocumentValueWithSource.swift; path = "textbundle-swift/Classes/DocumentValueWithSource.swift"; sourceTree = "<group>"; };
+		9F2D22D7AA82A1B451DB797B8F06F278 /* TextBundleDocumentTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextBundleDocumentTests.swift; path = "textbundle-swift/Tests/TextBundleDocumentTests.swift"; sourceTree = "<group>"; };
 		A5FEA2A878513235636ECFB0D5A2A9CF /* TextBundleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TextBundleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A67F663CD3707F1A7D4B19ABA2078F35 /* Pods-TextBundleExample-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TextBundleExample-umbrella.h"; sourceTree = "<group>"; };
+		A77E30A9BD9CD6887F1530D3C0D54175 /* TextBundleKit-Unit-Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "TextBundleKit-Unit-Tests-Info.plist"; sourceTree = "<group>"; };
 		A85C87FF991433C2F3BBB5F612EC23BF /* Pods-TextBundleExampleTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TextBundleExampleTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		A9035AE81708C3951BA45B3FCD75ADEB /* Pods-TextBundleExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TextBundleExample.debug.xcconfig"; sourceTree = "<group>"; };
+		AF0D669B046BE6465673FAB4CFFA7BF3 /* TextBundle+Snapshots.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "TextBundle+Snapshots.swift"; path = "textbundle-swift/Classes/TextBundle+Snapshots.swift"; sourceTree = "<group>"; };
 		B669C305414D912E82B0911E5AA37449 /* Pods-TextBundleExampleTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TextBundleExampleTests-umbrella.h"; sourceTree = "<group>"; };
-		BF125D5B5635D41AE8A84DF3EBA41038 /* DocumentProperty.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DocumentProperty.swift; path = "textbundle-swift/Classes/DocumentProperty.swift"; sourceTree = "<group>"; };
-		C0941D4F71594ABCC98EEE3A806709DC /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		C5E7EABE170F942881058DFA2D85F0B2 /* TextBundle+Metadata.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "TextBundle+Metadata.swift"; path = "textbundle-swift/Classes/TextBundle+Metadata.swift"; sourceTree = "<group>"; };
-		CB305315BEAF06A734B69C1E2DF1CB62 /* TextStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextStorage.swift; path = "textbundle-swift/Classes/TextStorage.swift"; sourceTree = "<group>"; };
-		DB0E31F5FA41AB476267EA20661FC089 /* TextBundleKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TextBundleKit-prefix.pch"; sourceTree = "<group>"; };
-		DB7D811C9110E5B714A22B85395C75FC /* TextBundleKit-Unit-Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "TextBundleKit-Unit-Tests-Info.plist"; sourceTree = "<group>"; };
-		DFEB323B6DC66485F7707F5914F20CE6 /* BlockArray.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BlockArray.swift; path = "textbundle-swift/Classes/BlockArray.swift"; sourceTree = "<group>"; };
-		E0C22E75495A2DAB76CA8D2EE6C8D7D5 /* TextBundleSnapshotTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextBundleSnapshotTests.swift; path = "textbundle-swift/Tests/TextBundleSnapshotTests.swift"; sourceTree = "<group>"; };
-		E3DEAD5343BA5CACB5BBAC3063287EE6 /* Publisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Publisher.swift; path = "textbundle-swift/Classes/Publisher.swift"; sourceTree = "<group>"; };
-		ED0877C7FB96E69757B24A14F0D1DCB0 /* TextBundleKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = TextBundleKit.modulemap; sourceTree = "<group>"; };
-		ED7DC204A92EF2F91C0C42920BE64F20 /* DocumentValueWithSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DocumentValueWithSource.swift; path = "textbundle-swift/Classes/DocumentValueWithSource.swift"; sourceTree = "<group>"; };
-		EF8094C215C192163E23335161ADEF54 /* Pods_TextBundleExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TextBundleExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBFA38D22CFC8A53EF241B4FA3E7C571 /* TextBundleSnapshotTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextBundleSnapshotTests.swift; path = "textbundle-swift/Tests/TextBundleSnapshotTests.swift"; sourceTree = "<group>"; };
+		DF17254B9B8EF5FF00C8B0616C7AA1BD /* TextBundleTestHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextBundleTestHelper.swift; path = "textbundle-swift/Tests/TextBundleTestHelper.swift"; sourceTree = "<group>"; };
+		E4025F7DDE0AEFF123071A29DA2A0356 /* TextStorageTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextStorageTests.swift; path = "textbundle-swift/Tests/TextStorageTests.swift"; sourceTree = "<group>"; };
+		EF75A20DBAF6FD5B7ECCD31B66894DF3 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		EF8094C215C192163E23335161ADEF54 /* Pods_TextBundleExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_TextBundleExampleTests.framework; path = "Pods-TextBundleExampleTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0C4B37C5E1348A97D745358B0532222 /* TextBundleKit-Unit-Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "TextBundleKit-Unit-Tests-resources.sh"; sourceTree = "<group>"; };
+		F1A1978001B8D83D79E455B298C596D5 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F38B3DCA335134568D58144E0ECAFDA0 /* TextBundleKit-Unit-Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "TextBundleKit-Unit-Tests"; path = "TextBundleKit-Unit-Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F39EA3C0A2C2DC33398D1184133ABA2E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F95FB644E791B6314648AE18A4664051 /* ResourceBundle-TestContent-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-TestContent-Info.plist"; sourceTree = "<group>"; };
+		F853B2555F14E273D4CEA30A3BC1856F /* TextBundleKit-Unit-Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "TextBundleKit-Unit-Tests-frameworks.sh"; sourceTree = "<group>"; };
+		F98E41ACAD4E5001BC5DE6ACC4B304D2 /* TextBundle+Metadata.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "TextBundle+Metadata.swift"; path = "textbundle-swift/Classes/TextBundle+Metadata.swift"; sourceTree = "<group>"; };
+		FD88753794FDA212D4BAE911875B1578 /* TextBundleKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TextBundleKit-umbrella.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,24 +226,26 @@
 			path = "Target Support Files/Pods-TextBundleExample";
 			sourceTree = "<group>";
 		};
-		43846F2A3485C4C0E5589A2EB6376E2F /* Support Files */ = {
+		37DD084C081C5520AC1305720BF5EE2A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				F39EA3C0A2C2DC33398D1184133ABA2E /* Info.plist */,
-				F95FB644E791B6314648AE18A4664051 /* ResourceBundle-TestContent-Info.plist */,
-				ED0877C7FB96E69757B24A14F0D1DCB0 /* TextBundleKit.modulemap */,
-				3AEE52DB75106C77476E04218491C587 /* TextBundleKit.xcconfig */,
-				5A7671BF41FAEED9383D2C606E63FCDD /* TextBundleKit-dummy.m */,
-				DB0E31F5FA41AB476267EA20661FC089 /* TextBundleKit-prefix.pch */,
-				7561B5A12176061C4BEB5F7C2F662EC1 /* TextBundleKit-umbrella.h */,
-				95F177B0AFDC13B25FE392FFCE841E94 /* TextBundleKit-Unit-Tests-frameworks.sh */,
-				DB7D811C9110E5B714A22B85395C75FC /* TextBundleKit-Unit-Tests-Info.plist */,
-				7BBDAAD665779823EC53103313E98707 /* TextBundleKit-Unit-Tests-prefix.pch */,
-				6011AE971CEEA3B3C8C8423028BA5F91 /* TextBundleKit-Unit-Tests-resources.sh */,
-				A0AC114636FB2D1F04C0B60E51843216 /* TextBundleKit.unit.xcconfig */,
+				9F2D22D7AA82A1B451DB797B8F06F278 /* TextBundleDocumentTests.swift */,
+				CBFA38D22CFC8A53EF241B4FA3E7C571 /* TextBundleSnapshotTests.swift */,
+				DF17254B9B8EF5FF00C8B0616C7AA1BD /* TextBundleTestHelper.swift */,
+				E4025F7DDE0AEFF123071A29DA2A0356 /* TextStorageTests.swift */,
+				EB55FC7F19E186A9FF5CD200102345D8 /* Resources */,
 			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/TextBundleKit";
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		39F67E6822F031455A04097FB58A917D /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				EF75A20DBAF6FD5B7ECCD31B66894DF3 /* LICENSE */,
+				19110C527F8C891BA9FDF94C0540031D /* README.md */,
+				783F746F84E22149B3469E08525F6080 /* TextBundleKit.podspec */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		48931CB9FE722C69441292F1671A35CF /* Frameworks */ = {
@@ -267,11 +269,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7A1C7177D6EA03DC8116A69820C3773E /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ED8EE0889D4D2CA23E7DBB1E2FC69972 /* TextBundleKit */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
-				8705C948140B95438FC55678071321ED /* Development Pods */,
+				7A1C7177D6EA03DC8116A69820C3773E /* Development Pods */,
 				48931CB9FE722C69441292F1671A35CF /* Frameworks */,
 				5BD0394E548704B22020A6FB3B4C1A85 /* Products */,
 				99B8E597C139F20670AC147C1794F78A /* Targets Support Files */,
@@ -279,24 +289,6 @@
 			indentWidth = 2;
 			sourceTree = "<group>";
 			tabWidth = 2;
-		};
-		8705C948140B95438FC55678071321ED /* Development Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D8275081D9705606FFBB57B81FF199AE /* TextBundleKit */,
-			);
-			name = "Development Pods";
-			sourceTree = "<group>";
-		};
-		8E5B157585A94F76C393F5677AA5571F /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				447DBC9F0AEAB121B0D12FFE25218D20 /* LICENSE */,
-				C0941D4F71594ABCC98EEE3A806709DC /* README.md */,
-				2C0B63D5902C2BCCD4B10AC5E4FCE14A /* TextBundleKit.podspec */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
 		};
 		99B8E597C139F20670AC147C1794F78A /* Targets Support Files */ = {
 			isa = PBXGroup;
@@ -307,50 +299,58 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		CE4E784ABD99126ADE5B4A9BD12A93C7 /* Tests */ = {
+		EB55FC7F19E186A9FF5CD200102345D8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3C3A30BA2A1F8F8EA306B269C4EE2C24 /* TextBundleDocumentTests.swift */,
-				E0C22E75495A2DAB76CA8D2EE6C8D7D5 /* TextBundleSnapshotTests.swift */,
-				749CB4CFED3BAB44C776FD9CFB75E9A4 /* TextBundleTestHelper.swift */,
-				0946E869F44BD1F10E547E606BBBCC98 /* TextStorageTests.swift */,
-				D9D544FC4EF691DE93919ADCCC76E30D /* Resources */,
+				32DFB56D3FBD96EADEFB450D4193C9E8 /* Textbundle Example.textbundle */,
+				896E9A37DEE270A496D63C8A75F78D54 /* textbundle-md-extension.textbundle */,
 			);
-			name = Tests;
+			name = Resources;
 			sourceTree = "<group>";
 		};
-		D8275081D9705606FFBB57B81FF199AE /* TextBundleKit */ = {
+		ED8EE0889D4D2CA23E7DBB1E2FC69972 /* TextBundleKit */ = {
 			isa = PBXGroup;
 			children = (
-				DFEB323B6DC66485F7707F5914F20CE6 /* BlockArray.swift */,
-				BF125D5B5635D41AE8A84DF3EBA41038 /* DocumentProperty.swift */,
-				7A22FB3D9CA85B6C20E8A100BF33CAB2 /* DocumentProtocol.swift */,
-				ED7DC204A92EF2F91C0C42920BE64F20 /* DocumentValueWithSource.swift */,
-				0D119F05F5F154D9612FF49F66F6C360 /* FileWrapper+TextBundle.swift */,
-				636FE35EEEA2B8CD42973BF2305883A3 /* MetadataStorage.swift */,
-				26EC68EB687753A4AAAB7E5065E8AECC /* NSError+TextBundleKit.swift */,
-				E3DEAD5343BA5CACB5BBAC3063287EE6 /* Publisher.swift */,
-				9958057FC7076B927E6B688307C6583D /* Result.swift */,
-				C5E7EABE170F942881058DFA2D85F0B2 /* TextBundle+Metadata.swift */,
-				07062B24A1E092068FB64A52E793941F /* TextBundle+Snapshots.swift */,
-				2261FC224F3B19773416EF9D08D275E1 /* TextBundleDocument.swift */,
-				CB305315BEAF06A734B69C1E2DF1CB62 /* TextStorage.swift */,
-				41F84911787E565C21869A3659E1EB7A /* UIDocumentWithPreviousError.swift */,
-				8E5B157585A94F76C393F5677AA5571F /* Pod */,
-				43846F2A3485C4C0E5589A2EB6376E2F /* Support Files */,
-				CE4E784ABD99126ADE5B4A9BD12A93C7 /* Tests */,
+				324E3924EEEDB006BD4F209D5AF770E6 /* BlockArray.swift */,
+				212EF6E1AB79E42EA439A115F70BA491 /* DocumentProperty.swift */,
+				269B65BEC1FD5F8E2CB41313F6326FB8 /* DocumentProtocol.swift */,
+				9E0C8CEFCBAD13D585D36BB1944ADE07 /* DocumentValueWithSource.swift */,
+				53D7C93C1923112CC89C0039EA509F66 /* FileWrapper+TextBundle.swift */,
+				38D63C8ED8C41975A17A50940A76EA81 /* MetadataStorage.swift */,
+				5D9445AD0692CDADEA44DD3B86D8C420 /* NSError+TextBundleKit.swift */,
+				90BE4772463A4020E4AA5D72E8A9717C /* Publisher.swift */,
+				462060820AA04C7E7A875E951F2F4B93 /* Result.swift */,
+				F98E41ACAD4E5001BC5DE6ACC4B304D2 /* TextBundle+Metadata.swift */,
+				AF0D669B046BE6465673FAB4CFFA7BF3 /* TextBundle+Snapshots.swift */,
+				68845AEE681BC5E1F2E2B632C8BFD278 /* TextBundleDocument.swift */,
+				57CD1963B53A80ECCCDB44E230D71731 /* TextStorage.swift */,
+				10D3E75634109EE1EACE47700AD8192B /* UIDocumentWithPreviousError.swift */,
+				39F67E6822F031455A04097FB58A917D /* Pod */,
+				F1CEB6CC68DAABE864CF71CF065816A9 /* Support Files */,
+				37DD084C081C5520AC1305720BF5EE2A /* Tests */,
 			);
 			name = TextBundleKit;
 			path = ../..;
 			sourceTree = "<group>";
 		};
-		D9D544FC4EF691DE93919ADCCC76E30D /* Resources */ = {
+		F1CEB6CC68DAABE864CF71CF065816A9 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				0C732E210C9DB5BEC4D28F99C30F3C15 /* Textbundle Example.textbundle */,
-				51F7384351BCE30C7A67FDA5BF34A2ED /* textbundle-md-extension.textbundle */,
+				F1A1978001B8D83D79E455B298C596D5 /* Info.plist */,
+				14F6AA60505710B2BC30E2BAEE658F0D /* ResourceBundle-TestContent-Info.plist */,
+				0DC636E896C809E045E24054BF45D74F /* TextBundleKit.modulemap */,
+				3569F675D34426913BF9E9D38468E5A2 /* TextBundleKit.xcconfig */,
+				4DE2CBBF5BDB931CE42F4A8577C83D58 /* TextBundleKit-dummy.m */,
+				7595D28C2A1238B552045A2F6FCD10A4 /* TextBundleKit-prefix.pch */,
+				FD88753794FDA212D4BAE911875B1578 /* TextBundleKit-umbrella.h */,
+				F853B2555F14E273D4CEA30A3BC1856F /* TextBundleKit-Unit-Tests-frameworks.sh */,
+				A77E30A9BD9CD6887F1530D3C0D54175 /* TextBundleKit-Unit-Tests-Info.plist */,
+				1AE810C38108E1386C9626701EA29F09 /* TextBundleKit-Unit-Tests-prefix.pch */,
+				F0C4B37C5E1348A97D745358B0532222 /* TextBundleKit-Unit-Tests-resources.sh */,
+				08C0525E82F9BE95629BA3A650016F31 /* TextBundleKit.unit.xcconfig */,
 			);
-			name = Resources;
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/TextBundleKit";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -444,7 +444,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6A7E7F6D7230BD3920C7BEE9B1B5C7B5 /* Build configuration list for PBXNativeTarget "TextBundleKit" */;
 			buildPhases = (
-				D84F9EE33B9E36B5C800DC75E22D5DB3 /* Sources */,
+				AE9C585792446AD23CE036202B57036F /* Sources */,
 				51538E809300F1C36F4B22287DAAE725 /* Frameworks */,
 				E409A1B40B09BF618103BF4BD4ADBDFB /* Headers */,
 			);
@@ -571,6 +571,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AE9C585792446AD23CE036202B57036F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31A11DD15C2B1AC675C25BA41F1263CD /* BlockArray.swift in Sources */,
+				255F9F1F6AACE325E93CA2ADC7323B44 /* DocumentProperty.swift in Sources */,
+				F465E792861844BF8B2F6B95F848F7EC /* DocumentProtocol.swift in Sources */,
+				712E96CB46604B428AD5754F6C627C31 /* DocumentValueWithSource.swift in Sources */,
+				BA10885C93EAB6BF052C736859F33972 /* FileWrapper+TextBundle.swift in Sources */,
+				68F2E6200C7C15D1058CC415EC01EBB3 /* MetadataStorage.swift in Sources */,
+				6E7D9EBAAFC2F80A968CC02CF729C2BD /* NSError+TextBundleKit.swift in Sources */,
+				DC70D57D856F192158218294C9FA63E6 /* Publisher.swift in Sources */,
+				DD08CC87927973EFBD683D4CB6A85267 /* Result.swift in Sources */,
+				999879131816E5E550A85C362064C5D9 /* TextBundle+Metadata.swift in Sources */,
+				9E8F947B0EF428C7A3B70EF5FED523DC /* TextBundle+Snapshots.swift in Sources */,
+				A91860A5B842F319204D67BEC952F7B0 /* TextBundleDocument.swift in Sources */,
+				5C46D5E1D4784C688CEA7913DCA778D1 /* TextBundleKit-dummy.m in Sources */,
+				2A8E702D45469E64622B6CE6955BE953 /* TextStorage.swift in Sources */,
+				0147A168C0B7EAD41AC3DBFB42E721C3 /* UIDocumentWithPreviousError.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C3D71487356EBE309F4A3F4DA823F39F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -584,28 +606,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				08921BC07B82D0567614410C2D3FC08A /* Pods-TextBundleExample-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D84F9EE33B9E36B5C800DC75E22D5DB3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8CC94DB18951E002949FA9DB3A7A6013 /* BlockArray.swift in Sources */,
-				2A0EA7810B9448B02ED34E2D0AD4CC0E /* DocumentProperty.swift in Sources */,
-				7AD2DFF9A633FD098B465308CE3546CB /* DocumentProtocol.swift in Sources */,
-				9B14EC97EE156600316BCF485E30F75F /* DocumentValueWithSource.swift in Sources */,
-				BDFA280FCA63BBDA596E2F0B90FF0FBA /* FileWrapper+TextBundle.swift in Sources */,
-				8FD81A0DB19E1286F51289AE6B8B6EF8 /* MetadataStorage.swift in Sources */,
-				58B4420A80E5AD60D5F72EAEF761A918 /* NSError+TextBundleKit.swift in Sources */,
-				D8DA9A7B8AC038E6865E42DE790AB5E5 /* Publisher.swift in Sources */,
-				AB02F8503993E0A110A7C7886451531A /* Result.swift in Sources */,
-				AAD4119ABB444BCA99300B0D2C4973E5 /* TextBundle+Metadata.swift in Sources */,
-				63F5A0036AA856D79DA620F936CAD179 /* TextBundle+Snapshots.swift in Sources */,
-				0EE14699E6B096E7CCCE6C0EC833EA82 /* TextBundleDocument.swift in Sources */,
-				A2D3F0F847D12B7A2B28A66ED2A84039 /* TextBundleKit-dummy.m in Sources */,
-				1AAA4F968D8A1353F1FC9F6B3CB7C223 /* TextStorage.swift in Sources */,
-				6C1590C52C766521C0EF16C76905FF33 /* UIDocumentWithPreviousError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -668,7 +668,11 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-TextBundleExampleTests/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-TextBundleExampleTests/Pods-TextBundleExampleTests.modulemap";
 				OTHER_LDFLAGS = "";
@@ -745,7 +749,7 @@
 		};
 		17CCBDA6A1C9ABF8BF868B1BC65FB9F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0AC114636FB2D1F04C0B60E51843216 /* TextBundleKit.unit.xcconfig */;
+			baseConfigurationReference = 08C0525E82F9BE95629BA3A650016F31 /* TextBundleKit.unit.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Target Support Files/TextBundleKit/ResourceBundle-TestContent-Info.plist";
@@ -760,7 +764,7 @@
 		};
 		1A720BDD7B76CEC11D25B1764783CE87 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0AC114636FB2D1F04C0B60E51843216 /* TextBundleKit.unit.xcconfig */;
+			baseConfigurationReference = 08C0525E82F9BE95629BA3A650016F31 /* TextBundleKit.unit.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = YES;
@@ -799,7 +803,11 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-TextBundleExample/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-TextBundleExample/Pods-TextBundleExample.modulemap";
 				OTHER_LDFLAGS = "";
@@ -835,7 +843,11 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-TextBundleExample/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-TextBundleExample/Pods-TextBundleExample.modulemap";
 				OTHER_LDFLAGS = "";
@@ -855,7 +867,7 @@
 		};
 		50A7C3D727649E842DC7F78BE3029346 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3AEE52DB75106C77476E04218491C587 /* TextBundleKit.xcconfig */;
+			baseConfigurationReference = 3569F675D34426913BF9E9D38468E5A2 /* TextBundleKit.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -871,7 +883,11 @@
 				INFOPLIST_FILE = "Target Support Files/TextBundleKit/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/TextBundleKit/TextBundleKit.modulemap";
 				PRODUCT_MODULE_NAME = TextBundleKit;
 				PRODUCT_NAME = TextBundleKit;
@@ -888,7 +904,7 @@
 		};
 		5714070D0A94EF6A04BDA550CEF7003F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3AEE52DB75106C77476E04218491C587 /* TextBundleKit.xcconfig */;
+			baseConfigurationReference = 3569F675D34426913BF9E9D38468E5A2 /* TextBundleKit.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -904,7 +920,11 @@
 				INFOPLIST_FILE = "Target Support Files/TextBundleKit/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/TextBundleKit/TextBundleKit.modulemap";
 				PRODUCT_MODULE_NAME = TextBundleKit;
 				PRODUCT_NAME = TextBundleKit;
@@ -938,7 +958,11 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-TextBundleExampleTests/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-TextBundleExampleTests/Pods-TextBundleExampleTests.modulemap";
 				OTHER_LDFLAGS = "";
@@ -956,7 +980,7 @@
 		};
 		92CE72731B54B38B80D560EFE88E9CFE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0AC114636FB2D1F04C0B60E51843216 /* TextBundleKit.unit.xcconfig */;
+			baseConfigurationReference = 08C0525E82F9BE95629BA3A650016F31 /* TextBundleKit.unit.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Target Support Files/TextBundleKit/ResourceBundle-TestContent-Info.plist";
@@ -1034,7 +1058,7 @@
 		};
 		C163F3EE5E62E8665A0708F7D840EFA4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0AC114636FB2D1F04C0B60E51843216 /* TextBundleKit.unit.xcconfig */;
+			baseConfigurationReference = 08C0525E82F9BE95629BA3A650016F31 /* TextBundleKit.unit.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = YES;
