@@ -10,26 +10,25 @@
 		0147A168C0B7EAD41AC3DBFB42E721C3 /* UIDocumentWithPreviousError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D3E75634109EE1EACE47700AD8192B /* UIDocumentWithPreviousError.swift */; };
 		08921BC07B82D0567614410C2D3FC08A /* Pods-TextBundleExample-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 92754500A4651FB481A2D9703306EF62 /* Pods-TextBundleExample-dummy.m */; };
 		0A72E7723C8ABC54C34B13CD5AAF889D /* TextBundleSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFA38D22CFC8A53EF241B4FA3E7C571 /* TextBundleSnapshotTests.swift */; };
+		0B0F4799C5577DA8A5AEA3BF6EC38D09 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CF4AB24EC4805EF81E0DA4AD44CCC7 /* Foundation.framework */; };
 		0DA9DAF785B172663A074ED14B35A312 /* Pods-TextBundleExampleTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E3BB114BBA9D500AC3A17476021200 /* Pods-TextBundleExampleTests-dummy.m */; };
 		11F9565CF24F18BA45E3FEA247CFD04E /* Pods-TextBundleExampleTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B669C305414D912E82B0911E5AA37449 /* Pods-TextBundleExampleTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		229B404D6AB69A53FCE9B8FB6EDEC373 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA05B4A48C63E5E7CB52B53BE62CC48 /* Foundation.framework */; };
 		255F9F1F6AACE325E93CA2ADC7323B44 /* DocumentProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212EF6E1AB79E42EA439A115F70BA491 /* DocumentProperty.swift */; };
 		2A8E702D45469E64622B6CE6955BE953 /* TextStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CD1963B53A80ECCCDB44E230D71731 /* TextStorage.swift */; };
 		31A11DD15C2B1AC675C25BA41F1263CD /* BlockArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324E3924EEEDB006BD4F209D5AF770E6 /* BlockArray.swift */; };
 		387C4556D4F73A6FABE91E9D05D46435 /* TextStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4025F7DDE0AEFF123071A29DA2A0356 /* TextStorageTests.swift */; };
-		39895D454501D83D33313B81732776CE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA05B4A48C63E5E7CB52B53BE62CC48 /* Foundation.framework */; };
 		3F6ED8ACC15CC45D66BFEBC253D8001A /* TextBundleTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF17254B9B8EF5FF00C8B0616C7AA1BD /* TextBundleTestHelper.swift */; };
 		425F4A4D1C57FFCF4575E1A4FACF8B9B /* TextBundleDocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D22D7AA82A1B451DB797B8F06F278 /* TextBundleDocumentTests.swift */; };
-		482FF68891E0898E11BADB49BC7C7B31 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA05B4A48C63E5E7CB52B53BE62CC48 /* Foundation.framework */; };
 		524977D429DB8E5827169A311FCE537E /* TextBundleKit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FD88753794FDA212D4BAE911875B1578 /* TextBundleKit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5C46D5E1D4784C688CEA7913DCA778D1 /* TextBundleKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DE2CBBF5BDB931CE42F4A8577C83D58 /* TextBundleKit-dummy.m */; };
 		68F2E6200C7C15D1058CC415EC01EBB3 /* MetadataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D63C8ED8C41975A17A50940A76EA81 /* MetadataStorage.swift */; };
 		6E7D9EBAAFC2F80A968CC02CF729C2BD /* NSError+TextBundleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9445AD0692CDADEA44DD3B86D8C420 /* NSError+TextBundleKit.swift */; };
 		712E96CB46604B428AD5754F6C627C31 /* DocumentValueWithSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0C8CEFCBAD13D585D36BB1944ADE07 /* DocumentValueWithSource.swift */; };
 		7A9F285EE87584F4E712B2478B5900C9 /* Pods-TextBundleExample-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A67F663CD3707F1A7D4B19ABA2078F35 /* Pods-TextBundleExample-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7B4529F3C8A0A21B29DCCD228B286733 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CF4AB24EC4805EF81E0DA4AD44CCC7 /* Foundation.framework */; };
+		7BE0B90D5021922F88F277CE0E2F2F46 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CF4AB24EC4805EF81E0DA4AD44CCC7 /* Foundation.framework */; };
 		999879131816E5E550A85C362064C5D9 /* TextBundle+Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98E41ACAD4E5001BC5DE6ACC4B304D2 /* TextBundle+Metadata.swift */; };
 		9E8F947B0EF428C7A3B70EF5FED523DC /* TextBundle+Snapshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D669B046BE6465673FAB4CFFA7BF3 /* TextBundle+Snapshots.swift */; };
-		A4EC1784B58F864D32E3D81D8EDA9766 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA05B4A48C63E5E7CB52B53BE62CC48 /* Foundation.framework */; };
 		A91860A5B842F319204D67BEC952F7B0 /* TextBundleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68845AEE681BC5E1F2E2B632C8BFD278 /* TextBundleDocument.swift */; };
 		AE8C9E41E01F204D1FC878083994D23E /* Textbundle Example.textbundle in Resources */ = {isa = PBXBuildFile; fileRef = 32DFB56D3FBD96EADEFB450D4193C9E8 /* Textbundle Example.textbundle */; };
 		BA10885C93EAB6BF052C736859F33972 /* FileWrapper+TextBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7C93C1923112CC89C0039EA509F66 /* FileWrapper+TextBundle.swift */; };
@@ -38,6 +37,7 @@
 		DA3DCD668C2FEC0680155CA653128C07 /* textbundle-md-extension.textbundle in Resources */ = {isa = PBXBuildFile; fileRef = 896E9A37DEE270A496D63C8A75F78D54 /* textbundle-md-extension.textbundle */; };
 		DC70D57D856F192158218294C9FA63E6 /* Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BE4772463A4020E4AA5D72E8A9717C /* Publisher.swift */; };
 		DD08CC87927973EFBD683D4CB6A85267 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462060820AA04C7E7A875E951F2F4B93 /* Result.swift */; };
+		EC2FDA25F3D76922433EE9D382CE8973 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CF4AB24EC4805EF81E0DA4AD44CCC7 /* Foundation.framework */; };
 		F465E792861844BF8B2F6B95F848F7EC /* DocumentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269B65BEC1FD5F8E2CB41313F6326FB8 /* DocumentProtocol.swift */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +94,7 @@
 		3A9FD4A50CB899F265ACF1C7FEAA1D4A /* Pods-TextBundleExample-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TextBundleExample-resources.sh"; sourceTree = "<group>"; };
 		462060820AA04C7E7A875E951F2F4B93 /* Result.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Result.swift; path = "textbundle-swift/Classes/Result.swift"; sourceTree = "<group>"; };
 		4906B205AE3012900B0EE515C72240B4 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49CF4AB24EC4805EF81E0DA4AD44CCC7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		4DE2CBBF5BDB931CE42F4A8577C83D58 /* TextBundleKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TextBundleKit-dummy.m"; sourceTree = "<group>"; };
 		50759FF5F7CC9F466569298DD85C95C4 /* TestContent.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TestContent.bundle; path = "TextBundleKit-TestContent.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		51D890B61B17CE4814242E37D6E46BA4 /* Pods-TextBundleExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TextBundleExample.release.xcconfig"; sourceTree = "<group>"; };
@@ -114,7 +115,6 @@
 		90BE4772463A4020E4AA5D72E8A9717C /* Publisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Publisher.swift; path = "textbundle-swift/Classes/Publisher.swift"; sourceTree = "<group>"; };
 		92754500A4651FB481A2D9703306EF62 /* Pods-TextBundleExample-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TextBundleExample-dummy.m"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9CA05B4A48C63E5E7CB52B53BE62CC48 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		9D41B8EF25E9DB3DBB3613A6D6B088F0 /* Pods-TextBundleExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TextBundleExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9E0C8CEFCBAD13D585D36BB1944ADE07 /* DocumentValueWithSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DocumentValueWithSource.swift; path = "textbundle-swift/Classes/DocumentValueWithSource.swift"; sourceTree = "<group>"; };
 		9F2D22D7AA82A1B451DB797B8F06F278 /* TextBundleDocumentTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextBundleDocumentTests.swift; path = "textbundle-swift/Tests/TextBundleDocumentTests.swift"; sourceTree = "<group>"; };
@@ -143,7 +143,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39895D454501D83D33313B81732776CE /* Foundation.framework in Frameworks */,
+				0B0F4799C5577DA8A5AEA3BF6EC38D09 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,7 +158,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				482FF68891E0898E11BADB49BC7C7B31 /* Foundation.framework in Frameworks */,
+				EC2FDA25F3D76922433EE9D382CE8973 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,7 +166,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				229B404D6AB69A53FCE9B8FB6EDEC373 /* Foundation.framework in Frameworks */,
+				7BE0B90D5021922F88F277CE0E2F2F46 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,7 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4EC1784B58F864D32E3D81D8EDA9766 /* Foundation.framework in Frameworks */,
+				7B4529F3C8A0A21B29DCCD228B286733 /* Foundation.framework in Frameworks */,
 				C91430E8D023AC2C75CA75EA2DAEDD99 /* TextBundleKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -182,14 +182,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		07DDDB11F994CBA8D2F5A1F20BE6AD37 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				9CA05B4A48C63E5E7CB52B53BE62CC48 /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
 		0AA83133B92E1C8430AC245831814C4D /* Pods-TextBundleExampleTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,7 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				A5FEA2A878513235636ECFB0D5A2A9CF /* TextBundleKit.framework */,
-				07DDDB11F994CBA8D2F5A1F20BE6AD37 /* iOS */,
+				CA037ADCFBC97CD0E03142DD2CE09E10 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -297,6 +289,14 @@
 				0AA83133B92E1C8430AC245831814C4D /* Pods-TextBundleExampleTests */,
 			);
 			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		CA037ADCFBC97CD0E03142DD2CE09E10 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				49CF4AB24EC4805EF81E0DA4AD44CCC7 /* Foundation.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 		EB55FC7F19E186A9FF5CD200102345D8 /* Resources */ = {
@@ -668,11 +668,7 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-TextBundleExampleTests/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-TextBundleExampleTests/Pods-TextBundleExampleTests.modulemap";
 				OTHER_LDFLAGS = "";
@@ -803,11 +799,7 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-TextBundleExample/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-TextBundleExample/Pods-TextBundleExample.modulemap";
 				OTHER_LDFLAGS = "";
@@ -843,11 +835,7 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-TextBundleExample/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-TextBundleExample/Pods-TextBundleExample.modulemap";
 				OTHER_LDFLAGS = "";
@@ -883,11 +871,7 @@
 				INFOPLIST_FILE = "Target Support Files/TextBundleKit/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/TextBundleKit/TextBundleKit.modulemap";
 				PRODUCT_MODULE_NAME = TextBundleKit;
 				PRODUCT_NAME = TextBundleKit;
@@ -920,11 +904,7 @@
 				INFOPLIST_FILE = "Target Support Files/TextBundleKit/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/TextBundleKit/TextBundleKit.modulemap";
 				PRODUCT_MODULE_NAME = TextBundleKit;
 				PRODUCT_NAME = TextBundleKit;
@@ -958,11 +938,7 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-TextBundleExampleTests/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-TextBundleExampleTests/Pods-TextBundleExampleTests.modulemap";
 				OTHER_LDFLAGS = "";

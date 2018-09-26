@@ -1,6 +1,6 @@
 PODS:
-  - TextBundleKit (0.2.1)
-  - TextBundleKit/Tests (0.2.1)
+  - TextBundleKit (0.3.0)
+  - TextBundleKit/Tests (0.3.0)
 
 DEPENDENCIES:
   - TextBundleKit (from `../`)
@@ -11,8 +11,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  TextBundleKit: 3e011b3f76b629486bffc261b55f578aab5989bd
+  TextBundleKit: b8d96772e8d184e65d6696890f85a6d4ce535702
 
 PODFILE CHECKSUM: 50d7c8710fbb85216af5b9064d69ce6dd58515cc
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.5.0
