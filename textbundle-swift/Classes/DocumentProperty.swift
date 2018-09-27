@@ -19,9 +19,12 @@ import Foundation
 
 /// Holds an mutable in-memory copy of data that is in stable storage, and tracks whether
 /// the in-memory copy has changed since being in stable storage ("dirty").
-public final class DocumentProperty<Value>: TextBundleDocumentSaveListener {
+public final class DocumentProperty<Value> {
 
+  /// Reads values from the document.
   public typealias ReadFunction = (TextBundleDocument) throws -> Value
+
+  /// Writes values back to the document.
   public typealias WriteFunction = (Value, TextBundleDocument) throws -> Void
 
   public init(
@@ -37,23 +40,12 @@ public final class DocumentProperty<Value>: TextBundleDocumentSaveListener {
 
   private let readFunction: ReadFunction
   private let writeFunction: WriteFunction
+  private let (publishingEndpoint, publisher) = Publisher<ValueWithSource>.create()
 
+  /// For TextBundleSaveListener conformance: Tells our document that we have something to save.
   public var textBundleListenerHasChanges: TextBundleDocumentSaveListener.ChangeBlock?
 
-  public func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws {
-    if let value = clean() {
-      try writeFunction(value, textBundleDocument)
-    }
-  }
-
-  public final func textBundleDocumentDidLoad(_ textBundleDocument: TextBundleDocument) {
-    let result = Result<Value> { try readFunction(textBundleDocument) }
-    setDocumentResult(result)
-  }
-
   public typealias ValueWithSource = DocumentValueWithSource<Value>
-
-  private let (publishingEndpoint, publisher) = Publisher<ValueWithSource>.create()
 
   /// Returns the in-memory copy of the value.
   public var currentResult: Result<Value> {
@@ -83,23 +75,20 @@ public final class DocumentProperty<Value>: TextBundleDocumentSaveListener {
     publishingEndpoint(newResult)
     textBundleListenerHasChanges?()
   }
+}
 
-  /// If the in-memory copy is dirty, returns that value and sets its state to clean.
-  ///
-  /// - note: This is intended to only be called by the stable storage when writing the
-  ///         in-memory copy.
-  public func clean() -> Value? {
-    var returnValue: Value? = nil
-    currentValueWithSource = currentValueWithSource.flatMap({ (valueWithSource) -> ValueWithSource in
-      switch valueWithSource.source {
-      case .document:
-        return valueWithSource
-      case .memory:
-        returnValue = valueWithSource.value
-        return valueWithSource.settingSource(.document)
-      }
-    })
-    return returnValue
+extension DocumentProperty: TextBundleDocumentSaveListener {
+  public func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws {
+    guard let valueWithSource = currentValueWithSource.value else { return }
+    if valueWithSource.source == .memory {
+      try writeFunction(valueWithSource.value, textBundleDocument)
+      currentValueWithSource = .success(valueWithSource.settingSource(.document))
+    }
+  }
+
+  public final func textBundleDocumentDidLoad(_ textBundleDocument: TextBundleDocument) {
+    let result = Result<Value> { try readFunction(textBundleDocument) }
+    setDocumentResult(result)
   }
 }
 
