@@ -104,7 +104,7 @@ extension DocumentProperty: CustomReflectable {
   public var customMirror: Mirror {
     return Mirror(
       self,
-      children: ["currentResult": _result, "subscribers": publisher],
+      children: ["currentResult": String(describing: _result), "subscribers": publisher],
       displayStyle: .class,
       ancestorRepresentation: .suppressed
     )

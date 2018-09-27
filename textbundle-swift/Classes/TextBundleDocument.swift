@@ -37,15 +37,16 @@ public final class TextBundleDocument: UIDocumentWithPreviousError {
   }
   
   /// Listeners are strongly held until the document closes.
-  private var listeners: [TextBundleDocumentSaveListener] = []
+  private var listeners = [String: TextBundleDocumentSaveListener]()
   
-  public func addListener(_ listener: TextBundleDocumentSaveListener) {
-    listeners.append(listener)
+  public func addListener(key: String, listener: TextBundleDocumentSaveListener) {
+    assert(listeners[key] == nil)
+    listeners[key] = listener
   }
   
   /// Write in-memory contents to textBundle and return textBundle for storage.
   override public func contents(forType typeName: String) throws -> Any {
-    for listener in listeners {
+    for (_, listener) in listeners {
       try listener.textBundleDocumentWillSave(self)
     }
     return bundle
@@ -60,17 +61,9 @@ public final class TextBundleDocument: UIDocumentWithPreviousError {
       throw NSError(domain: NSCocoaErrorDomain, code: NSFileReadCorruptFileError, userInfo: nil)
     }
     bundle = directory
-    for listener in listeners {
+    for (_, listener) in listeners {
       listener.textBundleDocumentDidLoad(self)
     }
-  }
-  
-  public override func close(completionHandler: ((Bool) -> Void)? = nil) {
-    let wrappedHandler = { (success: Bool) in
-      completionHandler?(success)
-      self.listeners = []
-    }
-    super.close(completionHandler: wrappedHandler)
   }
 }
 

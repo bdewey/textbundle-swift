@@ -22,7 +22,7 @@ public final class TextStorage: WrappingDocument {
   
   public init(document: TextBundleDocument) {
     self.document = document
-    document.addListener(self)
+    document.addListener(key: "text", listener: self)
   }
   
   public let document: TextBundleDocument

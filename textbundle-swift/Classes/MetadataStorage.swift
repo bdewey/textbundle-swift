@@ -21,7 +21,7 @@ import Foundation
 public final class MetadataStorage: TextBundleDocumentSaveListener, WrappingDocument {
   public init(document: TextBundleDocument) {
     self.document = document
-    document.addListener(self)
+    document.addListener(key: "metadata", listener: self)
   }
   
   private(set) public lazy var metadata = DocumentProperty(storage: self)
