@@ -26,6 +26,7 @@ public final class TextStorage: WrappingDocument {
   }
   
   public let document: TextBundleDocument
+  public var textBundleListenerHasChanges: TextBundleDocumentSaveListener.ChangeBlock?
   public private(set) lazy var text = DocumentProperty(storage: self)
   
   var key: String {
@@ -69,6 +70,6 @@ extension TextStorage: StableStorage {
   }
   
   public func documentPropertyDidChange() {
-    document.updateChangeCount(.done)
+    textBundleListenerHasChanges?()
   }
 }

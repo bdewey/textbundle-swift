@@ -18,6 +18,8 @@
 import UIKit
 
 public protocol TextBundleDocumentSaveListener: class {
+  typealias ChangeBlock = () -> Void
+  var textBundleListenerHasChanges: ChangeBlock? { get set }
   func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws
   func textBundleDocumentDidLoad(_ textBundleDocument: TextBundleDocument)
 }
@@ -41,6 +43,7 @@ public final class TextBundleDocument: UIDocumentWithPreviousError {
   
   public func addListener(key: String, listener: TextBundleDocumentSaveListener) {
     assert(listeners[key] == nil)
+    listener.textBundleListenerHasChanges = { [weak self] in self?.updateChangeCount(.done) }
     listeners[key] = listener
   }
   

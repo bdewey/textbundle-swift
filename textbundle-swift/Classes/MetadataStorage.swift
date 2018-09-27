@@ -27,6 +27,7 @@ public final class MetadataStorage: TextBundleDocumentSaveListener, WrappingDocu
   private(set) public lazy var metadata = DocumentProperty(storage: self)
 
   public let document: TextBundleDocument
+  public var textBundleListenerHasChanges: TextBundleDocumentSaveListener.ChangeBlock?
   private let key = "info.json"
   
   private func writeValue(_ value: Metadata) throws {
@@ -53,6 +54,6 @@ extension MetadataStorage: StableStorage {
   }
   
   public func documentPropertyDidChange() {
-    document.updateChangeCount(.done)
+    textBundleListenerHasChanges?()
   }
 }
