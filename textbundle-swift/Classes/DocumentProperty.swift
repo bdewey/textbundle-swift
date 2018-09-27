@@ -17,77 +17,53 @@
 
 import Foundation
 
-/// Coordination protocol with stable storage.
-public protocol StableStorage: class {
-  associatedtype Value
-  
-  /// Supplies the stable storage version of the value.
-  func documentPropertyInitialValue() throws -> Value
-  
-  /// Lets stable storage know that the in-memory copy has changed.
-  func documentPropertyDidChange()
-}
-
 /// Holds an mutable in-memory copy of data that is in stable storage, and tracks whether
 /// the in-memory copy has changed since being in stable storage ("dirty").
-public final class DocumentProperty<Storage: StableStorage> {
+public final class DocumentProperty<Value> {
 
-  public typealias ValueWithSource = DocumentValueWithSource<Storage.Value>
+  public typealias ValueWithSource = DocumentValueWithSource<Value>
 
-  public init(storage: Storage) { self.storage = storage }
-  
-  /// Weak reference back to stable storage.
-  private weak var storage: Storage?
-  
-  /// In-memory copy of the value.
-  private var _result: Result<ValueWithSource>?
+  public init(initialResult: Result<Value>) {
+    self.currentValueWithSource = initialResult.flatMap { DocumentValueWithSource(source: .document, value: $0 )}
+  }
   
   private let (publishingEndpoint, publisher) = Publisher<ValueWithSource>.create()
 
-  /// Discards the cached value and reloads from stable storage.
-  public func invalidate() {
-    _result = nil
-    if publisher.hasActiveSubscribers {
-      publishingEndpoint(currentValueWithSource)
-    }
-  }
-  
   /// Returns the in-memory copy of the value.
-  public var currentResult: Result<Storage.Value> {
+  public var currentResult: Result<Value> {
     return currentValueWithSource.flatMap { $0.value }
   }
 
-  private var currentValueWithSource: Result<ValueWithSource> {
-    if let value = _result { return value }
-    _result = Result<ValueWithSource> {
-      let value = try storage!.documentPropertyInitialValue()
-      return DocumentValueWithSource(source: .document, value: value)
-    }
-    return _result!
-  }
+  private var currentValueWithSource: Result<ValueWithSource>
   
   /// Changes the in-memory copy of the value.
-  public func setValue(_ value: Storage.Value) {
+  public func setValue(_ value: Value) {
     setResult(.success(value))
   }
 
-  public func changeValue(_ mutation: (Storage.Value) -> Storage.Value) {
+  public func changeValue(_ mutation: (Value) -> Value) {
     setResult(currentResult.flatMap(mutation))
   }
+
+  internal func setDocumentResult(_ result: Result<Value>) {
+    let newResult = result.flatMap { DocumentValueWithSource(source: .document, value: $0) }
+    currentValueWithSource = newResult
+    publishingEndpoint(newResult)
+  }
   
-  private func setResult(_ result: Result<Storage.Value>) {
-    self._result = result.flatMap { DocumentValueWithSource(source: .memory, value: $0) }
-    publishingEndpoint(currentValueWithSource)
-    storage?.documentPropertyDidChange()
+  private func setResult(_ result: Result<Value>) {
+    let newResult = result.flatMap { DocumentValueWithSource(source: .memory, value: $0) }
+    currentValueWithSource = newResult
+    publishingEndpoint(newResult)
   }
 
   /// If the in-memory copy is dirty, returns that value and sets its state to clean.
   ///
   /// - note: This is intended to only be called by the stable storage when writing the
   ///         in-memory copy.
-  public func clean() -> Storage.Value? {
-    var returnValue: Storage.Value? = nil
-    _result = _result?.flatMap({ (valueWithSource) -> ValueWithSource in
+  public func clean() -> Value? {
+    var returnValue: Value? = nil
+    currentValueWithSource = currentValueWithSource.flatMap({ (valueWithSource) -> ValueWithSource in
       switch valueWithSource.source {
       case .document:
         return valueWithSource
@@ -104,7 +80,10 @@ extension DocumentProperty: CustomReflectable {
   public var customMirror: Mirror {
     return Mirror(
       self,
-      children: ["currentResult": String(describing: _result), "subscribers": publisher],
+      children: [
+        "currentValueWithSource": String(describing: currentValueWithSource),
+        "subscribers": publisher,
+      ],
       displayStyle: .class,
       ancestorRepresentation: .suppressed
     )
