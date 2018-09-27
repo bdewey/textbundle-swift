@@ -56,8 +56,7 @@ public final class TextBundleDocument: UIDocumentWithPreviousError {
       return listener as! Listener
     }
     let listener = constructor(self)
-    listeners[key] = listener
-    listener.textBundleListenerHasChanges = { [weak self] in self?.updateChangeCount(.done) }
+    addListener(key: key, listener: listener)
     return listener
   }
   
