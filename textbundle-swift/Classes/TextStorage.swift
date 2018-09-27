@@ -18,67 +18,44 @@
 import Foundation
 
 /// Reads and writes data to text.*
-public final class TextStorage: TextBundleDocumentSaveListener {
-  
-  internal init(document: TextBundleDocument) {
-    value = DocumentProperty(initialResult: TextStorage.textResult(from: document))
-    changeSubscription = value.subscribe { [weak self](result) in
-      guard let value = result.value else { return }
-      if value.source == .memory {
-        self?.textBundleListenerHasChanges?()
-      }
+public struct TextStorage: DocumentPropertyStorage {
+
+  public func writeValue(_ text: String, to document: TextBundleDocument) throws {
+    guard let data = text.data(using: .utf8) else {
+      throw NSError.fileWriteInapplicableStringEncoding
     }
-  }
-  
-  public var textBundleListenerHasChanges: TextBundleDocumentSaveListener.ChangeBlock?
-  public let value: DocumentProperty<String>
-  public var changeSubscription: AnySubscription?
-  
-  public func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws {
-    if let text = value.clean() {
-      guard let data = text.data(using: .utf8) else {
-        throw NSError.fileWriteInapplicableStringEncoding
-      }
-      let wrapper = FileWrapper(regularFileWithContents: data)
-      textBundleDocument.bundle.replaceFileWrapper(
-        wrapper,
-        key: TextStorage.key(for: textBundleDocument)
-      )
-    }
+    let wrapper = FileWrapper(regularFileWithContents: data)
+    document.bundle.replaceFileWrapper(
+      wrapper,
+      key: key(for: document)
+    )
   }
 
-  public func textBundleDocumentDidLoad(_ textBundleDocument: TextBundleDocument) {
-    value.setDocumentResult(TextStorage.textResult(from: textBundleDocument))
-  }
-
-  private static func key(for document: TextBundleDocument) -> String {
+  private func key(for document: TextBundleDocument) -> String {
     return document.bundle.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
       ?? "text.markdown"
   }
 
-  private static func textResult(from textBundleDocument: TextBundleDocument) -> Result<String> {
-    guard let data = try? textBundleDocument.data(for: key(for: textBundleDocument)) else {
-      return .success("")
+  public func read(from document: TextBundleDocument) throws -> String {
+    guard let data = try? document.data(for: key(for: document)) else {
+      return ""
     }
-    let result = Result<String> {
-      guard let string = String(data: data, encoding: .utf8) else {
-        throw NSError(
-          domain: NSCocoaErrorDomain,
-          code: NSFileReadInapplicableStringEncodingError,
-          userInfo: nil
-        )
-      }
-      return string
+    guard let string = String(data: data, encoding: .utf8) else {
+      throw NSError(
+        domain: NSCocoaErrorDomain,
+        code: NSFileReadInapplicableStringEncodingError,
+        userInfo: nil
+      )
     }
-    return result
+    return string
   }
 }
 
 extension TextBundleDocument {
-  public var text: TextStorage {
-    guard let textStorage = listener(for: "text", constructor: TextStorage.init) as? TextStorage else {
-      fatalError("Wrong type for text storage?")
+  public var text: DocumentProperty<TextStorage> {
+    let listener = self.listener(for: "text") { (document) -> TextBundleDocumentSaveListener in
+      return DocumentProperty(document: document, storage: TextStorage())
     }
-    return textStorage
+    return listener as! DocumentProperty<TextStorage>
   }
 }

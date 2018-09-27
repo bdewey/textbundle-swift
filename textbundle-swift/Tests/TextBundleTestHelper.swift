@@ -59,9 +59,9 @@ extension TextBundleHelperMethods where Self: XCTestCase {
     document.open { (success) in
       XCTAssertTrue(success)
       let textStorage = document.text
-      let text = try! textStorage.value.currentResult.unwrap()
+      let text = try! textStorage.currentResult.unwrap()
       XCTAssertEqual(TextBundleTestHelper.expectedDocumentContents, text)
-      textStorage.value.setValue(editedText)
+      textStorage.setValue(editedText)
       didEdit.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
@@ -79,7 +79,7 @@ extension TextBundleHelperMethods where Self: XCTestCase {
     roundTripDocument.open { (success) in
       XCTAssertTrue(success)
       let newStorage = roundTripDocument.text
-      XCTAssertEqual(newStorage.value.currentResult.value, editedText)
+      XCTAssertEqual(newStorage.currentResult.value, editedText)
       XCTAssertEqual(roundTripDocument.assetNames, ["textbundle.png"])
       didOpen.fulfill()
     }

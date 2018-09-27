@@ -50,7 +50,7 @@ extension TextBundleDocument {
   /// - returns: The Date that identifies this particular snapshot.
   @discardableResult
   public func makeSnapshot(at snapshotDate: Date = Date()) throws -> Date {
-    let currentText = try text.value.currentResult.unwrap()
+    let currentText = try text.currentResult.unwrap()
     guard let data = currentText.data(using: .utf8) else {
       throw NSError(
         domain: NSCocoaErrorDomain,

@@ -17,51 +17,26 @@
 
 import Foundation
 
+fileprivate let key = "info.json"
+
 /// Reads and writes metadata to info.json
-public final class MetadataStorage: TextBundleDocumentSaveListener {
-  internal init(document: TextBundleDocument) {
-    value = DocumentProperty(initialResult: metadataResult(from: document))
-    changeSubscription = value.subscribe { [weak self](result) in
-      guard let value = result.value else { return }
-      if value.source == .memory {
-        self?.textBundleListenerHasChanges?()
-      }
-    }
+public struct MetadataStorage: DocumentPropertyStorage {
+
+  public func read(from document: TextBundleDocument) throws -> MetadataStorage.Metadata {
+    guard let data = try? document.data(for: key) else { return Metadata() }
+    return try Metadata(from: data)
   }
 
-  public let value: DocumentProperty<Metadata>
-  public var changeSubscription: AnySubscription?
-
-  public var textBundleListenerHasChanges: TextBundleDocumentSaveListener.ChangeBlock?
-  fileprivate static let key = "info.json"
-  
-  public func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws {
-    if let metadata = value.clean() {
-      let data = try metadata.makeData()
-      let wrapper = FileWrapper(regularFileWithContents: data)
-      textBundleDocument.bundle.replaceFileWrapper(wrapper, key: MetadataStorage.key)
-    }
-  }
-  
-  public func textBundleDocumentDidLoad(_ textBundleDocument: TextBundleDocument) {
-    let result = Result<Metadata> {
-      guard let data = try? textBundleDocument.data(for: MetadataStorage.key) else { return Metadata() }
-      return try Metadata(from: data)
-    }
-    value.setDocumentResult(result)
-  }
-}
-
-private func metadataResult(from document: TextBundleDocument) -> Result<MetadataStorage.Metadata> {
-  return Result<MetadataStorage.Metadata> {
-    guard let data = try? document.data(for: MetadataStorage.key) else { return MetadataStorage.Metadata() }
-    return try MetadataStorage.Metadata(from: data)
+  public func writeValue(_ metadata: MetadataStorage.Metadata, to document: TextBundleDocument) throws {
+    let data = try metadata.makeData()
+    let wrapper = FileWrapper(regularFileWithContents: data)
+    document.bundle.replaceFileWrapper(wrapper, key: key)
   }
 }
 
 extension TextBundleDocument {
-  public var metadata: MetadataStorage {
-    guard let metadataStorage = listener(for: MetadataStorage.key, constructor: MetadataStorage.init) as? MetadataStorage else {
+  public var metadata: DocumentProperty<MetadataStorage> {
+    guard let metadataStorage = listener(for: key, constructor: { DocumentProperty(document: $0, storage: MetadataStorage())}) as? DocumentProperty<MetadataStorage> else {
       fatalError("Metadata storage is the wrong type?")
     }
     return metadataStorage
