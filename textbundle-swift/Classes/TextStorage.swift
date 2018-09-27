@@ -18,14 +18,14 @@
 import Foundation
 
 /// Reads and writes data to text.*
-private enum TextStorage {
+public enum TextStorage {
 
   private static func key(for document: TextBundleDocument) -> String {
     return document.bundle.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
       ?? "text.markdown"
   }
 
-  private static func writeValue(_ text: String, to document: TextBundleDocument) throws {
+  public static func writeValue(_ text: String, to document: TextBundleDocument) throws {
     guard let data = text.data(using: .utf8) else {
       throw NSError.fileWriteInapplicableStringEncoding
     }
@@ -36,7 +36,7 @@ private enum TextStorage {
     )
   }
 
-  private static func read(from document: TextBundleDocument) throws -> String {
+  public static func read(from document: TextBundleDocument) throws -> String {
     guard let data = try? document.data(for: key(for: document)) else {
       return ""
     }
