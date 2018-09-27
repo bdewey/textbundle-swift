@@ -17,65 +17,67 @@
 
 import Foundation
 
-public protocol DocumentPropertyStorage {
-  associatedtype Value
-
-  func read(from document: TextBundleDocument) throws -> Value
-  func writeValue(_ value: Value, to document: TextBundleDocument) throws
-}
-
 /// Holds an mutable in-memory copy of data that is in stable storage, and tracks whether
 /// the in-memory copy has changed since being in stable storage ("dirty").
-public final class DocumentProperty<Storage: DocumentPropertyStorage>: TextBundleDocumentSaveListener {
+public final class DocumentProperty<Value>: TextBundleDocumentSaveListener {
+
+  public typealias ReadFunction = (TextBundleDocument) throws -> Value
+  public typealias WriteFunction = (Value, TextBundleDocument) throws -> Void
+
+  public init(
+    document: TextBundleDocument,
+    readFunction: @escaping ReadFunction,
+    writeFunction: @escaping WriteFunction
+  ) {
+    self.readFunction = readFunction
+    self.writeFunction = writeFunction
+    let initialResult = Result<Value> { try readFunction(document) }
+    self.currentValueWithSource = initialResult.flatMap { DocumentValueWithSource(source: .document, value: $0 )}
+  }
+
+  private let readFunction: ReadFunction
+  private let writeFunction: WriteFunction
 
   public var textBundleListenerHasChanges: TextBundleDocumentSaveListener.ChangeBlock?
 
   public func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws {
     if let value = clean() {
-      try storage.writeValue(value, to: textBundleDocument)
+      try writeFunction(value, textBundleDocument)
     }
   }
 
   public final func textBundleDocumentDidLoad(_ textBundleDocument: TextBundleDocument) {
-    let result = Result<Storage.Value> { try self.storage.read(from: textBundleDocument) }
+    let result = Result<Value> { try readFunction(textBundleDocument) }
     setDocumentResult(result)
   }
 
+  public typealias ValueWithSource = DocumentValueWithSource<Value>
 
-  private let storage: Storage
-  public typealias ValueWithSource = DocumentValueWithSource<Storage.Value>
-
-  public init(document: TextBundleDocument, storage: Storage) {
-    self.storage = storage
-    let initialResult = Result<Storage.Value> { try storage.read(from: document) }
-    self.currentValueWithSource = initialResult.flatMap { DocumentValueWithSource(source: .document, value: $0 )}
-  }
-  
   private let (publishingEndpoint, publisher) = Publisher<ValueWithSource>.create()
 
   /// Returns the in-memory copy of the value.
-  public var currentResult: Result<Storage.Value> {
+  public var currentResult: Result<Value> {
     return currentValueWithSource.flatMap { $0.value }
   }
 
   private var currentValueWithSource: Result<ValueWithSource>
   
   /// Changes the in-memory copy of the value.
-  public func setValue(_ value: Storage.Value) {
+  public func setValue(_ value: Value) {
     setResult(.success(value))
   }
 
-  public func changeValue(_ mutation: (Storage.Value) -> Storage.Value) {
+  public func changeValue(_ mutation: (Value) -> Value) {
     setResult(currentResult.flatMap(mutation))
   }
 
-  internal func setDocumentResult(_ result: Result<Storage.Value>) {
+  internal func setDocumentResult(_ result: Result<Value>) {
     let newResult = result.flatMap { DocumentValueWithSource(source: .document, value: $0) }
     currentValueWithSource = newResult
     publishingEndpoint(newResult)
   }
   
-  private func setResult(_ result: Result<Storage.Value>) {
+  private func setResult(_ result: Result<Value>) {
     let newResult = result.flatMap { DocumentValueWithSource(source: .memory, value: $0) }
     currentValueWithSource = newResult
     publishingEndpoint(newResult)
@@ -86,8 +88,8 @@ public final class DocumentProperty<Storage: DocumentPropertyStorage>: TextBundl
   ///
   /// - note: This is intended to only be called by the stable storage when writing the
   ///         in-memory copy.
-  public func clean() -> Storage.Value? {
-    var returnValue: Storage.Value? = nil
+  public func clean() -> Value? {
+    var returnValue: Value? = nil
     currentValueWithSource = currentValueWithSource.flatMap({ (valueWithSource) -> ValueWithSource in
       switch valueWithSource.source {
       case .document:

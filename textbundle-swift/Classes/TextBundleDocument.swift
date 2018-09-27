@@ -47,20 +47,18 @@ public final class TextBundleDocument: UIDocumentWithPreviousError {
     listeners[key] = listener
   }
 
-  public func listener(
+  public func listener<Listener: TextBundleDocumentSaveListener>(
     for key: String,
-    constructor: ((TextBundleDocument) -> TextBundleDocumentSaveListener)? = nil
-  ) -> TextBundleDocumentSaveListener? {
+    constructor: (TextBundleDocument) -> Listener
+  ) -> Listener {
     precondition(!documentState.contains(.closed))
     if let listener = listeners[key] {
-      return listener
+      return listener as! Listener
     }
-    if let listener = constructor?(self) {
-      listeners[key] = listener
-      listener.textBundleListenerHasChanges = { [weak self] in self?.updateChangeCount(.done) }
-      return listener
-    }
-    return nil
+    let listener = constructor(self)
+    listeners[key] = listener
+    listener.textBundleListenerHasChanges = { [weak self] in self?.updateChangeCount(.done) }
+    return listener
   }
   
   /// Write in-memory contents to textBundle and return textBundle for storage.

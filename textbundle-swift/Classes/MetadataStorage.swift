@@ -19,26 +19,29 @@ import Foundation
 
 fileprivate let key = "info.json"
 
-/// Reads and writes metadata to info.json
-public struct MetadataStorage: DocumentPropertyStorage {
+public enum MetadataStorage {
 
-  public func read(from document: TextBundleDocument) throws -> MetadataStorage.Metadata {
+  /// Reads and writes metadata to info.json
+  private static func read(from document: TextBundleDocument) throws -> MetadataStorage.Metadata {
     guard let data = try? document.data(for: key) else { return Metadata() }
     return try Metadata(from: data)
   }
 
-  public func writeValue(_ metadata: MetadataStorage.Metadata, to document: TextBundleDocument) throws {
+  private static func writeValue(_ metadata: MetadataStorage.Metadata, to document: TextBundleDocument) throws {
     let data = try metadata.makeData()
     let wrapper = FileWrapper(regularFileWithContents: data)
     document.bundle.replaceFileWrapper(wrapper, key: key)
   }
+
+  fileprivate static func makeProperty(
+    for document: TextBundleDocument
+  ) -> DocumentProperty<MetadataStorage.Metadata> {
+    return DocumentProperty(document: document, readFunction: read, writeFunction: writeValue)
+  }
 }
 
 extension TextBundleDocument {
-  public var metadata: DocumentProperty<MetadataStorage> {
-    guard let metadataStorage = listener(for: key, constructor: { DocumentProperty(document: $0, storage: MetadataStorage())}) as? DocumentProperty<MetadataStorage> else {
-      fatalError("Metadata storage is the wrong type?")
-    }
-    return metadataStorage
+  public var metadata: DocumentProperty<MetadataStorage.Metadata> {
+    return listener(for: key, constructor: MetadataStorage.makeProperty)
   }
 }

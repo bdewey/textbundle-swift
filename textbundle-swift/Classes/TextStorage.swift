@@ -18,9 +18,14 @@
 import Foundation
 
 /// Reads and writes data to text.*
-public struct TextStorage: DocumentPropertyStorage {
+private enum TextStorage {
 
-  public func writeValue(_ text: String, to document: TextBundleDocument) throws {
+  private static func key(for document: TextBundleDocument) -> String {
+    return document.bundle.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
+      ?? "text.markdown"
+  }
+
+  private static func writeValue(_ text: String, to document: TextBundleDocument) throws {
     guard let data = text.data(using: .utf8) else {
       throw NSError.fileWriteInapplicableStringEncoding
     }
@@ -31,12 +36,7 @@ public struct TextStorage: DocumentPropertyStorage {
     )
   }
 
-  private func key(for document: TextBundleDocument) -> String {
-    return document.bundle.fileWrappers?.keys.first(where: { $0.hasPrefix("text.") })
-      ?? "text.markdown"
-  }
-
-  public func read(from document: TextBundleDocument) throws -> String {
+  private static func read(from document: TextBundleDocument) throws -> String {
     guard let data = try? document.data(for: key(for: document)) else {
       return ""
     }
@@ -49,13 +49,14 @@ public struct TextStorage: DocumentPropertyStorage {
     }
     return string
   }
+
+  fileprivate static func makeProperty(for document: TextBundleDocument) -> DocumentProperty<String> {
+    return DocumentProperty(document: document, readFunction: read, writeFunction: writeValue)
+  }
 }
 
 extension TextBundleDocument {
-  public var text: DocumentProperty<TextStorage> {
-    let listener = self.listener(for: "text") { (document) -> TextBundleDocumentSaveListener in
-      return DocumentProperty(document: document, storage: TextStorage())
-    }
-    return listener as! DocumentProperty<TextStorage>
+  public var text: DocumentProperty<String> {
+    return listener(for: "text", constructor: TextStorage.makeProperty)
   }
 }
