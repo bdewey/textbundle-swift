@@ -56,7 +56,7 @@ final class TextStorageTests: XCTestCase {
       didOpenActive.fulfill()
     }
     waitForExpectations(timeout: 3, handler: nil)
-    var textHistory: [Result<DocumentValueWithSource<String>>] = []
+    var textHistory: [Result<TaggedValue<String>>] = []
     let passiveDidGetEditedText = expectation(description: "passive document got the edited text")
     var subscription: AnySubscription? = passiveDocument.text.subscribe { (result) in
       textHistory.append(result)

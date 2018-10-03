@@ -17,6 +17,11 @@
 
 import Foundation
 
+extension Tag {
+  public static let document = Tag(rawValue: "document")
+  public static let memory = Tag(rawValue: "memory")
+}
+
 /// Holds an mutable in-memory copy of data that is in stable storage, and tracks whether
 /// the in-memory copy has changed since being in stable storage ("dirty").
 public final class DocumentProperty<Value> {
@@ -35,7 +40,7 @@ public final class DocumentProperty<Value> {
     self.readFunction = readFunction
     self.writeFunction = writeFunction
     let initialResult = Result<Value> { try readFunction(document) }
-    self.currentValueWithSource = initialResult.flatMap { DocumentValueWithSource(source: .document, value: $0 )}
+    self.currentValueWithSource = initialResult.flatMap { TaggedValue(tag: .document, value: $0 )}
   }
 
   private let readFunction: ReadFunction
@@ -45,7 +50,7 @@ public final class DocumentProperty<Value> {
   /// For TextBundleSaveListener conformance: Tells our document that we have something to save.
   public var textBundleListenerHasChanges: TextBundleDocumentSaveListener.ChangeBlock?
 
-  public typealias ValueWithSource = DocumentValueWithSource<Value>
+  public typealias ValueWithSource = TaggedValue<Value>
 
   /// Returns the in-memory copy of the value.
   public var currentResult: Result<Value> {
@@ -64,13 +69,13 @@ public final class DocumentProperty<Value> {
   }
 
   internal func setDocumentResult(_ result: Result<Value>) {
-    let newResult = result.flatMap { DocumentValueWithSource(source: .document, value: $0) }
+    let newResult = result.flatMap { TaggedValue(tag: .document, value: $0) }
     currentValueWithSource = newResult
     publishingEndpoint(newResult)
   }
   
-  private func setResult(_ result: Result<Value>) {
-    let newResult = result.flatMap { DocumentValueWithSource(source: .memory, value: $0) }
+  private func setResult(_ result: Result<Value>, tag: Tag = .memory) {
+    let newResult = result.flatMap { TaggedValue(tag: tag, value: $0) }
     currentValueWithSource = newResult
     publishingEndpoint(newResult)
     textBundleListenerHasChanges?()
@@ -80,9 +85,9 @@ public final class DocumentProperty<Value> {
 extension DocumentProperty: TextBundleDocumentSaveListener {
   public func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws {
     guard let valueWithSource = currentValueWithSource.value else { return }
-    if valueWithSource.source == .memory {
+    if valueWithSource.tag != .document {
       try writeFunction(valueWithSource.value, textBundleDocument)
-      currentValueWithSource = .success(valueWithSource.settingSource(.document))
+      currentValueWithSource = .success(valueWithSource.tagging(.document))
     }
   }
 
