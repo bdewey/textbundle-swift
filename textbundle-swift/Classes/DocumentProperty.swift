@@ -68,17 +68,13 @@ public final class DocumentProperty<Value> {
     setResult(currentResult.flatMap(mutation))
   }
 
-  internal func setDocumentResult(_ result: Result<Value>) {
-    let newResult = result.flatMap { TaggedValue(tag: .document, value: $0) }
-    currentValueWithSource = newResult
-    publishingEndpoint(newResult)
-  }
-  
   private func setResult(_ result: Result<Value>, tag: Tag = .memory) {
     let newResult = result.flatMap { TaggedValue(tag: tag, value: $0) }
     currentValueWithSource = newResult
     publishingEndpoint(newResult)
-    textBundleListenerHasChanges?()
+    if tag != .document {
+      textBundleListenerHasChanges?()
+    }
   }
 }
 
@@ -93,7 +89,7 @@ extension DocumentProperty: TextBundleDocumentSaveListener {
 
   public final func textBundleDocumentDidLoad(_ textBundleDocument: TextBundleDocument) {
     let result = Result<Value> { try readFunction(textBundleDocument) }
-    setDocumentResult(result)
+    setResult(result, tag: .document)
   }
 }
 
