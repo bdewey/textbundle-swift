@@ -64,7 +64,7 @@ public final class DocumentProperty<Value> {
     taggedResult = .success(Tagged(tag: tag, value: value))
   }
 
-  public func changeValue(tag: Tag = .memory, _ mutation: (Value) -> Value) {
+  public func changeValue(tag: Tag = .memory, mutation: (Value) -> Value) {
     taggedResult = taggedResult.flatMap({ Tagged(tag: tag, value: mutation($0.value)) })
   }
 }
