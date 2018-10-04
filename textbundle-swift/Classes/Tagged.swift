@@ -24,7 +24,7 @@ public struct Tag: RawRepresentable {
 
 /// A structure that carries both a the value and its "source" (did it come from the document
 /// or an in-memory modification)
-public struct TaggedValue<Value> {
+public struct Tagged<Value> {
 
   public init(tag: Tag, value: Value) {
     self.tag = tag
@@ -37,8 +37,8 @@ public struct TaggedValue<Value> {
   /// The value itself
   public let value: Value
 
-  public func tagging(_ tag: Tag) -> TaggedValue<Value> {
-    return TaggedValue(tag: tag, value: value)
+  public func tagging(_ tag: Tag) -> Tagged<Value> {
+    return Tagged(tag: tag, value: value)
   }
 }
 

@@ -40,56 +40,48 @@ public final class DocumentProperty<Value> {
     self.readFunction = readFunction
     self.writeFunction = writeFunction
     let initialResult = Result<Value> { try readFunction(document) }
-    self.currentValueWithSource = initialResult.flatMap { TaggedValue(tag: .document, value: $0 )}
+    self.taggedResult = initialResult.flatMap { Tagged(tag: .document, value: $0 )}
   }
 
   private let readFunction: ReadFunction
   private let writeFunction: WriteFunction
-  private let (publishingEndpoint, publisher) = Publisher<ValueWithSource>.create()
+  private let (publishingEndpoint, publisher) = Publisher<Tagged<Value>>.create()
 
   /// For TextBundleSaveListener conformance: Tells our document that we have something to save.
   public var textBundleListenerHasChanges: TextBundleDocumentSaveListener.ChangeBlock?
 
-  public typealias ValueWithSource = TaggedValue<Value>
-
-  /// Returns the in-memory copy of the value.
-  public var currentResult: Result<Value> {
-    return currentValueWithSource.flatMap { $0.value }
+  public var taggedResult: Result<Tagged<Value>> {
+    didSet {
+      publishingEndpoint(taggedResult)
+      if let tag = taggedResult.value?.tag, tag != Tag.document {
+        textBundleListenerHasChanges?()
+      }
+    }
   }
-
-  private var currentValueWithSource: Result<ValueWithSource>
   
   /// Changes the in-memory copy of the value.
-  public func setValue(_ value: Value) {
-    setResult(.success(value))
+  public func setValue(_ value: Value, tag: Tag = .memory) {
+    taggedResult = .success(Tagged(tag: tag, value: value))
   }
 
-  public func changeValue(_ mutation: (Value) -> Value) {
-    setResult(currentResult.flatMap(mutation))
-  }
-
-  private func setResult(_ result: Result<Value>, tag: Tag = .memory) {
-    let newResult = result.flatMap { TaggedValue(tag: tag, value: $0) }
-    currentValueWithSource = newResult
-    publishingEndpoint(newResult)
-    if tag != .document {
-      textBundleListenerHasChanges?()
-    }
+  public func changeValue(tag: Tag = .memory, _ mutation: (Value) -> Value) {
+    taggedResult = taggedResult.flatMap({ Tagged(tag: tag, value: mutation($0.value)) })
   }
 }
 
 extension DocumentProperty: TextBundleDocumentSaveListener {
   public func textBundleDocumentWillSave(_ textBundleDocument: TextBundleDocument) throws {
-    guard let valueWithSource = currentValueWithSource.value else { return }
+    guard let valueWithSource = taggedResult.value else { return }
     if valueWithSource.tag != .document {
       try writeFunction(valueWithSource.value, textBundleDocument)
-      currentValueWithSource = .success(valueWithSource.tagging(.document))
+      taggedResult = .success(valueWithSource.tagging(.document))
     }
   }
 
   public final func textBundleDocumentDidLoad(_ textBundleDocument: TextBundleDocument) {
-    let result = Result<Value> { try readFunction(textBundleDocument) }
-    setResult(result, tag: .document)
+    taggedResult = Result<Tagged<Value>> {
+      Tagged(tag: .document, value: try readFunction(textBundleDocument))
+    }
   }
 }
 
@@ -98,7 +90,7 @@ extension DocumentProperty: CustomReflectable {
     return Mirror(
       self,
       children: [
-        "currentValueWithSource": String(describing: currentValueWithSource),
+        "taggedResult": String(describing: taggedResult),
         "subscribers": publisher,
       ],
       displayStyle: .class,
@@ -108,8 +100,8 @@ extension DocumentProperty: CustomReflectable {
 }
 
 extension DocumentProperty {
-  public func subscribe(_ block: @escaping (Result<ValueWithSource>) -> Void) -> AnySubscription {
-    block(currentValueWithSource)
+  public func subscribe(_ block: @escaping (Result<Tagged<Value>>) -> Void) -> AnySubscription {
+    block(taggedResult)
     return publisher.subscribe(block)
   }
 
