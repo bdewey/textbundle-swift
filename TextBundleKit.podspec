@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '11.0'
 
   s.source_files = 'textbundle-swift/Classes/**/*'
-  s.test_spec 'Tests' do |test_spec|
+  s.test_spec 'unit' do |test_spec|
     test_spec.source_files = 'textbundle-swift/Tests/**/*'
     test_spec.resource_bundles = {
       'TestContent' => 'textbundle-swift/TestContent/*',
